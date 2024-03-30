@@ -46,6 +46,10 @@
   # Set your time zone.
   time.timeZone = "Europe/London";
 
+  fonts.packages = with pkgs; [
+    (nerdfonts.override {fonts = ["FiraCode"];})
+  ];
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
 
@@ -136,12 +140,8 @@
     ];
   };
 
-  fonts.packages = with pkgs; [
-    (nerdfonts.override {fonts = ["FiraCode"];})
-  ];
-
   # Enable automatic login for the user.
-  services.getty.autologinUser = "harryp";
+  ## services.getty.autologinUser = "harryp";
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -184,7 +184,7 @@
     # require enabling PolKit integration on some desktop environments (e.g. Plasma).
     polkitPolicyOwners = ["Harry Prior"];
   };
-
+  programs.regreet.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

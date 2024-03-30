@@ -177,7 +177,29 @@ in {
         keymaps = {
           "<leader>g" = "live_grep";
         };
-        extensions.fzf-native = {enable = true;};
+        extraOptions = {
+          pickers = {
+            command_history = {
+              theme = "dropdown";
+            };
+            builtin = {
+              theme = "dropdown";
+            };
+            lsp_definitions = {
+              theme = "ivy";
+            };
+            lsp_references = {
+              theme = "ivy";
+            };
+            diagnostics = {
+              theme = "ivy";
+            };
+          };
+        };
+        extensions = {
+          fzf-native.enable = true;
+          ui-select.enable = true;
+        };
       };
       nvim-autopairs.enable = true;
       treesitter = {
@@ -304,15 +326,306 @@ in {
           };
         };
       };
+      leap.enable = true;
+      illuminate.enable = true;
+      surround.enable = true;
+      comment.enable = true;
+
+      lualine = {
+        enable = true;
+        globalstatus = true;
+        disabledFiletypes = {
+          statusline = ["dashboard" "alpha"];
+        };
+        theme = {
+          normal = {
+            a = {
+              bg = "#b4befe";
+              fg = "#1c1d21";
+            };
+            b = {
+              bg = "nil";
+            };
+            c = {
+              bg = "nil";
+            };
+            z = {
+              bg = "nil";
+            };
+            y = {
+              bg = "nil";
+            };
+            x = {
+              bg = "nil";
+            };
+          };
+        };
+        componentSeparators = {
+          left = "";
+          right = " ";
+        };
+        sectionSeparators = {
+          left = "";
+          right = "";
+        };
+        sections = {
+          lualine_a = [
+            {
+              name = "mode";
+              icon = "";
+              separator = {
+                left = "";
+                right = "";
+              };
+            }
+          ];
+          lualine_b = [
+            {
+              name = "branch";
+              icon = "";
+              separator = {
+                left = "";
+                right = "";
+              };
+              color = {
+                fg = "#1c1d21";
+                bg = "#7d83ac";
+              };
+            }
+          ];
+          lualine_c = [
+            {
+              name = "diagnostic";
+              extraConfig = {
+                symbols = {
+                  error = " ";
+                  warn = " ";
+                  info = " ";
+                  hint = "󰝶 ";
+                };
+              };
+            }
+            {
+              name = "filetype";
+              separator = {
+                left = "";
+                right = "";
+              };
+              extraConfig = {
+                icon_only = true;
+                padding = {
+                  left = 1;
+                  right = 0;
+                };
+              };
+            }
+            {
+              name = "filename";
+              extraConfig = {
+                symbols = {
+                  modified = "  ";
+                  readonly = "";
+                  unnamed = "";
+                };
+              };
+            }
+          ];
+          lualine_x = [
+            "diff"
+          ];
+          lualine_y = [
+            {
+              name = "progress";
+              icon = "";
+              color = {
+                fg = "#1c1d21";
+                bg = "#f2cdcd";
+              };
+            }
+          ];
+          lualine_z = [
+            {
+              name = "location";
+              color = {
+                fg = "#1c1d21";
+                bg = "#f2cdcd";
+              };
+            }
+          ];
+        };
+      };
+      neo-tree.enable = true;
     };
     keymaps = [
+      {
+        key = "<leader>t";
+        action = "<cmd>lua require('neo-tree.command').execute({ toggle = true })<cr>";
+        options = {
+          silent = true;
+          desc = "Toggle neotree";
+        };
+      }
       {
         mode = ["n" "v"];
         key = "gf";
         action = "<cmd>lua require('conform').format()<cr>";
         options = {
           silent = true;
-          desc = "Format";
+          desc = "Format buffer or selection";
+        };
+      }
+      {
+        mode = ["v"];
+        key = "<C-p>";
+        action = "y'>p";
+        options = {
+          silent = true;
+          desc = "Copy visual selection below";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<C-s>";
+        action = ":setlocal spell! spelllang=en_gb<CR>";
+        options = {
+          silent = true;
+          desc = "Turn spell checker on";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>vr";
+        action = "<cmd>lua require('rust-tools.runnables').runnables()<CR>";
+        options = {
+          silent = true;
+          desc = "Open rust runnables";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>h";
+        action = "<c-w>h";
+        options = {
+          silent = true;
+          desc = "Move to left window";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>j";
+        action = "<c-w>j";
+        options = {
+          silent = true;
+          desc = "Move to lower window";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>k";
+        action = "<c-w>k";
+        options = {
+          silent = true;
+          desc = "Move to upper window";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>l";
+        action = "<c-w>l";
+        options = {
+          silent = true;
+          desc = "Move to right window";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "=";
+        action = ":vertical resize +5<CR>";
+        options = {
+          silent = true;
+          desc = "Expand vertical window size";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "-";
+        action = ":vertical resize -5<CR>";
+        options = {
+          silent = true;
+          desc = "Reduce vertical window size";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "+";
+        action = "resize +5<CR>";
+        options = {
+          silent = true;
+          desc = "Resize right";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "_";
+        action = "resize -5<CR>";
+        options = {
+          silent = true;
+          desc = "Resize left";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>=";
+        action = "<c-w>=";
+        options = {
+          silent = true;
+          desc = "Make all splits equal size";
+        };
+      }
+      # Telescope  bindings
+      {
+        mode = ["n"];
+        key = "<leader>:";
+        action = "<cmd>Telescope command_history<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope command history";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>;";
+        action = "<cmd>Telescope buffers show_all_buffers=true<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope show all buffers";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>/";
+        action = "<cmd>Telescope current_buffer_fuzzy_find<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope fuzzy find through current buffer";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>'";
+        action = "<cmd>Telescope marks<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope marks";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>f";
+        action = "<cmd>Telescope find_files<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope find files";
         };
       }
     ];
@@ -377,7 +690,6 @@ in {
       monitor=DP-2,2560x2880@29.969999,3440x0,1.5
       monitor=DP-1,3840x2160,-1440x-400,1.5,transform,1
       monitor=HDMI-A-1,disable
-
 
       # Key bindings
       $mainMod = SUPER
