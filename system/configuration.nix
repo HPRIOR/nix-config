@@ -1,20 +1,21 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   hardware.opengl = {
     enable = pkgs.lib.mkDefault true;
     driSupport = true;
     driSupport32Bit = true;
-    };
+  };
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -23,8 +24,7 @@
     open = false;
     nvidiaSettings = true;
     package = config.boot.kernelPackages.nvidiaPackages.stable;
-    
-    };
+  };
 
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
@@ -65,9 +65,9 @@
   services.xserver = {
     videoDrivers = ["nvidia"];
     xkb = {
-        variant = "";
-        options = "caps:swapescape" ;
-        layout = "gb";
+      variant = "";
+      options = "caps:swapescape";
+      layout = "gb";
     };
   };
 
@@ -81,60 +81,64 @@
   users.users.harryp = {
     isNormalUser = true;
     description = "Harry Prior";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
-        ranger
-        croc
+      ranger
+      croc
 
-        # hyprland stuff
-        waybar
-        (waybar.overrideAttrs (oldAttrs: {
-            mesonFlags = oldAttrs.mesonFlags ++ [ "-Dexperimental=true"];
-        }))
-        dunst
-        libnotify
-        rofi-wayland
-        wlr-randr
-        wl-clipboard
-        nwg-displays
+      # hyprland stuff
+      waybar
+      (waybar.overrideAttrs (oldAttrs: {
+        mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+      }))
+      dunst
+      libnotify
+      rofi-wayland
+      wlr-randr
+      wl-clipboard
+      nwg-displays
 
-        # modern unix apps
-        eza # ls replacement
-        lazygit 
-        lazydocker
-        difftastic
-        bat # cat replacement
-        du-dust # intuitive du - view drive space
-        duf
-        fd # find alternative
-        ripgrep
-        fzf
-        choose # user friendly cut (and awk)
-        jq # json processor
-        sd # sed alternative
-        tldr
-        bottom
-        glances
-        hyperfine # benchmarking tool
-        gping # ping with graph
-        procs # ps alternative
-        zoxide
+      # modern unix apps
+      eza # ls replacement
+      lazygit
+      lazydocker
+      difftastic
+      bat # cat replacement
+      du-dust # intuitive du - view drive space
+      duf
+      fd # find alternative
+      ripgrep
+      fzf
+      choose # user friendly cut (and awk)
+      jq # json processor
+      sd # sed alternative
+      tldr
+      bottom
+      glances
+      hyperfine # benchmarking tool
+      gping # ping with graph
+      procs # ps alternative
+      zoxide
 
-        # git syntax highlighting pager
-        delta
+      # git syntax highlighting pager
+      delta
 
-        # terminal emulator
-        kitty
+      # terminal emulator
+      kitty
 
-        # applications
-        firefox
+      # applications
+      firefox
 
-        # rust
-        cargo
-        rustc
-        gcc
+      # rust
+      cargo
+      rustc
+      gcc
     ];
   };
+
+  fonts.packages = with pkgs; [
+    (nerdfonts.override {fonts = ["FiraCode"];})
+  ];
 
   # Enable automatic login for the user.
   services.getty.autologinUser = "harryp";
@@ -145,22 +149,22 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-	# standard stuff 
-	vim 
-  	wget
-	git
+    # standard stuff
+    vim
+    wget
+    git
   ];
 
-  environment.shells = with pkgs; [ zsh ];
+  environment.shells = with pkgs; [zsh];
   users.defaultUserShell = pkgs.zsh;
   programs.zsh.enable = true;
 
   programs.hyprland = {
-	enable = true;
+    enable = true;
   };
 
   xdg.portal.enable = true;
-  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
   sound.enable = true;
   security.rtkit.enable = true;
@@ -178,7 +182,7 @@
     enable = true;
     # Certain features, including CLI integration and system authentication support,
     # require enabling PolKit integration on some desktop environments (e.g. Plasma).
-    polkitPolicyOwners = [ "Harry Prior" ];
+    polkitPolicyOwners = ["Harry Prior"];
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -207,6 +211,5 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.11"; # Did you read the comment?
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 }
