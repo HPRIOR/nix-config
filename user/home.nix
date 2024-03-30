@@ -685,10 +685,10 @@ in {
       exec-once = blueman-applet
 
       # Monitor
-      monitor=,preferred,auto,1
       monitor=DP-3,3440x1440@74.983002,0x0,1
       monitor=DP-2,2560x2880@29.969999,3440x0,1.5
       monitor=DP-1,3840x2160,-1440x-400,1.5,transform,1
+      monitor=,preferred,auto,1
       monitor=HDMI-A-1,disable
 
       # Key bindings
