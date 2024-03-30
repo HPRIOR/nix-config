@@ -63,10 +63,12 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "gb";
-    xkbVariant = "";
     videoDrivers = ["nvidia"];
-    xkbOptions = "caps:swapescape";
+    xkb = {
+        variant = "";
+        options = "caps:swapescape" ;
+        layout = "gb";
+    };
   };
 
   services.blueman.enable = true;

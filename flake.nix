@@ -1,12 +1,16 @@
 {
 	description = "System config";
 	inputs = {
-		nixpkgs.url = "nixpkgs/nixos-23.11";
-		home-manager.url = "github:nix-community/home-manager/release-23.11";
+		nixpkgs.url = "nixpkgs/nixos-unstable";
+		home-manager.url = "github:nix-community/home-manager";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs";
+        nixvim = {
+                url = "github:nix-community/nixvim";
+                inputs.nixpkgs.follows = "nixpkgs";
+        };
 	};
 
-	outputs = { self, nixpkgs, home-manager, ...}:
+	outputs = { self, nixpkgs, home-manager, nixvim }:
 	let
 		lib = nixpkgs.lib;
 		system = "x86_64-linux";
@@ -24,8 +28,12 @@
 		homeConfigurations = {
 			harryp = home-manager.lib.homeManagerConfiguration {
 				inherit pkgs;
-				modules = [ ./user/home.nix ];
-
+                extraSpecialArgs = {
+                    inherit nixvim;
+                };
+				modules = [ 
+                    ./user/home.nix 
+                ];
 			};
 		};
 	};
