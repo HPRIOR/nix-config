@@ -13,7 +13,7 @@
     buildconfig = "sudo nixos-rebuild switch --flake ${dotFiles}";
     edithome = "cd ${dotFiles}/user && nvim home.nix && cd -";
     buildhome = "home-manager switch --flake ${dotFiles}";
-    editnix = "cd ${dotFiles} && nvim .a && cd -";
+    editnix = "cd ${dotFiles} && nvim && cd -";
 
     # lazy
     lzg = "lazygit";
@@ -207,21 +207,38 @@ in {
         enable = true;
         servers = {
           bashls.enable = true;
+          clangd.enable = true;
+          cmake.enable = true;
+          dockerls.enable = true;
+          elmls.enable = true;
+          fsautocomplete.enable = true;
+          html.enable = true;
           jsonls.enable = true;
+          lua-ls.enable = true;
+          marksman.enable = true;
           nixd.enable = true;
+          ocamllsp.enable = true;
+          omnisharp.enable = true;
+          pyright.enable = true;
           rust-analyzer = {
             enable = true;
             installCargo = true;
             installRustc = true;
           };
-          clangd.enable = true;
-          lua-ls.enable = true;
+          yamlls.enable = true;
         };
         keymaps.lspBuf = {
           "gD" = "references";
           "gt" = "type_definition";
           "gi" = "implementation";
           "K" = "hover";
+          "<leader>a" = "code_action";
+          "<leader>r" = "rename";
+        };
+        keymaps.diagnostic = {
+          "ge" = "goto_next";
+          "gE" = "goto_prev";
+          "<leader>d" = "open_float";
         };
       };
       # Code formatting
@@ -249,8 +266,6 @@ in {
           sh = ["shfmt"];
         };
       };
-
-      rust-tools.enable = true;
 
       lspkind = {
         enable = true;
@@ -323,11 +338,6 @@ in {
           };
         };
       };
-      leap.enable = true;
-      illuminate.enable = true;
-      surround.enable = true;
-      comment.enable = true;
-
       lualine = {
         enable = true;
         globalstatus = true;
@@ -451,6 +461,109 @@ in {
           ];
         };
       };
+      alpha = let
+        nixFlake = ''
+                     III      ~+===~     =+=
+                    IIIII      +====:   =====
+                     IIIII      =====  ======
+                     +IIII7      ====+:====~
+                      7IIII       =========
+                =IIIIIIIIIIIIIIIII,=======      =
+               ~IIIIIIIIIIIIIIIIIII =====      +7:
+               IIIIIIIIIIIIIIIIIIIII =====     III:
+                      =====           =====   IIII7
+                     =====~            ===== IIIII
+                    :====~             ~=== IIIII
+           ::::::::~====+               ~= IIIII??????
+          =============+                 ,7IIIIIIIIIIII
+          +============?                 IIIIIIIIIIIIII
+                 ====+,II               7IIII
+                =====,IIII             IIIII~
+               ===== ~IIIII           ?IIII~
+              =====   ?IIII~         ~IIII7
+               ===     7IIII:=====================
+                +       IIIII ===================
+                       IIIIIII =================,
+                      7IIIIIII7       =====
+                     7IIII~7IIII       =====
+                    IIIII~  IIIII      :====+
+                    7IIII    IIIII      :===+
+        '';
+      in {
+        enable = true;
+        layout = [
+          {
+            type = "padding";
+            val = 4;
+          }
+          {
+            opts = {
+              hl = "AlphaHeader";
+              position = "center";
+            };
+            type = "text";
+            val = nixFlake;
+          }
+          {
+            type = "padding";
+            val = 2;
+          }
+          {
+            type = "group";
+            val = let
+              mkButton = shortcut: cmd: val: hl: {
+                type = "button";
+                inherit val;
+                opts = {
+                  inherit hl shortcut;
+                  keymap = [
+                    "n"
+                    shortcut
+                    cmd
+                    {}
+                  ];
+                  position = "center";
+                  cursor = 0;
+                  width = 40;
+                  align_shortcut = "right";
+                  hl_shortcut = "Keyword";
+                };
+              };
+            in [
+              (
+                mkButton
+                "f"
+                "<CMD>lua require('telescope.builtin').find_files()<CR>"
+                "🔍 Find File"
+                "Operator"
+              )
+              (
+                mkButton
+                "t"
+                "<cmd>lua require('neo-tree.command').execute({ toggle = true })<cr>"
+                " Open tree"
+                "Operator"
+              )
+              (
+                mkButton
+                "q"
+                "<CMD>qa<CR>"
+                "💣 Quit Neovim"
+                "String"
+              )
+            ];
+          }
+          {
+            type = "padding";
+            val = 2;
+          }
+        ];
+      };
+      leap.enable = true;
+      illuminate.enable = true;
+      surround.enable = true;
+      comment.enable = true;
+      rust-tools.enable = true;
       neo-tree.enable = true;
     };
     keymaps = [
