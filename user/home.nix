@@ -9,11 +9,11 @@
   dotFiles = "${homeDir}/.dotfiles";
   aliases = {
     # nix editing
-    editconfig = "nvim ${dotFiles}/system/configuration.nix";
+    editconfig = "cd ${dotFiles}/system && nvim configuration.nix && cd -";
     buildconfig = "sudo nixos-rebuild switch --flake ${dotFiles}";
-    edithome = "nvim ${dotFiles}/user/home.nix";
+    edithome = "cd ${dotFiles}/user && nvim home.nix && cd -";
     buildhome = "home-manager switch --flake ${dotFiles}";
-    editnix = "nvim ${dotFiles}";
+    editnix = "cd ${dotFiles} && nvim .a && cd -";
 
     # lazy
     lzg = "lazygit";
@@ -174,9 +174,6 @@ in {
       };
       telescope = {
         enable = true;
-        keymaps = {
-          "<leader>g" = "live_grep";
-        };
         extraOptions = {
           pickers = {
             command_history = {
@@ -218,9 +215,9 @@ in {
             installRustc = true;
           };
           clangd.enable = true;
+          lua-ls.enable = true;
         };
         keymaps.lspBuf = {
-          "gd" = "definition";
           "gD" = "references";
           "gt" = "type_definition";
           "gi" = "implementation";
@@ -489,7 +486,7 @@ in {
         action = ":setlocal spell! spelllang=en_gb<CR>";
         options = {
           silent = true;
-          desc = "Turn spell checker on";
+          desc = "Toggle spell checker";
         };
       }
       {
@@ -558,7 +555,7 @@ in {
       {
         mode = ["n"];
         key = "+";
-        action = "resize +5<CR>";
+        action = ":resize +5<CR>";
         options = {
           silent = true;
           desc = "Resize right";
@@ -567,7 +564,7 @@ in {
       {
         mode = ["n"];
         key = "_";
-        action = "resize -5<CR>";
+        action = ":resize -5<CR>";
         options = {
           silent = true;
           desc = "Resize left";
@@ -580,6 +577,15 @@ in {
         options = {
           silent = true;
           desc = "Make all splits equal size";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>w";
+        action = ":close <cr>";
+        options = {
+          silent = true;
+          desc = "Close buffer";
         };
       }
       # Telescope  bindings
@@ -626,6 +632,63 @@ in {
         options = {
           silent = true;
           desc = "Telescope find files";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "<leader>g";
+        action = "<cmd>Telescope live_grep<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope live  grep";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "gd";
+        action = "<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope go to definition";
+        };
+      }
+      {
+        mode = ["n"];
+        key = "gu";
+        action = "<cmd>lua require'telescope.builtin'.lsp_references()<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope find references";
+        };
+      }
+      {
+        #  todo change severity, currently showing warnings too
+        mode = ["n"];
+        key = "<leader>xx";
+        action = "<cmd>lua require'telescope.builtin'.diagnostics({ bufnr = 0 })<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope diagnostics in current buffer";
+        };
+      }
+      {
+        #  todo change severity, currently showing warnings too
+        mode = ["n"];
+        key = "<leader>xa";
+        action = "<cmd>lua require'telescope.builtin'.diagnostics()<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope diagnostics in all buffers";
+        };
+      }
+      {
+        #  todo change severity, currently showing warnings too
+        mode = ["n"];
+        key = "<leader>s";
+        action = "<cmd>lua require'telescope.builtin'.spell_suggest(require('telescope.themes').get_dropdown({ width = 0.8, previewer = false, prompt_title = false }))<cr>";
+        options = {
+          silent = true;
+          desc = "Telescope show spelling suggestions";
         };
       }
     ];
@@ -686,7 +749,7 @@ in {
 
       # Monitor
       monitor=DP-3,3440x1440@74.983002,0x0,1
-      monitor=DP-2,2560x2880@29.969999,3440x0,1.5
+      monitor=DP-2,2560x2880@29.969999,3440x0,1
       monitor=DP-1,3840x2160,-1440x-400,1.5,transform,1
       monitor=,preferred,auto,1
       monitor=HDMI-A-1,disable
