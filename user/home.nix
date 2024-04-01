@@ -195,7 +195,7 @@ in {
         };
         extensions = {
           fzf-native.enable = true;
-          ui-select.enable = true;
+          # ui-select.enable = true;
         };
       };
       nvim-autopairs.enable = true;
@@ -541,7 +541,7 @@ in {
                 mkButton
                 "t"
                 "<cmd>lua require('neo-tree.command').execute({ toggle = true })<cr>"
-                " Open tree"
+                "  Open tree"
                 "Operator"
               )
               (
@@ -566,6 +566,46 @@ in {
       rust-tools.enable = true;
       neo-tree.enable = true;
     };
+    extraPlugins = with pkgs.vimPlugins; [
+      dressing-nvim
+    ];
+    extraConfigLua = ''
+      -- configure dressing-nvim
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+          require("lazy").load({ plugins = { "dressing.nvim" } })
+          return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+          require("lazy").load({ plugins = { "dressing.nvim" } })
+          return vim.ui.input(...)
+      end
+
+      -- configure lsp
+      local _border = "rounded"
+
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+          vim.lsp.handlers.hover, {
+              border = _border
+          }
+      )
+
+      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+          vim.lsp.handlers.signature_help, {
+              border = _border
+          }
+      )
+
+      vim.diagnostic.config{
+          float={border=_border}
+      };
+
+      require('lspconfig.ui.windows').default_options = {
+          border = _border
+      }
+
+    '';
     keymaps = [
       {
         key = "<leader>t";
@@ -824,30 +864,6 @@ in {
 
     globals.mapleader = " ";
     globals.maplocalleader = " ";
-    extraConfigLua = ''
-      local _border = "rounded"
-
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-          vim.lsp.handlers.hover, {
-              border = _border
-          }
-      )
-
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-          vim.lsp.handlers.signature_help, {
-              border = _border
-          }
-      )
-
-      vim.diagnostic.config{
-          float={border=_border}
-      };
-
-      require('lspconfig.ui.windows').default_options = {
-          border = _border
-      }
-
-    '';
   };
 
   wayland.windowManager.hyprland = {
