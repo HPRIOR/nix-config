@@ -132,6 +132,8 @@
       # rust
       cargo
       rustc
+      rustfmt
+      clippy
       gcc
     ];
   };
