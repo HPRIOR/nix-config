@@ -35,9 +35,8 @@
     copy = "wl-copy";
     paste = "wl-paste";
   };
-
   # scripts
-  nix-build = import ./scripts/nix-build.nix {inherit pkgs;};
+  # nix-build = import ./scripts/nix-build.nix {inherit pkgs;};
 in {
   imports = [
     nixvim.homeManagerModules.nixvim
@@ -46,8 +45,39 @@ in {
   home.username = userName;
   home.homeDirectory = homeDir;
   home.stateVersion = "23.05";
-  home.packages = [
-    nix-build
+  home.packages = with pkgs; [
+    # nix-build
+    ranger
+    croc
+    eza # ls replacement
+    lazygit
+    lazydocker
+    difftastic
+    bat # cat replacement
+    du-dust # intuitive du - view drive space
+    duf
+    fd # find alternative
+    ripgrep
+    fzf
+    choose # user friendly cut (and awk)
+    jq # json processor
+    sd # sed alternative
+    tldr
+    bottom
+    glances
+    hyperfine # benchmarking tool
+    gping # ping with graph
+    procs # ps alternative
+    zoxide
+    delta # git syntax highlighting pager
+    kitty # terminal emulator
+    firefox # applications
+    cargo
+    rustc
+    rustfmt
+    clippy
+    gcc
+    iftop
   ];
   home.file = {};
   home.sessionVariables = {

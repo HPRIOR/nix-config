@@ -83,58 +83,8 @@
     description = "Harry Prior";
     extraGroups = ["networkmanager" "wheel"];
     packages = with pkgs; [
-      ranger
-      croc
 
-      # hyprland stuff
-      waybar
-      (waybar.overrideAttrs (oldAttrs: {
-        mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
-      }))
-      dunst
-      libnotify
-      rofi-wayland
-      wlr-randr
-      wl-clipboard
-      nwg-displays
-
-      # modern unix apps
-      eza # ls replacement
-      lazygit
-      lazydocker
-      difftastic
-      bat # cat replacement
-      du-dust # intuitive du - view drive space
-      duf
-      fd # find alternative
-      ripgrep
-      fzf
-      choose # user friendly cut (and awk)
-      jq # json processor
-      sd # sed alternative
-      tldr
-      bottom
-      glances
-      hyperfine # benchmarking tool
-      gping # ping with graph
-      procs # ps alternative
-      zoxide
-
-      # git syntax highlighting pager
-      delta
-
-      # terminal emulator
-      kitty
-
-      # applications
-      firefox
-
-      # rust
-      cargo
-      rustc
-      rustfmt
-      clippy
-      gcc
+      
     ];
   };
 
@@ -151,6 +101,17 @@
     vim
     wget
     git
+
+    # hyprland and wm stuff
+    waybar
+    (waybar.overrideAttrs (oldAttrs: {
+    mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+    }))
+    dunst
+    libnotify
+    rofi-wayland
+    wl-clipboard
+    wlr-randr
   ];
 
   environment.shells = with pkgs; [zsh];
