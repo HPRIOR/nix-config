@@ -122,6 +122,8 @@ in {
     shellAliases = aliases;
     initExtra = ''
       eval "$(zoxide init zsh)"
+      ${builtins.readFile ./zsh_funcs}
+
     '';
   };
 

@@ -117,9 +117,10 @@ in {
     rofi-wayland
     wl-clipboard
     wlr-randr
-  ];
 
-  # secrets management. Needs to run in sys config for now because templates aren't supported 
+    pinentry-curses
+  ];
+  # secrets management. Needs to run in sys config for now because templates aren't supported
   sops = {
     defaultSopsFile = ../secrets/secrets.yaml;
     defaultSopsFormat = "yaml";
