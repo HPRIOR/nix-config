@@ -82,10 +82,7 @@
     isNormalUser = true;
     description = "Harry Prior";
     extraGroups = ["networkmanager" "wheel"];
-    packages = with pkgs; [
-
-      
-    ];
+    packages = with pkgs; [];
   };
 
   # Enable automatic login for the user.
@@ -105,7 +102,7 @@
     # hyprland and wm stuff
     waybar
     (waybar.overrideAttrs (oldAttrs: {
-    mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+      mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
     dunst
     libnotify

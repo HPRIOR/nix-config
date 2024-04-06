@@ -78,6 +78,7 @@ in {
     clippy
     gcc
     iftop
+    aichat
   ];
   home.file = {};
   home.sessionVariables = {
