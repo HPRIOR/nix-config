@@ -1,15 +1,15 @@
 {
   config,
   pkgs,
+  lib,
   inputs,
+  userSettings,
   ...
 }: let
-  userName = "harryp";
-  homeDir = "/home/harryp";
+  #  some of this should be passed in
+  userName = userSettings.userName;
+  homeDir = "/home/${userName}";
   dotFiles = "${homeDir}/.dotfiles";
-
-  # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
-  sopsPrivateKey = "${homeDir}/.config/sops/age/keys.txt";
 
   aliases = rec {
     # nix editing
@@ -44,36 +44,14 @@
 in {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
-    inputs.sops-nix.homeManagerModules.sops
   ];
 
   xdg = {
     enable = true;
-
     userDirs = {
       enable = true;
       createDirectories = true;
     };
-  };
-
-  # secrets are decrypted in a systemd user service called sops-nix,
-  # so other services needing secrets must order after it:
-  systemd.user.services.mbsync.Unit.After = ["sops-nix.service"];
-
-  # As home-manager does not restart the sops-nix unit automatically instruct home-manager to do so:
-  home.activation.setupEtc = config.lib.dag.entryAfter ["writeBoundary"] ''
-    /run/current-system/sw/bin/systemctl start --user sops-nix
-  '';
-
-  sops = {
-    defaultSopsFile = ../secrets/secrets.yaml;
-    defaultSopsFormat = "yaml";
-    age = {
-      keyFile = "${homeDir}/.config/sops/age/keys.txt";
-      sshKeyPaths = ["${homeDir}/.ssh"];
-      generateKey = true;
-    };
-    secrets.gpt-api-key = {};
   };
 
   home.username = userName;
@@ -155,8 +133,8 @@ in {
   programs.git = {
     enable = true;
     package = pkgs.gitAndTools.gitFull;
-    userName = "Harry Joseph Prior";
-    userEmail = "harryjosephprior@protonmail.com";
+    userName = userSettings.fullName;
+    userEmail = userSettings.email;
     extraConfig = {
       core.autocrlf = "input";
       merge.conflictstyle = "diff3";
@@ -1044,4 +1022,9 @@ in {
       "f1" = "new_tab_with_cwd";
     };
   };
+  home.file."${homeDir}/.config/aichat/config.yaml".text = ''
+    model: openai
+    clients:
+    - type: openai
+  '';
 }

@@ -5,13 +5,18 @@
   config,
   pkgs,
   inputs,
+  systemSettings,
+  userSettings,
   ...
-}: {
+}: let
+  userName = userSettings.userName;
+  homeDir = "/home/${userName}";
+in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    inputs.sops-nix.nixosModules.sops
   ];
-
 
   hardware.opengl = {
     enable = pkgs.lib.mkDefault true;
@@ -35,7 +40,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = systemSettings.networkHostName; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -49,18 +54,18 @@
   time.timeZone = "Europe/London";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = systemSettings.defaultLocale;
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = "en_GB.UTF-8";
-    LC_IDENTIFICATION = "en_GB.UTF-8";
-    LC_MEASUREMENT = "en_GB.UTF-8";
-    LC_MONETARY = "en_GB.UTF-8";
-    LC_NAME = "en_GB.UTF-8";
-    LC_NUMERIC = "en_GB.UTF-8";
-    LC_PAPER = "en_GB.UTF-8";
-    LC_TELEPHONE = "en_GB.UTF-8";
-    LC_TIME = "en_GB.UTF-8";
+    LC_ADDRESS = systemSettings.defaultLocale;
+    LC_IDENTIFICATION = systemSettings.defaultLocale;
+    LC_MEASUREMENT = systemSettings.defaultLocale;
+    LC_MONETARY = systemSettings.defaultLocale;
+    LC_NAME = systemSettings.defaultLocale;
+    LC_NUMERIC = systemSettings.defaultLocale;
+    LC_PAPER = systemSettings.defaultLocale;
+    LC_TELEPHONE = systemSettings.defaultLocale;
+    LC_TIME = systemSettings.defaultLocale;
   };
 
   # Configure keymap in X11
@@ -80,10 +85,11 @@
   console.useXkbConfig = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.harryp = {
+  users.users.${userSettings.userName} = {
     isNormalUser = true;
-    description = "Harry Prior";
-    extraGroups = ["networkmanager" "wheel"];
+    uid = userSettings.uid;
+    description = userSettings.fullName;
+    extraGroups = userSettings.extraGroups;
     packages = with pkgs; [];
   };
 
@@ -115,7 +121,13 @@
 
   environment.shells = with pkgs; [zsh];
   users.defaultUserShell = pkgs.zsh;
-  programs.zsh.enable = true;
+  programs.zsh = {
+    enable = true;
+    shellInit = ''
+        export OPENAI_API_KEY=$(cat ${config.sops.secrets.gpt-api-key.path})
+    '';
+  };
+  
 
   programs.hyprland = {
     enable = true;
@@ -140,8 +152,24 @@
     enable = true;
     # Certain features, including CLI integration and system authentication support,
     # require enabling PolKit integration on some desktop environments (e.g. Plasma).
-    polkitPolicyOwners = ["Harry Prior"];
+    polkitPolicyOwners = [userSettings.fullName];
   };
+
+  sops = {
+    defaultSopsFile = ../secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age = {
+      # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
+      keyFile = "${homeDir}/.config/sops/age/keys.txt";
+      # I think this can be generated automatically if it doesn't exist, thanks to generateKey and sshKeyPaths commands
+      sshKeyPaths = ["${homeDir}/.ssh/id_ed25519"];
+      generateKey = true;
+    };
+    secrets.gpt-api-key = {
+        owner = config.users.users.${userName}.name;
+    };
+  };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

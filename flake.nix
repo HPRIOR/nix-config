@@ -16,7 +16,7 @@
     ## secrets management
     sops-nix = {
       url = "github:Mic92/sops-nix";
-      # inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -28,13 +28,28 @@
     sops-nix,
   } @ inputs: let
     lib = nixpkgs.lib;
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
+    userSettings = {
+      uid = 1000;
+      userName = "harryp";
+      fullName = "Harry Joseph Prior";
+      email = "harryjosephprior@protonmail.com";
+      extraGroups = ["networkmanager" "wheel"];
+    };
+    systemSettings = {
+      system = "x86_64-linux";
+      networkHostName = "nixos";
+      defaultLocale = "en_GB.UTF-8";
+    };
+    pkgs = nixpkgs.legacyPackages.${systemSettings.system};
   in {
     nixosConfigurations = {
       nixos = lib.nixosSystem {
-        inherit system;
-        specialArgs = {inherit inputs;};
+        inherit (systemSettings) system;
+        specialArgs = {
+          inherit inputs;
+          systemSettings = systemSettings;
+          userSettings = userSettings;
+        };
         modules = [./system/configuration.nix];
       };
     };
@@ -44,6 +59,7 @@
         inherit pkgs;
         extraSpecialArgs = {
           inherit inputs;
+          userSettings = userSettings;
         };
         modules = [
           ./user/home.nix
