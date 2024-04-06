@@ -1,12 +1,16 @@
 {
   config,
   pkgs,
-  nixvim,
+  inputs,
   ...
 }: let
   userName = "harryp";
   homeDir = "/home/harryp";
   dotFiles = "${homeDir}/.dotfiles";
+
+  # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
+  sopsPrivateKey = "${homeDir}/.config/sops/age/keys.txt";
+
   aliases = rec {
     # nix editing
     editconfig = "cd ${dotFiles}/system && nvim configuration.nix && cd -";
@@ -39,8 +43,38 @@
   # nix-build = import ./scripts/nix-build.nix {inherit pkgs;};
 in {
   imports = [
-    nixvim.homeManagerModules.nixvim
+    inputs.nixvim.homeManagerModules.nixvim
+    inputs.sops-nix.homeManagerModules.sops
   ];
+
+  xdg = {
+    enable = true;
+
+    userDirs = {
+      enable = true;
+      createDirectories = true;
+    };
+  };
+
+  # secrets are decrypted in a systemd user service called sops-nix,
+  # so other services needing secrets must order after it:
+  systemd.user.services.mbsync.Unit.After = ["sops-nix.service"];
+
+  # As home-manager does not restart the sops-nix unit automatically instruct home-manager to do so:
+  home.activation.setupEtc = config.lib.dag.entryAfter ["writeBoundary"] ''
+    /run/current-system/sw/bin/systemctl start --user sops-nix
+  '';
+
+  sops = {
+    defaultSopsFile = ../secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age = {
+      keyFile = "${homeDir}/.config/sops/age/keys.txt";
+      sshKeyPaths = ["${homeDir}/.ssh"];
+      generateKey = true;
+    };
+    secrets.gpt-api-key = {};
+  };
 
   home.username = userName;
   home.homeDirectory = homeDir;
@@ -79,21 +113,14 @@ in {
     gcc
     iftop
     aichat
+    sops
+    tree
   ];
   home.file = {};
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
     TERMCMD = "${pkgs.kitty}/bin/kitty";
-  };
-
-  xdg = {
-    enable = true;
-
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-    };
   };
 
   # Let Home Manager install and manage itself.

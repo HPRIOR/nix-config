@@ -4,12 +4,14 @@
 {
   config,
   pkgs,
+  inputs,
   ...
 }: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
+
 
   hardware.opengl = {
     enable = pkgs.lib.mkDefault true;

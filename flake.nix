@@ -2,11 +2,21 @@
   description = "System config";
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    ## secrets management
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      # inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -15,7 +25,8 @@
     nixpkgs,
     home-manager,
     nixvim,
-  }: let
+    sops-nix,
+  } @ inputs: let
     lib = nixpkgs.lib;
     system = "x86_64-linux";
     pkgs = nixpkgs.legacyPackages.${system};
@@ -23,6 +34,7 @@
     nixosConfigurations = {
       nixos = lib.nixosSystem {
         inherit system;
+        specialArgs = {inherit inputs;};
         modules = [./system/configuration.nix];
       };
     };
@@ -31,7 +43,7 @@
       harryp = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         extraSpecialArgs = {
-          inherit nixvim;
+          inherit inputs;
         };
         modules = [
           ./user/home.nix
