@@ -125,10 +125,7 @@ in {
     defaultSopsFormat = "yaml";
     age = {
       # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
-      keyFile = "${homeDir}/.config/sops/age/keys.txt";
-      # I think this can be generated automatically if it doesn't exist, thanks to generateKey and sshKeyPaths commands
-      sshKeyPaths = ["${homeDir}/.ssh/id_ed25519"];
-      generateKey = true;
+      keyFile = "/etc/sops/age/keys.txt";
     };
     secrets.gpt-api-key = {
       owner = config.users.users.${userName}.name;
