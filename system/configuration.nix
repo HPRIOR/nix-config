@@ -119,15 +119,31 @@ in {
     wlr-randr
   ];
 
+  # secrets management. Needs to run in sys config for now because templates aren't supported 
+  sops = {
+    defaultSopsFile = ../secrets/secrets.yaml;
+    defaultSopsFormat = "yaml";
+    age = {
+      # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
+      keyFile = "${homeDir}/.config/sops/age/keys.txt";
+      # I think this can be generated automatically if it doesn't exist, thanks to generateKey and sshKeyPaths commands
+      sshKeyPaths = ["${homeDir}/.ssh/id_ed25519"];
+      generateKey = true;
+    };
+    secrets.gpt-api-key = {
+      owner = config.users.users.${userName}.name;
+    };
+  };
+
   environment.shells = with pkgs; [zsh];
   users.defaultUserShell = pkgs.zsh;
+
   programs.zsh = {
     enable = true;
     shellInit = ''
-        export OPENAI_API_KEY=$(cat ${config.sops.secrets.gpt-api-key.path})
+      export OPENAI_API_KEY=$(cat ${config.sops.secrets.gpt-api-key.path})
     '';
   };
-  
 
   programs.hyprland = {
     enable = true;
@@ -153,21 +169,6 @@ in {
     # Certain features, including CLI integration and system authentication support,
     # require enabling PolKit integration on some desktop environments (e.g. Plasma).
     polkitPolicyOwners = [userSettings.fullName];
-  };
-
-  sops = {
-    defaultSopsFile = ../secrets/secrets.yaml;
-    defaultSopsFormat = "yaml";
-    age = {
-      # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
-      keyFile = "${homeDir}/.config/sops/age/keys.txt";
-      # I think this can be generated automatically if it doesn't exist, thanks to generateKey and sshKeyPaths commands
-      sshKeyPaths = ["${homeDir}/.ssh/id_ed25519"];
-      generateKey = true;
-    };
-    secrets.gpt-api-key = {
-        owner = config.users.users.${userName}.name;
-    };
   };
 
   # Some programs need SUID wrappers, can be configured further or are
