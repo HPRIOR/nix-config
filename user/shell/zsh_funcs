@@ -108,7 +108,8 @@ lzcommit() {
 
     local msg=$(git -c pager.diff='less -R' diff | aichat 'write me a succinct git commit messsage for these changes' --model "gpt-3.5-turbo")
     echo $msg
-    read -q "response?Do you want to commit? (y/n): "
+    read -q "response?Do you want to commit? (y/n):"
+    echo ""
     if [[ $response == "y" ]]; then
         git commit -am "$msg"
         echo "Committed!"
