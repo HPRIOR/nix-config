@@ -1,6 +1,7 @@
 {
   inputs,
   pkgs,
+  config,
   ...
 }: {
   imports = [inputs.nixvim.homeManagerModules.nixvim];
