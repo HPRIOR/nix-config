@@ -1,7 +1,6 @@
 # make fzf use rg and include hidden files
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g "!{node_modules/*,.git/*}"'
 
-
 mkcd(){
     mkdir $1 && cd $1
 }

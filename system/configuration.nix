@@ -118,7 +118,6 @@ in {
     wl-clipboard
     wlr-randr
 
-    pinentry-curses
   ];
   # secrets management. Needs to run in sys config for now because templates aren't supported
   sops = {
