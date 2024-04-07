@@ -28,9 +28,12 @@
     sops-nix,
   } @ inputs: let
     lib = nixpkgs.lib;
-    userSettings = {
+    userSettings = rec {
       uid = 1000;
       userName = "harryp";
+      homeDir = "/home/${userName}";
+      dotFiles = "${homeDir}/.dotfiles";
+      configDir = "${homeDir}/.config";
       fullName = "Harry Joseph Prior";
       email = "harryjosephprior@protonmail.com";
       extraGroups = ["networkmanager" "wheel"];
