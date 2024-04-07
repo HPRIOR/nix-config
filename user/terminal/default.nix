@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, config, ...}: {
   home.sessionVariables = {
     TERMCMD = "${pkgs.kitty}/bin/kitty";
   };
@@ -9,39 +9,44 @@
       package = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
       size = 12;
     };
-    # theme = "kanagawabones";
     shellIntegration.enableZshIntegration = true;
     settings = {
-      # Kanagawa theme
-      background = "#1F1F28";
-      foreground = "#DCD7BA";
-      selection_background = "#2D4F67";
-      selection_foreground = "#C8C093";
-      url_color = "#72A7BC";
-      cursor = "#C8C093";
-      active_tab_background = "#1F1F28";
-      active_tab_foreground = "#C8C093";
-      inactive_tab_background = "#1F1F28";
-      inactive_tab_foreground = "#727169";
-      color0 = "#16161D";
-      color1 = "#C34043";
-      color2 = "#76946A";
-      color3 = "#C0A36E";
-      color4 = "#7E9CD8";
-      color5 = "#957FB8";
-      color6 = "#6A9589";
-      color7 = "#C8C093";
-      color8 = "#727169";
-      color9 = "#E82424";
-      color10 = "#98BB6C";
-      color11 = "#E6C384";
-      color12 = "#7FB4CA";
-      color13 = "#938AA9";
-      color14 = "#7AA89F";
-      color15 = "#DCD7BA";
-      color16 = "#FFA066";
-      color17 = "#FF5D62";
-      term = "xterm-256color";
+        background = "#${config.colorScheme.colors.base00}";
+        foreground = "#${config.colorScheme.colors.base05}";
+        selection_background = "#${config.colorScheme.colors.base05}";
+        selection_foreground = "#${config.colorScheme.colors.base00}";
+        url_color = "#${config.colorScheme.colors.base04}";
+        cursor = "#${config.colorScheme.colors.base05}";
+        active_border_color = "#${config.colorScheme.colors.base03}";
+        inactive_border_color = "#${config.colorScheme.colors.base01}";
+        active_tab_background = "#${config.colorScheme.colors.base00}";
+        active_tab_foreground = "#${config.colorScheme.colors.base05}";
+        inactive_tab_background = "#${config.colorScheme.colors.base01}";
+        inactive_tab_foreground = "#${config.colorScheme.colors.base04}";
+        tab_bar_background = "#${config.colorScheme.colors.base01}";
+        color0 = "#${config.colorScheme.colors.base00}";
+        color1 = "#${config.colorScheme.colors.base08}";
+        color2 = "#${config.colorScheme.colors.base0B}";
+        color3 = "#${config.colorScheme.colors.base0A}";
+        color4 = "#${config.colorScheme.colors.base0D}";
+        color5 = "#${config.colorScheme.colors.base0E}";
+        color6 = "#${config.colorScheme.colors.base0C}";
+        color7 = "#${config.colorScheme.colors.base05}";
+        color8 = "#${config.colorScheme.colors.base03}" ;
+        color9 = "#${config.colorScheme.colors.base08}" ;
+        color10 = "#${config.colorScheme.colors.base0B}";
+        color11 = "#${config.colorScheme.colors.base0A}";
+        color12 = "#${config.colorScheme.colors.base0D}";
+        color13 = "#${config.colorScheme.colors.base0E}";
+        color14 = "#${config.colorScheme.colors.base0C}";
+        color15 = "#${config.colorScheme.colors.base07}";
+        color16 = "#${config.colorScheme.colors.base09}";
+        color17 = "#${config.colorScheme.colors.base0F}";
+        color18 = "#${config.colorScheme.colors.base01}";
+        color19 = "#${config.colorScheme.colors.base02}";
+        color20 = "#${config.colorScheme.colors.base04}";
+        color21 = "#${config.colorScheme.colors.base06}";
+        term = "xterm-256color";
     };
     keybindings = {
       "f1" = "new_tab_with_cwd";

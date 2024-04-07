@@ -13,11 +13,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    ## secrets management
+    # secrets management
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nix-colours.url = "github:Misterio77/nix-colors";
   };
 
   outputs = {
@@ -26,6 +28,7 @@
     home-manager,
     nixvim,
     sops-nix,
+    nix-colours
   } @ inputs: let
     lib = nixpkgs.lib;
     userSettings = rec {

@@ -11,11 +11,13 @@
   dotFiles = userSettings.dotFiles;
 in {
   imports = [
+    inputs.nix-colours.homeManagerModules.default
     ./shell
     ./neovim
     ./window-manager
     ./terminal
   ];
+  colorScheme = inputs.nix-colours.colorSchemes.kanagawa;
 
   xdg = {
     enable = true;
