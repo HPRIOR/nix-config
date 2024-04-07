@@ -81,7 +81,6 @@ in {
 
   services.blueman.enable = true;
 
-
   # Configure console keymap
   # console.keyMap = "uk";
   console.useXkbConfig = true;
@@ -187,7 +186,8 @@ in {
     dataDir = homeDir;
     configDir = configDir;
     enable = true;
-    };
+  };
+    
 
   networking.firewall.allowedTCPPorts = [8384 22000];
   networking.firewall.allowedUDPPorts = [22000 21027];
