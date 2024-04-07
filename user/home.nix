@@ -63,6 +63,7 @@ in {
     aichat
     sops
     tree
+    thefuck
   ];
 
   # Let Home Manager install and manage itself.

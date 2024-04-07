@@ -31,6 +31,7 @@
     buildhome = "home-manager switch --flake ${dotFiles}";
     editnix = "cd ${dotFiles} && nvim && cd -";
     buildnix = "${buildconfig} && ${buildhome}";
+    editdocs = "cd ${homeDir}/Documents/vdoc && nvim && cd -";
 
     # lazy
     lzg = "lazygit";
@@ -75,6 +76,7 @@ in {
     shellAliases = aliases;
     initExtra = ''
       eval "$(zoxide init zsh)"
+      eval $(thefuck --alias)
       source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
       ${builtins.readFile ./zsh_funcs}
 
