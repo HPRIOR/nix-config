@@ -81,6 +81,7 @@ in {
 
   services.blueman.enable = true;
 
+
   # Configure console keymap
   # console.keyMap = "uk";
   console.useXkbConfig = true;

@@ -9,8 +9,8 @@
 
   # Very simple rust project for piping into nvim and saving into random scratch dir or named file.
   # Defined here because zsh_funcs  has a dependency on it.
-  # TODO: not much logic involved so should probably be a bash script instead - although good simple example of the 
-  # power of nix. This should now be reproducible. 
+  # TODO: not much logic involved so should probably be a bash script instead - although good simple example of the
+  # power of nix. This should now be reproducible.
   vdoc = pkgs.rustPlatform.buildRustPackage rec {
     pname = "vdoc";
     version = "0.1.0";
@@ -53,6 +53,10 @@
 in {
   imports = [];
 
+  home.packages = with pkgs; [
+    vdoc
+  ];
+
   programs.bash = {
     enable = false;
     shellAliases = aliases;
@@ -71,6 +75,7 @@ in {
     shellAliases = aliases;
     initExtra = ''
       eval "$(zoxide init zsh)"
+      source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
       ${builtins.readFile ./zsh_funcs}
 
     '';
