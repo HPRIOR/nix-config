@@ -1,10 +1,27 @@
 {
   userSettings,
+  pkgs,
   ...
 }: let
   userName = userSettings.userName;
   homeDir = "/home/${userName}";
   dotFiles = "${homeDir}/.dotfiles";
+
+  # Very simple rust project for piping into nvim and saving into random scratch dir or named file.
+  # Defined here because zsh_funcs  has a dependency on it.
+  # TODO: not much logic involved so should probably be a bash script instead - although good simple example of the 
+  # power of nix. This should now be reproducible. 
+  vdoc = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "vdoc";
+    version = "0.1.0";
+    src = pkgs.fetchFromGitHub {
+      owner = "HPRIOR";
+      repo = "vdoc";
+      rev = "master";
+      sha256 = "f//x7jizvnh5f0OdTF1vvX97FaO6Y73zQgXGbQr7ltw="; # Update this with the correct hash
+    };
+    cargoSha256 = "+5bF0/c4yoKAFWRE+/CSYpmD2IMGTuuHsb5nMKgS6SA="; # Update this as well
+  };
 
   aliases = rec {
     # nix editing

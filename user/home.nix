@@ -63,6 +63,7 @@ in {
     aichat
     sops
     tree
+    vdoc
   ];
 
   # Let Home Manager install and manage itself.

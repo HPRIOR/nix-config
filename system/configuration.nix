@@ -10,7 +10,8 @@
   ...
 }: let
   userName = userSettings.userName;
-  homeDir = "/home/${userName}";
+  homeDir = userSettings.homeDir;
+  configDir = userSettings.configDir;
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -180,7 +181,12 @@ in {
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
-  services.syncthing.enable = true;
+  services.syncthing = {
+    user = userName;
+    dataDir = homeDir;
+    configDir = configDir;
+    enable = true;
+    };
 
   networking.firewall.allowedTCPPorts = [8384 22000];
   networking.firewall.allowedUDPPorts = [22000 21027];
