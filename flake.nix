@@ -40,6 +40,7 @@
       fullName = "Harry Joseph Prior";
       email = "harryjosephprior@protonmail.com";
       extraGroups = ["networkmanager" "wheel"];
+      theme = "kanagawa";
     };
     systemSettings = {
       system = "x86_64-linux";

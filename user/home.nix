@@ -17,7 +17,7 @@ in {
     ./window-manager
     ./terminal
   ];
-  colorScheme = inputs.nix-colours.colorSchemes.kanagawa;
+  colorScheme = inputs.nix-colours.colorSchemes.${userSettings.theme};
 
   xdg = {
     enable = true;
