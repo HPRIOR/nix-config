@@ -130,6 +130,9 @@ in {
     secrets.gpt-api-key = {
       owner = config.users.users.${userName}.name;
     };
+    secrets.server-ip = {
+      owner = config.users.users.${userName}.name;
+    };
   };
 
   environment.shells = with pkgs; [zsh];
@@ -188,9 +191,31 @@ in {
     enable = true;
   };
     
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn;
+  };
+  # this isn't working for now, need to do  more research - getting clashes between nft and ipt
+  # networking.nftables = {
+  #   enable = false;
+  #   rulesetFile = config.sops.templates."excludeTraffic.rules".path;
+  # };
+  # sops.templates."excludeTraffic.rules"= {
+  #   content = ''
+  #       table inet excludeTraffic {
+  #           chain excludeOutgoing {
+  #               type route hook output priority 0; policy accept;
+  #               ip daddr ${config.sops.placeholder.server-ip} ct mark set 0x00000f41 meta mark set 0x6d6f6c65;
+  #           }
+  #       } 
+  #   '';
+  #   owner = userName;
+  # };
 
-  networking.firewall.allowedTCPPorts = [8384 22000];
-  networking.firewall.allowedUDPPorts = [22000 21027];
+
+
+  networking.firewall.allowedTCPPorts = [8384 22000  80 443 1401];
+  networking.firewall.allowedUDPPorts = [22000 21027 53 1194 1195 1196 1197 1300 1301 1302 1303 1400];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
