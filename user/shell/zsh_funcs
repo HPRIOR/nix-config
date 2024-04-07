@@ -28,103 +28,9 @@ doc(){
     fi
 }
 
-vedit(){
-    if [ -z "$1" ]; then
-        echo "No file provided"
-    else 
-        nvim $HOME/Documents/vdoc/$1
-    fi
-}
-
-
 # pretty print csv file
-clcsv(){
+csvcat(){
     column -s, -t < $1 | less -#2 -N -S
-}
-
-
-# search files and travel to directory of file
-# -a option will search all files including hidden
-fid(){
-    while getopts "a" option; do
-    case ${option} in
-        a) local p=$(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}") 
-    esac
-    done
-
-    if [ "x$p" = "x" ]; then
-        local p=$(FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs -g "!{node_modules/*,.git/*}"' fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
-    fi
- 
-    local d=${p%/*}
-    if [ "x$d" != "x" ]; then
-        cd "$d"
-    fi
-}
-
-# search files and open directory of file with vim
-fvd(){
-    while getopts "a" option; do
-    case ${option} in
-        a) local p=$(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}") 
-    esac
-    done
-
-    if [ "x$p" = "x" ]; then
-        local p=$(FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs -g "!{node_modules/*,.git/*}"' fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
-    fi
- 
-    local d=${p%/*}
-    if [ "x$d" != "x" ]; then
-        cd "$d" && nvim "$d" && cd -
-    fi
-
-}
-
-# search all files in current directory, open in vim, return to current directory when done
-fv(){
-    while getopts "a" option; do
-    case ${option} in
-        a) local p=$(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}") 
-    esac
-    done
-
-    if [ "x$p" = "x" ]; then
-        local p=$(FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs -g "!{node_modules/*,.git/*}"' fzf --preview "bat --color=always --style=numbers --line-range=:500 {}")
-    fi
-
-    local d=${p%/*}
-    if [ "x$p" != "x" ]; then
-        if [ "$p" != "$d" ]; then # if in a new directory
-            cd "$d" && nvim "$p" && cd -
-        else
-            nvim "$p"
-        fi 
-
-        
-    fi
-}
-
-# search directories in code directory and open directory in vim
-fiv(){
-    while getopts "a" option; do
-    case ${option} in
-        a) local p=$(fzf --preview "bat --color=always --style=numbers --line-range=:500 {}") 
-    esac
-    done
-
-    if [ "x$p" = "x" ]; then
-        local p=$(fd -u -d 1 --type directory . $HOME/Code | fzf --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension ")
-    fi
-
-    local d=${p%/*}
-    if [ "x$p" != "x" ]; then
-        if [ "$p" != "$d" ]; then # if in a new directory
-            cd "$d" && nvim "$p" 
-        else
-            nvim "$p"
-        fi 
-    fi
 }
 
 
@@ -134,17 +40,10 @@ f(){
         
 }
 
-# search directories, preview files/dir as tree and open directory
-fv-remote(){
-    nvim scp://192.168.0.60//$(ssh 192.168.0.60 'bin/fd --hidden -u --type file . /' | fzf )
-        
-}
-
-# search through code directory  and preview files/dir as tree
+# search through code directory and preview files/dir as tree
 fic(){
     cd $(fd -u -d 1 --type directory . $HOME/Code | fzf --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
 }
-
 
 # search unique file history and copy output to terminal 
 fh(){
@@ -179,7 +78,6 @@ fp(){
     print -z $p
 }
 
-
 # search through processes and kill the selected one
 # TODO: make output prettier (shorter)
 fkill() {
@@ -197,23 +95,6 @@ fkill() {
 }
 
 
-v(){
-    if  [ "x$1" = "x" ]; then
-        nvim . -c "Telescope find_files" 
-    else
-        nvim "$1"
-    fi
-}
-
-img(){
-    kitty +kitten icat $1
-}
-
-
-ezcroc(){
-    croc send --code give-me-$1 $1 
-}
-
 lzcommit() {
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         echo "You are not inside a Git repository."
@@ -225,7 +106,7 @@ lzcommit() {
         return
     fi
 
-    local msg=$(git -c pager.diff='less -R' diff | hey-gpt 'write me a succinct git commit messsage for these changes' --convo-length 0 --chat-model "gpt-3.5-turbo-16k")
+    local msg=$(git -c pager.diff='less -R' diff | aichat 'write me a succinct git commit messsage for these changes' --model "gpt-3.5-turbo")
     echo $msg
     read -q "response?Do you want to commit? (y/n): "
     if [[ $response == "y" ]]; then

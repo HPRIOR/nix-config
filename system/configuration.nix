@@ -117,7 +117,6 @@ in {
     rofi-wayland
     wl-clipboard
     wlr-randr
-
   ];
   # secrets management. Needs to run in sys config for now because templates aren't supported
   sops = {
@@ -180,6 +179,11 @@ in {
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
+
+  services.syncthing.enable = true;
+
+  networking.firewall.allowedTCPPorts = [8384 22000];
+  networking.firewall.allowedUDPPorts = [22000 21027];
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
