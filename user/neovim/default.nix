@@ -71,7 +71,7 @@
       };
       telescope = {
         enable = true;
-        extraOptions = {
+        settings = {
           pickers = {
             command_history = {
               theme = "dropdown";
@@ -156,7 +156,7 @@
           typescriptreact = [["prettierd" "prettier"]];
           python = ["black"];
           lua = ["stylua"];
-          nlix = ["alejandra"];
+          nix = ["alejandra"];
           markdown = [["prettierd" "prettier"]];
           yaml = ["yamlfmt"];
           rust = ["rustfmt"];
@@ -741,7 +741,6 @@
       # telescope deps
       ripgrep
       fzf
-
       # formatters requred by conform
       alejandra
       prettierd

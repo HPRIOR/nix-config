@@ -41,6 +41,8 @@
       email = "harryjosephprior@protonmail.com";
       extraGroups = ["networkmanager" "wheel"];
       theme = "kanagawa";
+      font = "FiraCode Nerd Font Mono";
+      fontPackage = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
     };
     systemSettings = {
       system = "x86_64-linux";

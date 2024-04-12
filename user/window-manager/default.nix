@@ -1,6 +1,13 @@
 {
+  config,
+  userSettings,
   ...
 }: {
+  programs.waybar = {
+    enable = true;
+    style = '''';
+    settings = {};
+  };
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = ''
