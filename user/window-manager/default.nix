@@ -5,8 +5,18 @@
 }: {
   programs.waybar = {
     enable = true;
-    style = '''';
-    settings = {};
+    settings = {
+      mainBar = {
+        height = 10;
+        output = "DP-3";
+        reload_style_on_change = true;
+        modules-left = ["hyprland/workspaces"];
+        modules-right = ["tray"];
+        "hyprland/workspaces" = {
+          all-outputs = true;
+        };
+      };
+    };
   };
   wayland.windowManager.hyprland = {
     enable = true;
@@ -64,6 +74,15 @@
       # Reset submap, normal keybindings resume
       submap=reset
 
+      general {
+        gaps_out = 5
+        gaps_in = 5
+        resize_on_border = true
+        border_size = 2
+        col.active_border = 0x${config.colorScheme.palette.base0E}ff 0x${config.colorScheme.palette.base09}ff 45deg
+        col.inactive_border =0x${config.colorScheme.palette.base02}ff 0x${config.colorScheme.palette.base03}ff 90deg
+
+      }
 
       input {
           kb_layout = gb
@@ -76,7 +95,7 @@
       }
 
       decoration {
-          rounding = 2
+          rounding = 5
           blur {
               enabled = true
               size = 3
