@@ -81,6 +81,18 @@ in {
 
   services.blueman.enable = true;
 
+  # Not sure this works as expected. Still get tty login, but launched hyprland after so I'm happy with it for now
+  services.greetd = {
+    enable = true;
+    settings = rec {
+      initial_session = {
+        command = "${pkgs.greetd.greetd}/bin/agreety --cmd ${pkgs.hyprland}/bin/Hyprland";
+        user = userName;
+      };
+      default_session = initial_session;
+    };
+  };
+
   # Configure console keymap
   # console.keyMap = "uk";
   console.useXkbConfig = true;
@@ -113,6 +125,7 @@ in {
     (waybar.overrideAttrs (oldAttrs: {
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
+
     dunst
     libnotify
     rofi-wayland
@@ -190,11 +203,12 @@ in {
     configDir = configDir;
     enable = true;
   };
-    
+
   services.mullvad-vpn = {
     enable = true;
     package = pkgs.mullvad-vpn;
   };
+
   # this isn't working for now, need to do  more research - getting clashes between nft and ipt
   # networking.nftables = {
   #   enable = false;
@@ -207,14 +221,12 @@ in {
   #               type route hook output priority 0; policy accept;
   #               ip daddr ${config.sops.placeholder.server-ip} ct mark set 0x00000f41 meta mark set 0x6d6f6c65;
   #           }
-  #       } 
+  #       }
   #   '';
   #   owner = userName;
   # };
 
-
-
-  networking.firewall.allowedTCPPorts = [8384 22000  80 443 1401];
+  networking.firewall.allowedTCPPorts = [8384 22000 80 443 1401];
   networking.firewall.allowedUDPPorts = [22000 21027 53 1194 1195 1196 1197 1300 1301 1302 1303 1400];
 
   # Open ports in the firewall.
