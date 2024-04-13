@@ -35,6 +35,10 @@
       monitor=,preferred,auto,1
       monitor=HDMI-A-1,disable
 
+      workspace=1,monitor:DP-1,default:true
+      workspace=2,monitor:DP-3,defualt:true
+      workspace=3,monitor:DP-2,default:true
+
       # Key bindings
       $mainMod = SUPER
       $shiftMod = SUPERSHIFT
@@ -46,16 +50,41 @@
       bind = $mainMod, K, movefocus, u
       bind = $mainMod, L, movefocus, r
 
-      bind = $shiftMod, H, movewindow, l
-      bind = $shiftMod, J, movewindow, d
-      bind = $shiftMod, K, movewindow, u
-      bind = $shiftMod, L, movewindow, r
+      bind = $shiftMod, H, movewindoworgroup, l
+      bind = $shiftMod, J, movewindoworgroup, d
+      bind = $shiftMod, K, movewindoworgroup, u
+      bind = $shiftMod, L, movewindoworgroup, r
 
       bind = $mainMod, SPACE, exec, rofi -show drun
       bind = $mainMod, F, fullscreen, 0
+      bind = $shiftMod, F, togglefloating, 
+
+      bind = $mainMod, 1, workspace, 1
+      bind = $mainMod, 2, workspace, 2
+      bind = $mainMod, 3, workspace, 3
+      bind = $mainMod, 4, workspace, 4
+      bind = $mainMod, 5, workspace, 5
+      bind = $mainMod, 6, workspace, 6
+      bind = $mainMod, 7, workspace, 7
+      bind = $mainMod, 8, workspace, 8
+      bind = $mainMod, 9, workspace, 9
+      bind = $shiftMod, 1, movetoworkspace, 1
+      bind = $shiftMod, 2, movetoworkspace, 2
+      bind = $shiftMod, 3, movetoworkspace, 3
+      bind = $shiftMod, 4, movetoworkspace, 4
+      bind = $shiftMod, 5, movetoworkspace, 5
+      bind = $shiftMod, 6, movetoworkspace, 6
+      bind = $shiftMod, 7, movetoworkspace, 7
+      bind = $shiftMod, 8, movetoworkspace, 8
+      bind = $shiftMod, 9, movetoworkspace, 9
+
+      bind = $mainMod, G, togglegroup
+      bind = $mainMod,bracketleft,changegroupactive,b
+      bind = $mainMod,bracketright,changegroupactive,f
 
       bindm = $mainMod, mouse:272, movewindow
       bindm = $mainMod, mouse:273, resizewindow
+
 
       # Switch to submap called resize
       bind=$mainMod,R,submap,resize
@@ -74,14 +103,43 @@
       # Reset submap, normal keybindings resume
       submap=reset
 
+      # Switch to submap called move
+      bind=$mainMod,M,submap,move
+
+      submap=move
+      binde=,L,moveactive,30 0
+      binde=,H,moveactive,-30 0
+      binde=,K,moveactive,0 -30
+      binde=,J,moveactive,0 30
+
+      # use reset to go back to the global submap
+      bind=,escape,submap,reset
+      bind=$mainMod,M,submap,reset
+      bind=,return,submap,reset
+
+      # Reset submap, normal keybindings resume
+      submap=reset
+
+     
       general {
         gaps_out = 5
         gaps_in = 5
         resize_on_border = true
         border_size = 2
-        col.active_border = 0x${config.colorScheme.palette.base0E}ff 0x${config.colorScheme.palette.base09}ff 45deg
-        col.inactive_border =0x${config.colorScheme.palette.base02}ff 0x${config.colorScheme.palette.base03}ff 90deg
+        col.active_border = 0x${config.colorScheme.palette.base0E}ff 0x${config.colorScheme.palette.base0F}ff 45deg
+        col.inactive_border = 0x${config.colorScheme.palette.base02}ff 0x${config.colorScheme.palette.base03}ff 90deg
 
+      }
+      group {
+        col.border_active = 0x${config.colorScheme.palette.base0E}ff 0x${config.colorScheme.palette.base0F}ff 45deg
+        col.border_inactive = 0x${config.colorScheme.palette.base02}ff 0x${config.colorScheme.palette.base03}ff 90deg
+        groupbar {
+            font_family = "${userSettings.font}"
+            font_size = 10
+            height = 16
+            col.active = 0x${config.colorScheme.palette.base0F}ff 
+            col.inactive = 0x${config.colorScheme.palette.base02}ff 
+        }
       }
 
       input {
