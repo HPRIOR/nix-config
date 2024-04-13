@@ -102,6 +102,7 @@
               passes = 1
               vibrancy = 0.1696
           }
+          inactive_opacity = 0.95
       }
 
     '';

@@ -9,6 +9,7 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
+    DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
   };
   programs.nixvim = {
     enable = true;
