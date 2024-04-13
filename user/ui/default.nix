@@ -10,13 +10,32 @@
         height = 10;
         output = "DP-3";
         reload_style_on_change = true;
-        modules-left = ["hyprland/workspaces"];
-        modules-right = ["tray"];
+        modules-left = ["hyprland/workspaces" "hyprland/submap"];
+        modules-center = ["hyprland/window"];
+        modules-right = ["disk" "cpu" "tray" "clock"];
         "hyprland/workspaces" = {
           all-outputs = true;
         };
+        "hyprland/window" = {
+          format = "{title}";
+          max-length = 50;
+          rewrite = {
+            "(.*) — Mozilla Firefox" = "🌎 $1";
+          };
+        };
       };
     };
+    style = ''
+      * {
+          background: #${config.colorScheme.palette.base01};
+          border: none;
+          border-radius: 0;
+          font-family: ${userSettings.font};
+          font-size: 13px;
+          min-height: 0;
+      }
+
+    '';
   };
   wayland.windowManager.hyprland = {
     enable = true;
@@ -57,7 +76,7 @@
 
       bind = $mainMod, SPACE, exec, rofi -show drun
       bind = $mainMod, F, fullscreen, 0
-      bind = $shiftMod, F, togglefloating, 
+      bind = $shiftMod, F, togglefloating,
 
       bind = $mainMod, 1, workspace, 1
       bind = $mainMod, 2, workspace, 2
@@ -120,7 +139,7 @@
       # Reset submap, normal keybindings resume
       submap=reset
 
-     
+
       general {
         gaps_out = 5
         gaps_in = 5
@@ -137,8 +156,8 @@
             font_family = "${userSettings.font}"
             font_size = 10
             height = 16
-            col.active = 0x${config.colorScheme.palette.base0F}ff 
-            col.inactive = 0x${config.colorScheme.palette.base02}ff 
+            col.active = 0x${config.colorScheme.palette.base0F}ff
+            col.inactive = 0x${config.colorScheme.palette.base02}ff
         }
       }
 
