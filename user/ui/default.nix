@@ -7,34 +7,81 @@
     enable = true;
     settings = {
       mainBar = {
-        height = 10;
+        height = 20;
+        spacing = 4;
+        margin-top = 5;
+        margin-bottom = 1;
+        margin-right = 6;
+        margin-left = 6;
         output = "DP-3";
         reload_style_on_change = true;
         modules-left = ["hyprland/workspaces" "hyprland/submap"];
-        modules-center = ["hyprland/window"];
-        modules-right = ["disk" "cpu" "tray" "clock"];
+        modules-right = ["tray" "disk" "cpu" "clock"];
         "hyprland/workspaces" = {
           all-outputs = true;
-        };
-        "hyprland/window" = {
-          format = "{title}";
-          max-length = 50;
-          rewrite = {
-            "(.*) — Mozilla Firefox" = "🌎 $1";
-          };
+          show-special = true;
         };
       };
     };
     style = ''
       * {
-          background: #${config.colorScheme.palette.base01};
+          background: transparent;
           border: none;
-          border-radius: 0;
+          border-radius: 10px;
           font-family: ${userSettings.font};
           font-size: 13px;
           min-height: 0;
       }
 
+      #workspaces button {
+          background: #${config.colorScheme.palette.base02};
+          color: #${config.colorScheme.palette.base05};
+          padding-left: 10px;
+          padding-right: 10px;
+          margin-left: 1px;
+          margin-right: 1px;
+      }
+
+      #workspaces button.active  {
+          background-color: #${config.colorScheme.palette.base03};
+          background: #${config.colorScheme.palette.base03};
+          color: #${config.colorScheme.palette.base05};
+      }
+
+
+      #submap {
+          padding-left: 10px;
+          padding-right: 10px;
+
+      }
+      #submap.resize  {
+          background-color: #${config.colorScheme.palette.base0B};
+          background: #${config.colorScheme.palette.base0B};
+          color: #${config.colorScheme.palette.base05};
+      }
+      #submap.move  {
+          background-color: #${config.colorScheme.palette.base0D};
+          background: #${config.colorScheme.palette.base0C};
+          color: #${config.colorScheme.palette.base05};
+      }
+
+
+      #battery,
+      #cpu,
+      #memory,
+      #disk,
+      #temperature,
+      #network,
+      #pulseaudio,
+      #tray,
+      #clock {
+        background-color:  #${config.colorScheme.palette.base02};
+        color: #${config.colorScheme.palette.base05};
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: 1;
+        margin-right: 1;
+      }
     '';
   };
   wayland.windowManager.hyprland = {
@@ -97,9 +144,13 @@
       bind = $shiftMod, 8, movetoworkspace, 8
       bind = $shiftMod, 9, movetoworkspace, 9
 
+      bind = $shiftMod, S, movetoworkspace, special
+      bind = $mainMod, S, togglespecialworkspace, special
+
       bind = $mainMod, G, togglegroup
       bind = $mainMod,bracketleft,changegroupactive,b
       bind = $mainMod,bracketright,changegroupactive,f
+
 
       bindm = $mainMod, mouse:272, movewindow
       bindm = $mainMod, mouse:273, resizewindow
@@ -156,7 +207,7 @@
             font_family = "${userSettings.font}"
             font_size = 10
             height = 16
-            col.active = 0x${config.colorScheme.palette.base0F}ff
+            col.active = 0x${config.colorScheme.palette.base04}ff
             col.inactive = 0x${config.colorScheme.palette.base02}ff
         }
       }

@@ -18,19 +18,19 @@
       owner = "HPRIOR";
       repo = "vdoc";
       rev = "master";
-      sha256 = "f//x7jizvnh5f0OdTF1vvX97FaO6Y73zQgXGbQr7ltw="; # Update this with the correct hash
+      sha256 = "f//x7jizvnh5f0OdTF1vvX97FaO6Y73zQgXGbQr7ltw=";
     };
-    cargoSha256 = "+5bF0/c4yoKAFWRE+/CSYpmD2IMGTuuHsb5nMKgS6SA="; # Update this as well
+    cargoSha256 = "+5bF0/c4yoKAFWRE+/CSYpmD2IMGTuuHsb5nMKgS6SA=";
   };
 
   aliases = rec {
     # nix editing
     editconfig = "cd ${dotFiles}/system && nvim configuration.nix && cd -";
-    buildconfig = "sudo nixos-rebuild switch --flake ${dotFiles}";
+    buildconfig = "echo 'Building nix config' && sudo nixos-rebuild switch --flake ${dotFiles} && echo 'Cleaning old generations' && nix-env --delete-generations +20 ";
     edithome = "cd ${dotFiles}/user && nvim home.nix && cd -";
-    buildhome = "home-manager switch --flake ${dotFiles}";
+    buildhome = "echo 'Building home configuration' && home-manager switch --flake ${dotFiles} && echo 'Cleaning old generations' && nix-env --delete-generations +20 ";
     editnix = "cd ${dotFiles} && nvim && cd -";
-    buildnix = "${buildconfig} && ${buildhome}";
+    buildnix = "echo 'Building home configuration' && ${buildconfig} && ${buildhome} && echo 'Cleaning old generations' && nix-env --delete-generations +20 ";
     editdocs = "cd ${homeDir}/Documents/vdoc && nvim && cd -";
 
     # lazy
