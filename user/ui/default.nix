@@ -2,7 +2,17 @@
   config,
   userSettings,
   ...
-}: {
+}: let
+  createToggleApp = app: "pgrep ${app} > /dev/null && pkill ${app} || ${app}  & > /dev/null'";
+
+  createBarWindowRule = app: verticalSizePercent: horizontalSize: ''
+    windowrule=workspace 2,^(${app})$
+    windowrule=size ${toString horizontalSize} ${toString verticalSizePercent}%,^(${app})$
+    windowrule=move 100%-${toString (horizontalSize + 30)} 50,^(${app})$
+    windowrule=float,^(${app})$
+    windowrule=animation slide,^(${app})$
+  '';
+in {
   programs.waybar = {
     enable = true;
     settings = {
@@ -62,7 +72,7 @@
             "default" = ["" ""];
           };
           "scroll-step" = 1;
-          "on-click" = "pavucontrol";
+          "on-click" = "hyprctl dispatch exec '${createToggleApp "pavucontrol"}'";
           "ignored-sinks" = ["Easy Effects Sink"];
         };
         "network" = {
@@ -146,8 +156,8 @@
       exec-once = waybar
       exec-once = blueman-applet
 
-      windowrule=float,^(tray-float)$
-      windowrule=move 100 100,^(tray-float)$
+      ${createBarWindowRule "pavucontrol" 50 700}
+
 
       # Monitor
       monitor=DP-3,3440x1440@74.983002,0x0,1
