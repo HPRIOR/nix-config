@@ -84,6 +84,7 @@ in {
     jetbrains.clion
     jetbrains.idea-ultimate
     jetbrains.rider
+    pavucontrol
   ];
 
   # Let Home Manager install and manage itself.

@@ -16,7 +16,7 @@
         output = "DP-3";
         reload_style_on_change = true;
         modules-left = ["hyprland/workspaces" "hyprland/submap"];
-        modules-right = ["tray" "disk" "cpu" "temperature" "clock"];
+        modules-right = ["tray" "pulseaudio" "disk#root" "disk#home" "memory" "cpu" "temperature" "network" "clock"];
         "hyprland/workspaces" = {
           all-outputs = true;
           show-special = true;
@@ -34,6 +34,43 @@
           format-critical = "󰸁 {temperatureC:02}°C";
           format-icons = ["󱃃" "󰔏" "󱃂"];
           interval = 1;
+        };
+        "memory" = {
+          interval = 1;
+          format = "{used:0.1f}G/{total:0.1f}G ";
+        };
+        "clock" = {
+          interval = 60;
+          format-alt = "{:%A, %B %d, %Y - %R}";
+        };
+        "disk#root" = {
+          interval = 30;
+          format = "{path} {percentage_used}%";
+          path = "/";
+        };
+        "disk#home" = {
+          interval = 30;
+          format = "{path} {percentage_used}%";
+          path = "/home";
+        };
+        "pulseaudio" = {
+          "format" = "{volume}% {icon}";
+          "format-bluetooth" = "{volume}% {icon}";
+          "format-muted" = "";
+          "format-icons" = {
+            "headphone" = "";
+            "default" = ["" ""];
+          };
+          "scroll-step" = 1;
+          "on-click" = "pavucontrol";
+          "ignored-sinks" = ["Easy Effects Sink"];
+        };
+        "network" = {
+          "interval" = 1;
+          "format" = "{ifname}";
+          "format-wifi" = "{essid} ({signalStrength}%) ";
+          "format-ethernet" = "{ipaddr} 󰈁";
+          "format-disconnected" = "󰈂";
         };
       };
     };
@@ -108,6 +145,9 @@
       # Startup applications
       exec-once = waybar
       exec-once = blueman-applet
+
+      windowrule=float,^(tray-float)$
+      windowrule=move 100 100,^(tray-float)$
 
       # Monitor
       monitor=DP-3,3440x1440@74.983002,0x0,1
