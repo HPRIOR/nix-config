@@ -13,6 +13,9 @@
     windowrule=animation slide,^(${app})$
   '';
 in {
+  imports = [
+    ./rofi.nix
+  ];
   programs.waybar = {
     enable = true;
     settings = {
@@ -194,7 +197,7 @@ in {
       bind = $shiftMod, K, movewindoworgroup, u
       bind = $shiftMod, L, movewindoworgroup, r
 
-      bind = $mainMod, SPACE, exec, rofi -show drun
+      bind = $mainMod, SPACE, exec, rofi -show drun -config "${userSettings.homeDir}/.config/rofi/config.rasi"
       bind = $mainMod, F, fullscreen, 0
       bind = $shiftMod, F, togglefloating,
 
