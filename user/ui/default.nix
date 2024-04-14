@@ -16,10 +16,24 @@
         output = "DP-3";
         reload_style_on_change = true;
         modules-left = ["hyprland/workspaces" "hyprland/submap"];
-        modules-right = ["tray" "disk" "cpu" "clock"];
+        modules-right = ["tray" "disk" "cpu" "temperature" "clock"];
         "hyprland/workspaces" = {
           all-outputs = true;
           show-special = true;
+        };
+        "cpu" = {
+          interval = 1;
+          format = "{icon} {usage:02}% {avg_frequency:.2f}GHz";
+          format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+        };
+        "temperature" = {
+          hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
+          input-filename = "temp1_input";
+          critical-threshold = 80;
+          format = "{icon} {temperatureC:02}°C";
+          format-critical = "󰸁 {temperatureC:02}°C";
+          format-icons = ["󱃃" "󰔏" "󱃂"];
+          interval = 1;
         };
       };
     };
@@ -32,7 +46,6 @@
           font-size: 13px;
           min-height: 0;
       }
-
       #workspaces button {
           background: #${config.colorScheme.palette.base02};
           color: #${config.colorScheme.palette.base05};
@@ -41,18 +54,17 @@
           margin-left: 1px;
           margin-right: 1px;
       }
-
       #workspaces button.active  {
           background-color: #${config.colorScheme.palette.base03};
           background: #${config.colorScheme.palette.base03};
           color: #${config.colorScheme.palette.base05};
       }
-
-
       #submap {
+          background-color: #${config.colorScheme.palette.base03};
+          background: #${config.colorScheme.palette.base03};
+          color: #${config.colorScheme.palette.base05};
           padding-left: 10px;
           padding-right: 10px;
-
       }
       #submap.resize  {
           background-color: #${config.colorScheme.palette.base0B};
@@ -64,8 +76,6 @@
           background: #${config.colorScheme.palette.base0C};
           color: #${config.colorScheme.palette.base05};
       }
-
-
       #battery,
       #cpu,
       #memory,
@@ -82,6 +92,11 @@
         margin-left: 1;
         margin-right: 1;
       }
+      #temperature.critical {
+        background-color:  #${config.colorScheme.palette.base08};
+        color: #${config.colorScheme.palette.base05};
+      }
+
     '';
   };
   wayland.windowManager.hyprland = {
