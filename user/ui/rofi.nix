@@ -24,10 +24,10 @@
 
     * {
         border-colour:               #${config.colorScheme.palette.base03};
-        handle-colour:               #${config.colorScheme.palette.base06};
+        handle-colour:               #${config.colorScheme.palette.base03};
         background-colour:           #${config.colorScheme.palette.base00};
         foreground-colour:           #${config.colorScheme.palette.base05};
-        alternate-background:        #${config.colorScheme.palette.base02};
+        alternate-background:        #${config.colorScheme.palette.base01};
         normal-background:           #${config.colorScheme.palette.base00};
         normal-foreground:           #${config.colorScheme.palette.base05};
         urgent-background:           #${config.colorScheme.palette.base08};
@@ -40,11 +40,11 @@
         selected-urgent-foreground:  #${config.colorScheme.palette.base05};
         selected-active-background:  #${config.colorScheme.palette.base01};
         selected-active-foreground:  #${config.colorScheme.palette.base05};
-        alternate-normal-background: #${config.colorScheme.palette.base01};
+        alternate-normal-background: #${config.colorScheme.palette.base00};
         alternate-normal-foreground: #${config.colorScheme.palette.base05};
-        alternate-urgent-background: #${config.colorScheme.palette.base02};
+        alternate-urgent-background: #${config.colorScheme.palette.base00};
         alternate-urgent-foreground: #${config.colorScheme.palette.base05};
-        alternate-active-background: #${config.colorScheme.palette.base02};
+        alternate-active-background: #${config.colorScheme.palette.base00};
         alternate-active-foreground: #${config.colorScheme.palette.base05};
     }
 
