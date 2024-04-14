@@ -164,6 +164,7 @@ in {
 
       ${createBarWindowRule "pavucontrol" 50 700}
       ${createBarWindowRule ".blueman-manager-wrapped" 50 700}
+      ${createBarWindowRule "1Password" 50 700}
 
       windowrule=workspace 2,^(Mullvad.*)$
       windowrule=move 100%-350 50,^(Mullvad.*)$
