@@ -31,11 +31,6 @@
         width: 40%;
     }
 
-    inputbar,
-    listview,
-    mod-switcher
-    message,
-    textbox,
     mainbox {
         padding: 10px;
         margin: 10px;
