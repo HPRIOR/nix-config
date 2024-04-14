@@ -3,7 +3,7 @@
   userSettings,
   ...
 }: let
-  createToggleApp = app: "pgrep ${app} > /dev/null && pkill ${app} || ${app}  & > /dev/null'";
+  createToggleApp = app: "pgrep ${app} > /dev/null && pkill ${app} || ${app}  & > /dev/null";
 
   createBarWindowRule = app: verticalSizePercent: horizontalSize: ''
     windowrule=workspace 2,^(${app})$
@@ -82,6 +82,9 @@ in {
           "format-ethernet" = "{ipaddr} 󰈁";
           "format-disconnected" = "󰈂";
         };
+        "tray" = {
+          spacing = 10;
+        };
       };
     };
     style = ''
@@ -157,7 +160,12 @@ in {
       exec-once = blueman-applet
 
       ${createBarWindowRule "pavucontrol" 50 700}
+      ${createBarWindowRule ".blueman-manager-wrapped" 50 700}
 
+      windowrule=workspace 2,^(Mullvad.*)$
+      windowrule=move 100%-350 50,^(Mullvad.*)$
+      windowrule=float,^(Mullvad.*)$
+      windowrule=animation slide,^(Mullvad.*)$
 
       # Monitor
       monitor=DP-3,3440x1440@74.983002,0x0,1
