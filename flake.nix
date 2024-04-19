@@ -28,7 +28,7 @@
     home-manager,
     nixvim,
     sops-nix,
-    nix-colours
+    nix-colours,
   } @ inputs: let
     lib = nixpkgs.lib;
     userSettings = rec {
@@ -59,21 +59,35 @@
           systemSettings = systemSettings;
           userSettings = userSettings;
         };
-        modules = [./system/configuration.nix];
-      };
-    };
-
-    homeConfigurations = {
-      harryp = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        extraSpecialArgs = {
-          inherit inputs;
-          userSettings = userSettings;
-        };
         modules = [
-          ./user/home.nix
+          ./system/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.harryp.imports = [./user/home.nix];
+
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              systemSettings = systemSettings;
+              userSettings = userSettings;
+            };
+          }
         ];
       };
     };
+
+    # homeConfigurations = {
+    #   harryp = home-manager.lib.homeManagerConfiguration {
+    #     inherit pkgs;
+    #     extraSpecialArgs = {
+    #       inherit inputs;
+    #       userSettings = userSettings;
+    #     };
+    #     modules = [
+    #       ./user/home.nix
+    #     ];
+    #   };
+    # };
   };
 }
