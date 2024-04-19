@@ -60,12 +60,12 @@
           userSettings = userSettings;
         };
         modules = [
-          ./system/configuration.nix
+          ./hosts/desktop/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.harryp.imports = [./user/home.nix];
+            home-manager.users.harryp.imports = [./hosts/desktop/home.nix];
 
             home-manager.extraSpecialArgs = {
               inherit inputs;
@@ -76,18 +76,5 @@
         ];
       };
     };
-
-    # homeConfigurations = {
-    #   harryp = home-manager.lib.homeManagerConfiguration {
-    #     inherit pkgs;
-    #     extraSpecialArgs = {
-    #       inherit inputs;
-    #       userSettings = userSettings;
-    #     };
-    #     modules = [
-    #       ./user/home.nix
-    #     ];
-    #   };
-    # };
   };
 }

@@ -24,13 +24,9 @@
   };
 
   aliases = rec {
-    # nix editing
-    editconfig = "cd ${dotFiles}/system && nvim configuration.nix && cd -";
-    buildconfig = "echo 'Building nix config' && sudo nixos-rebuild switch --flake ${dotFiles} && echo 'Cleaning old generations' && nix-env --delete-generations +20 ";
-    edithome = "cd ${dotFiles}/user && nvim home.nix && cd -";
-    buildhome = "echo 'Building home configuration' && home-manager switch --flake ${dotFiles} && echo 'Cleaning old generations' && nix-env --delete-generations +20 ";
+    buildnix = "echo 'Building nix config' && sudo nixos-rebuild switch --flake ${dotFiles} && echo 'Cleaning old generations' && nix-env --delete-generations +20 ";
+    buildnix-dev = "echo 'Building nix config' && sudo nixos-rebuild switch --flake ${dotFiles}";
     editnix = "cd ${dotFiles} && nvim && cd -";
-    buildnix = "echo 'Building home configuration' && ${buildconfig} && ${buildhome} && echo 'Cleaning old generations' && nix-env --delete-generations +20 ";
     editdocs = "cd ${homeDir}/Documents/vdoc && nvim && cd -";
 
     # lazy
