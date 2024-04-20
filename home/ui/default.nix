@@ -1,8 +1,11 @@
 {
+  pkgs,
   config,
   userSettings,
+  lib,
   ...
 }: let
+  isLinux = pkgs.stdenv.isLinux;
   createToggleApp = app: "pgrep ${app} > /dev/null && pkill ${app} || ${app}  & > /dev/null";
 
   createBarWindowRule = app: verticalSizePercent: horizontalSize: ''
@@ -16,8 +19,9 @@ in {
   imports = [
     ./rofi.nix
   ];
+
   programs.waybar = {
-    enable = true;
+    enable = isLinux;
     settings = {
       mainBar = {
         height = 20;
@@ -153,7 +157,7 @@ in {
     '';
   };
   wayland.windowManager.hyprland = {
-    enable = true;
+    enable = isLinux;
     extraConfig = ''
       # Required for mouse to render
       env = WLR_NO_HARDWARE_CURSORS,1

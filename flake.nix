@@ -3,6 +3,11 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-unstable";
 
+    nix-darwin = {
+      url = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,11 +29,12 @@
 
   outputs = {
     self,
-    nixpkgs,
     home-manager,
+    nix-colours,
+    nix-darwin,
+    nixpkgs,
     nixvim,
     sops-nix,
-    nix-colours,
   } @ inputs: let
     lib = nixpkgs.lib;
     userSettings = rec {
@@ -75,6 +81,26 @@
           }
         ];
       };
+    };
+
+    darwinConfigurations."Harrys-MacBook-Air" = nix-darwin.lib.darwinSystem {
+      specialArgs = {inherit inputs;};
+
+      modules = [
+        ./hosts/air/configuration.nix
+        home-manager.darwinModules.home-manager
+        {
+          # users.users.harryp.home = "/Users/harryp";
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.users.harryp.imports = [./hosts/air/home.nix];
+          home-manager.extraSpecialArgs = {
+            inherit inputs;
+            systemSettings = systemSettings;
+            userSettings = userSettings;
+          };
+        }
+      ];
     };
   };
 }
