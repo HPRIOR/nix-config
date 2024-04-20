@@ -37,33 +37,28 @@
     sops-nix,
   } @ inputs: let
     lib = nixpkgs.lib;
-    userSettings = rec {
-      uid = 1000;
-      userName = "harryp";
-      homeDir = "/home/${userName}";
-      dotFiles = "${homeDir}/.dotfiles";
-      configDir = "${homeDir}/.config";
-      fullName = "Harry Joseph Prior";
-      email = "harryjosephprior@protonmail.com";
-      extraGroups = ["networkmanager" "wheel"];
-      theme = "kanagawa";
-      font = "FiraCode Nerd Font Mono";
-      fontPackage = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
-    };
-    systemSettings = {
-      system = "x86_64-linux";
-      networkHostName = "nixos";
-      defaultLocale = "en_GB.UTF-8";
-    };
-    pkgs = nixpkgs.legacyPackages.${systemSettings.system};
   in {
-    nixosConfigurations = {
+    nixosConfigurations = let
+      system = "x86_64-linux";
+      settings = rec {
+        uid = 1000;
+        hostName = "nixos";
+        userName = "harryp";
+        homeDir = "/home/${userName}";
+        dotFiles = "${homeDir}/.dotfiles";
+        configDir = "${homeDir}/.config";
+        fullName = "Harry Joseph Prior";
+        email = "harryjosephprior@protonmail.com";
+        extraGroups = ["networkmanager" "wheel"];
+        theme = "kanagawa";
+        font = "FiraCode Nerd Font Mono";
+      };
+    in {
       nixos = lib.nixosSystem {
-        inherit (systemSettings) system;
+        inherit system;
         specialArgs = {
           inherit inputs;
-          systemSettings = systemSettings;
-          userSettings = userSettings;
+          settings = settings;
         };
         modules = [
           ./hosts/desktop/configuration.nix
@@ -75,32 +70,45 @@
 
             home-manager.extraSpecialArgs = {
               inherit inputs;
-              systemSettings = systemSettings;
-              userSettings = userSettings;
+              settings = settings;
             };
           }
         ];
       };
     };
 
-    darwinConfigurations."Harrys-MacBook-Air" = nix-darwin.lib.darwinSystem {
-      specialArgs = {inherit inputs;};
+    darwinConfigurations = let
+      settings = rec {
+        uid = 1000;
+        userName = "harryp";
+        homeDir = "/Users/${userName}";
+        dotFiles = "${homeDir}/.dotfiles";
+        configDir = "${homeDir}/.config";
+        fullName = "Harry Joseph Prior";
+        email = "harryjosephprior@protonmail.com";
+        extraGroups = ["networkmanager" "wheel"];
+        theme = "kanagawa";
+        font = "FiraCode Nerd Font Mono";
+      };
+    in {
+      "Harrys-MacBook-Air" = nix-darwin.lib.darwinSystem {
+        specialArgs = {inherit inputs; settings = settings;};
 
-      modules = [
-        ./hosts/air/configuration.nix
-        home-manager.darwinModules.home-manager
-        {
-          # users.users.harryp.home = "/Users/harryp";
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.harryp.imports = [./hosts/air/home.nix];
-          home-manager.extraSpecialArgs = {
-            inherit inputs;
-            systemSettings = systemSettings;
-            userSettings = userSettings;
-          };
-        }
-      ];
+        modules = [
+          ./hosts/air/configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            # users.users.harryp.home = "/Users/harryp";
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.harryp.imports = [./hosts/air/home.nix];
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              settings = settings;
+            };
+          }
+        ];
+      };
     };
   };
 }

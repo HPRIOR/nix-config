@@ -1,6 +1,6 @@
 {
   pkgs,
-  userSettings,
+  settings,
   config,
   lib,
   ...
@@ -11,7 +11,7 @@ in {
     lib.mkIf isLinux
     ''
       configuration {
-          font: "${userSettings.font} Medium 10";
+          font: "${settings.font} Medium 10";
           terminal: "kitty";
           run-command: "{cmd}";
           run-shell-command: "{terminal} -e {cmd}";

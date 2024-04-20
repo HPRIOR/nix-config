@@ -1,10 +1,10 @@
 {
-  userSettings,
+  settings,
   pkgs,
   ...
 }: let
-  userName = userSettings.userName;
-  homeDir = "/home/${userName}";
+  userName = settings.userName;
+  homeDir = settings.homeDir;
   dotFiles = "${homeDir}/.dotfiles";
 
   # Very simple rust project for piping into nvim and saving into random scratch dir or named file.

@@ -5,13 +5,14 @@
   config,
   pkgs,
   inputs,
-  systemSettings,
-  userSettings,
+  settings,
   ...
 }: let
-  userName = userSettings.userName;
-  homeDir = userSettings.homeDir;
-  configDir = userSettings.configDir;
+
+  userName = settings.userName;
+  homeDir = settings.homeDir;
+  configDir = settings.configDir;
+  defaultLocale = "en_GB.UTF-8";
 in {
   imports = [
     # Include the results of the hardware scan.
@@ -41,7 +42,7 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = systemSettings.networkHostName; # Define your hostname.
+  networking.hostName = settings.hostName; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -55,18 +56,18 @@ in {
   time.timeZone = "Europe/London";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = systemSettings.defaultLocale;
+  i18n.defaultLocale = defaultLocale;
 
   i18n.extraLocaleSettings = {
-    LC_ADDRESS = systemSettings.defaultLocale;
-    LC_IDENTIFICATION = systemSettings.defaultLocale;
-    LC_MEASUREMENT = systemSettings.defaultLocale;
-    LC_MONETARY = systemSettings.defaultLocale;
-    LC_NAME = systemSettings.defaultLocale;
-    LC_NUMERIC = systemSettings.defaultLocale;
-    LC_PAPER = systemSettings.defaultLocale;
-    LC_TELEPHONE = systemSettings.defaultLocale;
-    LC_TIME = systemSettings.defaultLocale;
+    LC_ADDRESS = defaultLocale;
+    LC_IDENTIFICATION = defaultLocale;
+    LC_MEASUREMENT = defaultLocale;
+    LC_MONETARY = defaultLocale;
+    LC_NAME = defaultLocale;
+    LC_NUMERIC = defaultLocale;
+    LC_PAPER = defaultLocale;
+    LC_TELEPHONE = defaultLocale;
+    LC_TIME = defaultLocale;
   };
 
   # Configure keymap in X11
@@ -98,11 +99,11 @@ in {
   console.useXkbConfig = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${userSettings.userName} = {
+  users.users.${settings.userName} = {
     isNormalUser = true;
-    uid = userSettings.uid;
-    description = userSettings.fullName;
-    extraGroups = userSettings.extraGroups;
+    uid = settings.uid;
+    description = settings.fullName;
+    extraGroups = settings.extraGroups;
     packages = with pkgs; [];
   };
 
@@ -162,7 +163,6 @@ in {
     enable = true;
   };
 
-
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [pkgs.xdg-desktop-portal-gtk];
 
@@ -182,7 +182,7 @@ in {
     enable = true;
     # Certain features, including CLI integration and system authentication support,
     # require enabling PolKit integration on some desktop environments (e.g. Plasma).
-    polkitPolicyOwners = [userSettings.fullName];
+    polkitPolicyOwners = [settings.fullName];
   };
 
   # Some programs need SUID wrappers, can be configured further or are

@@ -3,12 +3,12 @@
   pkgs,
   lib,
   inputs,
-  userSettings,
+  settings,
   ...
 }: let
-  userName = userSettings.userName;
-  homeDir = userSettings.homeDir;
-  dotFiles = userSettings.dotFiles;
+  userName = settings.userName;
+  homeDir = settings.homeDir;
+  dotFiles = settings.dotFiles;
 
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
@@ -25,7 +25,7 @@ in {
   };
 
   config = {
-    colorScheme = inputs.nix-colours.colorSchemes.${userSettings.theme};
+    colorScheme = inputs.nix-colours.colorSchemes.${settings.theme};
 
     xdg = {
       enable = true;
@@ -104,8 +104,8 @@ in {
     programs.git = {
       enable = true;
       package = pkgs.gitAndTools.gitFull;
-      userName = userSettings.fullName;
-      userEmail = userSettings.email;
+      userName = settings.fullName;
+      userEmail = settings.email;
       extraConfig = {
         core.autocrlf = "input";
         merge.conflictstyle = "diff3";
@@ -121,7 +121,7 @@ in {
       };
     };
 
-    home.file."${userSettings.configDir}/aichat/config.yaml".text = ''
+    home.file."${settings.configDir}/aichat/config.yaml".text = ''
       model: openai
       clients:
       - type: openai

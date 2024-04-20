@@ -1,12 +1,12 @@
-{pkgs, config, userSettings, ...}: {
+{pkgs, config, settings, ...}: {
   home.sessionVariables = {
     TERMCMD = "${pkgs.kitty}/bin/kitty";
   };
   programs.kitty = {
     enable = true;
     font = {
-      name = userSettings.font;
-      package = userSettings.fontPackage;
+      name = settings.font;
+      package = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
       size = 12;
     };
     shellIntegration.enableZshIntegration = true;

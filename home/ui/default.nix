@@ -1,7 +1,7 @@
 {
   pkgs,
   config,
-  userSettings,
+  settings,
   lib,
   ...
 }: let
@@ -99,7 +99,7 @@ in {
           background: transparent;
           border: none;
           border-radius: 10px;
-          font-family: ${userSettings.font};
+          font-family: ${settings.font};
           font-size: 13px;
           min-height: 0;
       }
@@ -202,7 +202,7 @@ in {
       bind = $shiftMod, K, movewindoworgroup, u
       bind = $shiftMod, L, movewindoworgroup, r
 
-      bind = $mainMod, SPACE, exec, rofi -show drun -config "${userSettings.homeDir}/.config/rofi/config.rasi"
+      bind = $mainMod, SPACE, exec, rofi -show drun -config "${settings.homeDir}/.config/rofi/config.rasi"
       bind = $mainMod, F, fullscreen, 0
       bind = $shiftMod, F, togglefloating,
 
@@ -285,7 +285,7 @@ in {
         col.border_active = 0x${config.colorScheme.palette.base0E}ff 0x${config.colorScheme.palette.base0F}ff 45deg
         col.border_inactive = 0x${config.colorScheme.palette.base02}ff 0x${config.colorScheme.palette.base03}ff 90deg
         groupbar {
-            font_family = "${userSettings.font}"
+            font_family = "${settings.font}"
             font_size = 10
             height = 16
             col.active = 0x${config.colorScheme.palette.base04}ff
