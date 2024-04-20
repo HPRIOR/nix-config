@@ -100,7 +100,7 @@ in {
 
     #  https://github.com/nix-community/home-manager/issues/1341 is closed.
     # creates aliases to nix store so that spotlight can search for nix installed packages
-    home.activation = {
+    home.activation = lib.mkIf isDarwin {
       aliasHomeManagerApplications = lib.hm.dag.entryAfter ["writeBoundary"] ''
         app_folder="${config.home.homeDirectory}/Applications/Home Manager Trampolines"
         rm -rf "$app_folder"
@@ -143,7 +143,7 @@ in {
       - type: openai
     '';
     home.sessionVariables = {
-        AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
+      AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
     };
   };
 }
