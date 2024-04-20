@@ -2,14 +2,17 @@
   inputs,
   pkgs,
   config,
+  lib,
   ...
-}: {
+}: let
+  isLinux = pkgs.stdenv.isLinux;
+in {
   imports = [inputs.nixvim.homeManagerModules.nixvim];
-    
+
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
-    DEFAULT_BROWSER = "${pkgs.firefox}/bin/firefox";
+    DEFAULT_BROWSER = lib.mkIf isLinux "${pkgs.firefox}/bin/firefox";
   };
   programs.nixvim = {
     enable = true;
@@ -463,40 +466,40 @@
       dressing-nvim
     ];
     extraConfigLua = ''
-            -- configure dressing-nvim
-            ---@diagnostic disable-next-line: duplicate-set-field
-            vim.ui.select = function(...)
-                require("lazy").load({ plugins = { "dressing.nvim" } })
-                return vim.ui.select(...)
-            end
-            ---@diagnostic disable-next-line: duplicate-set-field
-            vim.ui.input = function(...)
-                require("lazy").load({ plugins = { "dressing.nvim" } })
-                return vim.ui.input(...)
-            end
+      -- configure dressing-nvim
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+          require("lazy").load({ plugins = { "dressing.nvim" } })
+          return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+          require("lazy").load({ plugins = { "dressing.nvim" } })
+          return vim.ui.input(...)
+      end
 
-            -- configure lsp
-            local _border = "rounded"
+      -- configure lsp
+      local _border = "rounded"
 
-            vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-                vim.lsp.handlers.hover, {
-                    border = _border
-                }
-            )
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+          vim.lsp.handlers.hover, {
+              border = _border
+          }
+      )
 
-            vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-                vim.lsp.handlers.signature_help, {
-                    border = _border
-                }
-            )
+      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+          vim.lsp.handlers.signature_help, {
+              border = _border
+          }
+      )
 
-            vim.diagnostic.config = {
-                float={border=_border}
-            }
+      vim.diagnostic.config = {
+          float={border=_border}
+      }
 
-            require('lspconfig.ui.windows').default_options = {
-                border = _border
-            }
+      require('lspconfig.ui.windows').default_options = {
+          border = _border
+      }
 
     '';
     keymaps = [
