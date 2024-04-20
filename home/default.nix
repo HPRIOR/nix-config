@@ -19,6 +19,7 @@ in {
     ./neovim
     ./terminal
     ./ui
+    ./mac
   ];
 
   options = {
