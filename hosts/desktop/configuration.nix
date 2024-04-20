@@ -14,7 +14,6 @@ in {
     ./hardware-configuration.nix
   ];
 
-
   hardware.opengl = {
     enable = pkgs.lib.mkDefault true;
     driSupport = true;
@@ -94,7 +93,6 @@ in {
     packages = with pkgs; [];
   };
 
-
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
@@ -132,7 +130,7 @@ in {
 
   sound.enable = true;
   security.rtkit.enable = true;
-  security.polkit.enable = true;
+  # security.polkit.enable = true;
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -141,26 +139,17 @@ in {
     jack.enable = true;
   };
 
-  programs._1password.enable = true;
-  programs._1password-gui = {
-    enable = true;
-    # Certain features, including CLI integration and system authentication support,
-    # require enabling PolKit integration on some desktop environments (e.g. Plasma).
-    polkitPolicyOwners = [settings.fullName];
-  };
-
-  services.syncthing = {
-    user = userName;
-    dataDir = homeDir;
-    configDir = configDir;
-    enable = true;
-  };
-
   services.mullvad-vpn = {
     enable = true;
     package = pkgs.mullvad-vpn;
   };
 
+  services.dropbox = {
+    path = "~/Dropbox";
+    dropbox.enable = true;
+  };
+
+  virtualisation.docker.enable = true;
 
   networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [8384 22000 80 443 1401];

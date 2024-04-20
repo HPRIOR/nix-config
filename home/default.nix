@@ -9,6 +9,7 @@
   userName = settings.userName;
   homeDir = settings.homeDir;
   dotFiles = settings.dotFiles;
+  configDir = settings.configDir;
 
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
@@ -94,12 +95,25 @@ in {
         jetbrains.clion
         jetbrains.idea-ultimate
         jetbrains.rider
+        _1password-gui
+        _1password
+        syncthing
+        protonmail-bridge
+        discord
+        docker
       ]
       ++ (lib.optionals isLinux [
         firefox # applications
         pavucontrol
+        dropbox
+        obsidian
+        vlc
       ]);
 
+    services.syncthing = {
+      enable = true;
+      tray.enable = isLinux;
+    };
     #  https://github.com/nix-community/home-manager/issues/1341 is closed.
     # creates aliases to nix store so that spotlight can search for nix installed packages
     home.activation = lib.mkIf isDarwin {
@@ -172,8 +186,5 @@ in {
       OPENAI_API_KEY = "$(cat ${config.sops.secrets.gpt-api-key.path})";
     };
 
-    # todo not compat with darwin, 
-    # services.dropbox.path = "~/Dropbox";
-    # services.dropbox.enable = true;
   };
 }

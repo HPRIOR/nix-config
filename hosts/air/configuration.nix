@@ -5,7 +5,11 @@
   lib,
   settings,
   ...
-}: {
+}: let
+  userName = settings.userName;
+  homeDir = settings.homeDir;
+  configDir = settings.configDir;
+in {
   environment.systemPackages = [
     pkgs.vim
   ];
@@ -26,13 +30,14 @@
     defaults = {
       dock = {
         persistent-apps = [
-            # todo
+          # todo
         ];
         autohide = true;
         show-recents = false;
       };
     };
   };
+
 
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
@@ -44,18 +49,13 @@
     onActivation.upgrade = true;
     # updates homebrew packages on activation,
     # can make darwin-rebuild much slower (otherwise i'd forget to do it ever though)
-    # todo, check which are have packages available 
+    # todo, check which are have packages available
     casks = [
       "firefox"
-      "1password"
-      "syncthing"
       "mullvadvpn"
       "whatsapp"
       "rectangle"
-      "protonmail-bridge"
       "dropbox"
-      "discord"
-      "docker"
       "obsidian"
       "vlc"
     ];
