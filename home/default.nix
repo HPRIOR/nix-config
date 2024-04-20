@@ -160,14 +160,19 @@ in {
       clients:
       - type: openai
     '';
+
     home.sessionVariables = {
-      AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
       DEFAULT_BROWSER =
         if isLinux
         then "${pkgs.firefox}/bin/firefox"
         else "default";
 
+      AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
       OPENAI_API_KEY = "$(cat ${config.sops.secrets.gpt-api-key.path})";
     };
+
+    # todo not compat with darwin, 
+    # services.dropbox.path = "~/Dropbox";
+    # services.dropbox.enable = true;
   };
 }

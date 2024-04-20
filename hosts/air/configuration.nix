@@ -21,7 +21,18 @@
   # Can't seem to pass in self from above
   # system.configurationRevision = self.rev or self.dirtyRev or null;
 
-  system.stateVersion = 4;
+  system = {
+    stateVersion = 4;
+    defaults = {
+      dock = {
+        persistent-apps = [
+            # todo
+        ];
+        autohide = true;
+        show-recents = false;
+      };
+    };
+  };
 
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
@@ -33,9 +44,20 @@
     onActivation.upgrade = true;
     # updates homebrew packages on activation,
     # can make darwin-rebuild much slower (otherwise i'd forget to do it ever though)
+    # todo, check which are have packages available 
     casks = [
       "firefox"
       "1password"
+      "syncthing"
+      "mullvadvpn"
+      "whatsapp"
+      "rectangle"
+      "protonmail-bridge"
+      "dropbox"
+      "discord"
+      "docker"
+      "obsidian"
+      "vlc"
     ];
   };
 }

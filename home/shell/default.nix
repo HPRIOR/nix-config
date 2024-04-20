@@ -57,8 +57,16 @@
     lla = "exa -la";
     la = "exa -a";
     changes = "git diff */**";
-    copy = "wl-copy";
-    paste = "wl-paste";
+
+    copy =
+      if isDarwin
+      then "pbcopy"
+      else "wl-copy";
+
+    paste =
+      if isDarwin
+      then "pbpaste"
+      else "wl-paste";
   };
 in {
   imports = [];
