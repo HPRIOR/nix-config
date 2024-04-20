@@ -6,10 +6,9 @@
   ...
 }: let
   isLinux = pkgs.stdenv.isLinux;
-in {
-  home.file.".config/rofi/config.rasi".text =
-    lib.mkIf isLinux
-    ''
+in
+  lib.mkIf isLinux {
+    home.file.".config/rofi/config.rasi".text = ''
       configuration {
           font: "${settings.font} Medium 10";
           terminal: "kitty";
@@ -313,4 +312,4 @@ in {
           text-color:                  @foreground-colour;
       }
     '';
-}
+  }
