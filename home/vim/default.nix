@@ -7,7 +7,7 @@
 }: let
   isLinux = pkgs.stdenv.isLinux;
 in {
-  imports = [inputs.nixvim.homeManagerModules.nixvim];
+  imports = [inputs.nixvim.homeManagerModules.nixvim ./ideavim.nix];
 
   home.sessionVariables = {
     EDITOR = "nvim";
