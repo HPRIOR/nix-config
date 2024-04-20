@@ -79,7 +79,6 @@ in {
         zoxide
         delta # git syntax highlighting pager
         kitty # terminal emulator
-        firefox # applications
         cargo
         rustc
         rustfmt
@@ -95,6 +94,7 @@ in {
         jetbrains.rider
       ]
       ++ (lib.optionals isLinux [
+        firefox # applications
         pavucontrol
       ]);
 
