@@ -1,6 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
 {
   config,
   pkgs,
@@ -14,10 +11,9 @@
   defaultLocale = "en_GB.UTF-8";
 in {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    inputs.sops-nix.nixosModules.sops
   ];
+
 
   hardware.opengl = {
     enable = pkgs.lib.mkDefault true;
@@ -42,11 +38,6 @@ in {
   boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = settings.hostName; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -93,11 +84,8 @@ in {
     };
   };
 
-  # Configure console keymap
-  # console.keyMap = "uk";
   console.useXkbConfig = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${settings.userName} = {
     isNormalUser = true;
     uid = settings.uid;
@@ -106,14 +94,9 @@ in {
     packages = with pkgs; [];
   };
 
-  # Enable automatic login for the user.
-  ## services.getty.autologinUser = "harryp";
 
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     # standard stuff
     vim
@@ -132,30 +115,12 @@ in {
     wl-clipboard
     wlr-randr
   ];
-  # secrets management. Needs to run in sys config for now because templates aren't supported
-  sops = {
-    defaultSopsFile = ../../secrets/secrets.yaml;
-    defaultSopsFormat = "yaml";
-    age = {
-      # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
-      keyFile = "/etc/sops/age/keys.txt";
-    };
-    secrets.gpt-api-key = {
-      owner = config.users.users.${userName}.name;
-    };
-    secrets.server-ip = {
-      owner = config.users.users.${userName}.name;
-    };
-  };
 
   environment.shells = with pkgs; [zsh];
   users.defaultUserShell = pkgs.zsh;
 
   programs.zsh = {
     enable = true;
-    shellInit = ''
-      export OPENAI_API_KEY=$(cat ${config.sops.secrets.gpt-api-key.path})
-    '';
   };
 
   programs.hyprland = {
@@ -184,18 +149,6 @@ in {
     polkitPolicyOwners = [settings.fullName];
   };
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   services.syncthing = {
     user = userName;
@@ -209,38 +162,11 @@ in {
     package = pkgs.mullvad-vpn;
   };
 
-  # this isn't working for now, need to do  more research - getting clashes between nft and ipt
-  # networking.nftables = {
-  #   enable = false;
-  #   rulesetFile = config.sops.templates."excludeTraffic.rules".path;
-  # };
-  # sops.templates."excludeTraffic.rules"= {
-  #   content = ''
-  #       table inet excludeTraffic {
-  #           chain excludeOutgoing {
-  #               type route hook output priority 0; policy accept;
-  #               ip daddr ${config.sops.placeholder.server-ip} ct mark set 0x00000f41 meta mark set 0x6d6f6c65;
-  #           }
-  #       }
-  #   '';
-  #   owner = userName;
-  # };
 
+  networking.firewall.enable = true;
   networking.firewall.allowedTCPPorts = [8384 22000 80 443 1401];
   networking.firewall.allowedUDPPorts = [22000 21027 53 1194 1195 1196 1197 1300 1301 1302 1303 1400];
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = true;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "23.11"; # Did you read the comment? (doesn't need to change?)
   nix.settings.experimental-features = ["nix-command" "flakes"];
 }

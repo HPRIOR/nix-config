@@ -25,6 +25,7 @@ in {
   };
 
   config = {
+    systemd.user.services.mbsync.Unit.After = ["sops-nix.service"];
     colorScheme = inputs.nix-colours.colorSchemes.${settings.theme};
 
     xdg = lib.mkIf isLinux {
@@ -137,6 +138,22 @@ in {
       };
     };
 
+    sops = let
+      runtimePath =
+        if isLinux
+        then "$XDG_RUNTIME_DIR"
+        else "$(getconf DARWIN_USER_TEMP_DIR)";
+    in {
+      defaultSopsFile = ../secrets/secrets.yaml;
+      defaultSopsFormat = "yaml";
+      age = {
+        # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
+        keyFile = "/etc/sops/age/keys.txt";
+      };
+      secrets.gpt-api-key = {path = "${runtimePath}/secrets/gpt-api-key";};
+      secrets.server-ip = {};
+    };
+
     home.file."${settings.configDir}/aichat/config.yaml".text = ''
       model: openai
       clients:
@@ -144,6 +161,12 @@ in {
     '';
     home.sessionVariables = {
       AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
+      DEFAULT_BROWSER =
+        if isLinux
+        then "${pkgs.firefox}/bin/firefox"
+        else "default";
+
+      OPENAI_API_KEY = "$(cat ${config.sops.secrets.gpt-api-key.path})";
     };
   };
 }

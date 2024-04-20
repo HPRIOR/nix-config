@@ -71,6 +71,9 @@
               inherit inputs;
               settings = settings;
             };
+            home-manager.sharedModules = [
+              inputs.sops-nix.homeManagerModules.sops
+            ];
           }
         ];
       };
@@ -111,6 +114,9 @@
               inherit inputs;
               settings = settings;
             };
+            home-manager.sharedModules = [
+              inputs.sops-nix.homeManagerModules.sops
+            ];
           }
         ];
       };
