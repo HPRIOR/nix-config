@@ -3,6 +3,7 @@
   pkgs,
   ...
 }: let
+  isDarwin = pkgs.stdenv.isDarwin;
   userName = settings.userName;
   homeDir = settings.homeDir;
   dotFiles = "${homeDir}/.dotfiles";
@@ -24,8 +25,20 @@
   };
 
   aliases = rec {
-    buildnix = "echo 'Building nix config' && sudo nixos-rebuild switch --flake ${dotFiles} && echo 'Cleaning old generations' && nix-env --delete-generations +20 ";
-    buildnix-dev = "echo 'Building nix config' && sudo nixos-rebuild switch --flake ${dotFiles}";
+    buildnix = let
+      buildcmd =
+        if isDarwin
+        then "darwin-rebuild switch --flake ${dotFiles}"
+        else "sudo nixos-rebuild switch --flake ${dotFiles}";
+    in "echo 'Building nix config' && ${buildcmd} && echo 'Cleaning old generations' && nix-env --delete-generations +20";
+
+    buildnix-dev = let
+      buildcmd =
+        if isDarwin
+        then "darwin-rebuild switch --flake ${dotFiles}"
+        else "sudo nixos-rebuild switch --flake ${dotFiles}";
+    in "echo 'Building nix config' && ${buildcmd} && echo 'Cleaning old generations'";
+
     editnix = "cd ${dotFiles} && nvim && cd -";
     editdocs = "cd ${homeDir}/Documents/vdoc && nvim && cd -";
 
