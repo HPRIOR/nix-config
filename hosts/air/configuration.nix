@@ -1,7 +1,9 @@
 {
   pkgs,
+  inputs,
   self,
   lib,
+  settings,
   ...
 }: {
   environment.systemPackages = [
@@ -10,7 +12,7 @@
 
   services.nix-daemon.enable = true;
 
-  users.users.harryp.home = lib.mkForce  "/Users/harryp";
+  users.users.harryp.home = lib.mkForce "/Users/harryp";
   nix.settings.experimental-features = "nix-command flakes";
 
   programs.zsh.enable = true; # default shell on catalina
@@ -31,6 +33,9 @@
     onActivation.upgrade = true;
     # updates homebrew packages on activation,
     # can make darwin-rebuild much slower (otherwise i'd forget to do it ever though)
-    casks = [];
+    casks = [
+      "firefox"
+      "1password"
+    ];
   };
 }
