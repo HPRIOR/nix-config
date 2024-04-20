@@ -22,6 +22,7 @@
   system.stateVersion = 4;
 
   nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.config.allowUnfree = true;
   # hosts/YourHostName/default.nix - inside the returning attribute set
 
   homebrew = {
