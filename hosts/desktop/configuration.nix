@@ -149,7 +149,6 @@ in {
     polkitPolicyOwners = [settings.fullName];
   };
 
-
   services.syncthing = {
     user = userName;
     dataDir = homeDir;

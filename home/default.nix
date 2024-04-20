@@ -139,10 +139,11 @@ in {
     };
 
     sops = let
+      # This is a bit hacky, but works - %r replacement for runtime tmp path doesn't work according to sops-nix docs
       runtimePath =
         if isLinux
-        then "$XDG_RUNTIME_DIR"
-        else "$(getconf DARWIN_USER_TEMP_DIR)";
+        then "$XDG_RUNTIME_DIR/secrets" # must include leading slash because of command below
+        else "$(getconf DARWIN_USER_TEMP_DIR)secrets.d/1";
     in {
       defaultSopsFile = ../secrets/secrets.yaml;
       defaultSopsFormat = "yaml";
@@ -150,8 +151,8 @@ in {
         # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
         keyFile = "/etc/sops/age/keys.txt";
       };
-      secrets.gpt-api-key = {path = "${runtimePath}/secrets/gpt-api-key";};
-      secrets.server-ip = {};
+      secrets.gpt-api-key = {path = "${runtimePath}/gpt-api-key";};
+      secrets.server-ip = {path = "${runtimePath}/server-ip";};
     };
 
     home.file."${settings.configDir}/aichat/config.yaml".text = ''
