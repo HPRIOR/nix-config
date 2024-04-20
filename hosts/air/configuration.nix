@@ -8,7 +8,7 @@
     pkgs.vim
   ];
 
-  # services.nix-daemon.enable = true;
+  services.nix-daemon.enable = true;
 
   users.users.harryp.home = lib.mkForce  "/Users/harryp";
   nix.settings.experimental-features = "nix-command flakes";
