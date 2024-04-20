@@ -17,7 +17,7 @@ in {
   imports = [
     inputs.nix-colours.homeManagerModules.default
     ./shell
-    ./neovim
+    ./vim
     ./terminal
     ./ui
     ./mac
