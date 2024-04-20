@@ -27,7 +27,7 @@ in {
   config = {
     colorScheme = inputs.nix-colours.colorSchemes.${settings.theme};
 
-    xdg = {
+    xdg = lib.mkIf isLinux {
       enable = true;
       userDirs = {
         enable = true;
