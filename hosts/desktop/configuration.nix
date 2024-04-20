@@ -8,7 +8,6 @@
   settings,
   ...
 }: let
-
   userName = settings.userName;
   homeDir = settings.homeDir;
   configDir = settings.configDir;

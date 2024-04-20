@@ -67,7 +67,6 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.harryp.imports = [./hosts/desktop/home.nix];
-
             home-manager.extraSpecialArgs = {
               inherit inputs;
               settings = settings;
@@ -92,7 +91,10 @@
       };
     in {
       "Harrys-MacBook-Air" = nix-darwin.lib.darwinSystem {
-        specialArgs = {inherit inputs; settings = settings;};
+        specialArgs = {
+          inherit inputs;
+          settings = settings;
+        };
 
         modules = [
           ./hosts/air/configuration.nix
