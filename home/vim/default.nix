@@ -463,6 +463,16 @@ in {
     };
     extraPlugins = with pkgs.vimPlugins; [
       dressing-nvim
+      ChatGPT-nvim
+      (pkgs.vimUtils.buildVimPlugin {
+        name = "telescope-gpt";
+        src = pkgs.fetchFromGitHub {
+          owner = "HPRIOR";
+          repo = "telescope-gpt";
+          rev = "main";
+          hash = "sha256-fGCgayTQKdyx6UElUx4+2jQr3HPUfmaaONjcuW2PDDU=";
+        };
+      })
     ];
     extraConfigLua = ''
       -- configure dressing-nvim
@@ -500,6 +510,27 @@ in {
           border = _border
       }
 
+      require("chatgpt").setup({
+            extensions = {
+                gpt = {
+                    title = "Gpt Actions",
+                    commands = {
+                        "add_tests",
+                        "chat",
+                        "docstring",
+                        "explain_code",
+                        "fix_bugs",
+                        "grammar_correction",
+                        "interactive",
+                        "optimize_code",
+                        "summarize",
+                        "translate"
+                    },
+                    theme = require("telescope.themes").get_dropdown{}
+                }
+            }
+        })
+        require('telescope').load_extension('gpt')
     '';
     keymaps = [
       {
@@ -730,13 +761,21 @@ in {
         };
       }
       {
-        #  todo change severity, currently showing warnings too
-        mode = ["n"];
-        key = "<leader>s";
-        action = "<cmd>lua require'telescope.builtin'.spell_suggest(require('telescope.themes').get_dropdown({ width = 0.8, previewer = false, prompt_title = false }))<cr>";
+        mode = ["n" "v"];
+        key = "<C-c>";
+        action = ":ChatGPT<CR>";
         options = {
           silent = true;
-          desc = "Telescope show spelling suggestions";
+          desc = "Open chat gpt plugin";
+        };
+      }
+      {
+        mode = ["n" "v"];
+        key = "<C-a>";
+        action = "<cmd>Telescope gpt<cr>";
+        options = {
+          silent = true;
+          desc = "Open chat gpt telescope extension";
         };
       }
     ];
