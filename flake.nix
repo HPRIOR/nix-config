@@ -77,6 +77,7 @@
     };
 
     darwinConfigurations = let
+      system = "aarch64-darwin";
       settings = rec {
         uid = 1000;
         userName = "harryp";
@@ -91,8 +92,10 @@
       };
     in {
       "Harrys-MacBook-Air" = nix-darwin.lib.darwinSystem {
+        inherit system;
         specialArgs = {
           inherit inputs;
+
           settings = settings;
         };
 
