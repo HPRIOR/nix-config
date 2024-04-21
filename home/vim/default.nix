@@ -64,6 +64,10 @@ in {
       wrap = false; # Disable line wrap
     };
     plugins = {
+      navic = {
+        enable = true;
+        lsp.autoAttach = true;
+      };
       notify = {
         enable = true;
         backgroundColour = "#000000";
@@ -105,6 +109,11 @@ in {
       };
       lsp = {
         enable = true;
+        onAttach = ''
+          if client.server_capabilities.documentSymbolProvider then
+            require("nvim-navic").attach(client, bufnr)
+          end
+        '';
         servers = {
           bashls.enable = true;
           clangd.enable = true;
@@ -531,6 +540,13 @@ in {
             }
         })
         require('telescope').load_extension('gpt')
+
+        function create_winbar() 
+            local navic = "%{%v:lua.require'nvim-navic'.get_location()%}"
+            return "%{v:lua.string.gsub(expand('%'), '/', ' > ')} " .. navic
+        end
+
+        vim.opt.winbar = create_winbar()
     '';
     keymaps = [
       {

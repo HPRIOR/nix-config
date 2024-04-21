@@ -11,6 +11,7 @@
     };
     shellIntegration.enableZshIntegration = true;
     settings = {
+
         background = "#${config.colorScheme.palette.base00}";
         foreground = "#${config.colorScheme.palette.base05}";
         selection_background = "#${config.colorScheme.palette.base05}";

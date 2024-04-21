@@ -46,6 +46,13 @@ in {
           "x-scheme-handler/about" = "firefox.desktop";
           "x-scheme-handler/unknown" = "firefox.desktop";
         };
+        associations.added = {
+          "text/html" = ["firefox.desktop"];
+          "x-scheme-handler/http" = ["firefox.desktop"];
+          "x-scheme-handler/https" = ["firefox.desktop"];
+          "x-scheme-handler/about" = ["firefox.desktop"];
+          "x-scheme-handler/unknown" = ["firefox.desktop"];
+        };
       };
     };
 
@@ -105,7 +112,6 @@ in {
       ++ (lib.optionals isLinux [
         firefox # applications
         pavucontrol
-        # dropbox
         obsidian
         vlc
       ]);
@@ -153,23 +159,13 @@ in {
       };
     };
 
-    sops = let
-      # This is a bit hacky, but works - %r replacement for runtime tmp path doesn't work according to sops-nix docs
-      # This is error prone and not good. Using $XDG_RUNTIME_PATH wouldn't interpolate the argument, and would save the file to the home dir
- 
-      runtimePath =
-        if isLinux
-        then "/run/user/${toString settings.uid}/secrets.d/4" 
-        else "$(getconf DARWIN_USER_TEMP_DIR)secrets.d/1";
-    in {
+    sops = {
       defaultSopsFile = ../secrets/secrets.yaml;
       defaultSopsFormat = "yaml";
       age = {
         # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
         keyFile = "/etc/sops/age/keys.txt";
       };
-      # secrets.gpt-api-key = {path = "${runtimePath}/gpt-api-key";};
-      # secrets.server-ip = {path = "${runtimePath}/server-ip";};
       secrets.gpt-api-key = {};
       secrets.server-ip = {};
     };
