@@ -58,6 +58,7 @@ in {
       "dropbox"
       "obsidian"
       "vlc"
+      "libreoffice"
     ];
   };
 }

@@ -114,7 +114,9 @@ in {
         pavucontrol
         obsidian
         vlc
+        libreoffice
       ]);
+
 
     services.syncthing = {
       enable = true;

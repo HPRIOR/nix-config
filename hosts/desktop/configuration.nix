@@ -112,6 +112,8 @@ in {
     rofi-wayland
     wl-clipboard
     wlr-randr
+    cliphist
+    wl-clip-persist
   ];
 
   environment.shells = with pkgs; [zsh];
@@ -143,7 +145,6 @@ in {
     enable = true;
     package = pkgs.mullvad-vpn;
   };
-
 
   virtualisation.docker.enable = true;
 

@@ -166,6 +166,10 @@ in {
       exec-once = waybar
       exec-once = blueman-applet
 
+      exec-once = wl-paste --type text --watch cliphist store #Stores only text data
+
+      exec-once = wl-paste --type image --watch cliphist store #Stores only image data
+
       ${createBarWindowRule "pavucontrol" 50 700}
       ${createBarWindowRule ".blueman-manager-wrapped" 50 700}
       ${createBarWindowRule "1Password" 50 700}
@@ -203,6 +207,9 @@ in {
       bind = $shiftMod, L, movewindoworgroup, r
 
       bind = $mainMod, SPACE, exec, rofi -show drun -config "${settings.homeDir}/.config/rofi/config.rasi"
+      bind = $mainMod, TAB, exec, rofi -show window -config "${settings.homeDir}/.config/rofi/config.rasi"
+      bind = $mainMod, C, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
+
       bind = $mainMod, F, fullscreen, 0
       bind = $shiftMod, F, togglefloating,
 
