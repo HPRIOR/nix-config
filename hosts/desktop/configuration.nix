@@ -144,10 +144,6 @@ in {
     package = pkgs.mullvad-vpn;
   };
 
-  services.dropbox = {
-    path = "~/Dropbox";
-    dropbox.enable = true;
-  };
 
   virtualisation.docker.enable = true;
 

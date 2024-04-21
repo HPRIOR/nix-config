@@ -39,7 +39,7 @@
         else "sudo nixos-rebuild switch --flake ${dotFiles}";
     in "echo 'Building nix config' && ${buildcmd} && echo 'Cleaning old generations'";
 
-    updatenix = "nix flake update && ${buildnix}";
+    updatenix = "nix flake update ${dotFiles} && ${buildnix}";
 
     editnix = "cd ${dotFiles} && nvim && cd -";
 

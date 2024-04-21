@@ -105,14 +105,14 @@ in {
       ++ (lib.optionals isLinux [
         firefox # applications
         pavucontrol
-        dropbox
+        # dropbox
         obsidian
         vlc
       ]);
 
     services.syncthing = {
       enable = true;
-      tray.enable = isLinux;
+      # tray.enable = isLinux; ## not working for some reason
     };
     #  https://github.com/nix-community/home-manager/issues/1341 is closed.
     # creates aliases to nix store so that spotlight can search for nix installed packages
@@ -155,9 +155,11 @@ in {
 
     sops = let
       # This is a bit hacky, but works - %r replacement for runtime tmp path doesn't work according to sops-nix docs
+      # This is error prone and not good. Using $XDG_RUNTIME_PATH wouldn't interpolate the argument, and would save the file to the home dir
+ 
       runtimePath =
         if isLinux
-        then "$XDG_RUNTIME_DIR/secrets" # must include leading slash because of command below
+        then "/run/user/${toString settings.uid}/secrets.d/4" 
         else "$(getconf DARWIN_USER_TEMP_DIR)secrets.d/1";
     in {
       defaultSopsFile = ../secrets/secrets.yaml;
@@ -166,8 +168,10 @@ in {
         # Private key generated using ssh and `nix run nixpkgs#ssh-to-age -- -private-key -i ~/.ssh/private > ~/.config/sops/age/keys.txt`
         keyFile = "/etc/sops/age/keys.txt";
       };
-      secrets.gpt-api-key = {path = "${runtimePath}/gpt-api-key";};
-      secrets.server-ip = {path = "${runtimePath}/server-ip";};
+      # secrets.gpt-api-key = {path = "${runtimePath}/gpt-api-key";};
+      # secrets.server-ip = {path = "${runtimePath}/server-ip";};
+      secrets.gpt-api-key = {};
+      secrets.server-ip = {};
     };
 
     home.file."${settings.configDir}/aichat/config.yaml".text = ''
@@ -186,5 +190,9 @@ in {
       OPENAI_API_KEY = "$(cat ${config.sops.secrets.gpt-api-key.path})";
     };
 
+    services.dropbox = {
+      path = lib.mkIf isLinux /home/harryp/Dropbox;
+      enable = isLinux;
+    };
   };
 }

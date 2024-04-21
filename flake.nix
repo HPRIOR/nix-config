@@ -45,6 +45,7 @@
       uid = 1000;
       userName = userName;
       homeDir = homeDir;
+      hostName = hostName;
       dotFiles = "${homeDir}/.dotfiles";
       configDir = "${homeDir}/.config";
       fullName = "Harry Prior";
