@@ -46,7 +46,7 @@
         color19 = "#${config.colorScheme.palette.base02}";
         color20 = "#${config.colorScheme.palette.base04}";
         color21 = "#${config.colorScheme.palette.base06}";
-        term = "xterm-256color";
+        term = "xterm-kitty";
     };
     keybindings = {
       "f1" = "new_tab_with_cwd";

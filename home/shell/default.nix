@@ -39,9 +39,11 @@
         else "sudo nixos-rebuild switch --flake ${dotFiles}";
     in "echo 'Building nix config' && ${buildcmd} && echo 'Cleaning old generations'";
 
-    editnix = "cd ${dotFiles} && nvim && cd -";
-    editdocs = "cd ${homeDir}/Documents/vdoc && nvim && cd -";
+    updatenix = "nix flake update && ${buildnix}";
 
+    editnix = "cd ${dotFiles} && nvim && cd -";
+
+    editdocs = "cd ${homeDir}/Documents/vdoc && nvim && cd -";
     # lazy
     lzg = "lazygit";
     lzd = "lazydocker";

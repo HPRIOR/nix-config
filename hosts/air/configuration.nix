@@ -16,7 +16,7 @@ in {
 
   services.nix-daemon.enable = true;
 
-  users.users.harryp.home = lib.mkForce "/Users/harryp";
+  users.users.harryp.home = lib.mkForce homeDir;
   nix.settings.experimental-features = "nix-command flakes";
 
   programs.zsh.enable = true; # default shell on catalina
