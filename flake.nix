@@ -37,21 +37,32 @@
     sops-nix,
   } @ inputs: let
     lib = nixpkgs.lib;
+    sharedSettings = {
+      homeDir,
+      userName,
+      hostName,
+    }: {
+      uid = 1000;
+      userName = userName;
+      homeDir = homeDir;
+      dotFiles = "${homeDir}/.dotfiles";
+      configDir = "${homeDir}/.config";
+      fullName = "Harry Prior";
+      email = "harjp@pm.me";
+      theme = "kanagawa";
+      font = "FiraCode Nerd Font Mono";
+      extraGroups = ["networkmanager" "wheel"];
+    };
   in {
     nixosConfigurations = let
       system = "x86_64-linux";
-      settings = rec {
-        uid = 1000;
-        hostName = "nixos";
-        userName = "harryp";
-        homeDir = "/home/${userName}";
-        dotFiles = "${homeDir}/.dotfiles";
-        configDir = "${homeDir}/.config";
-        fullName = "Harry Joseph Prior";
-        email = "harryjosephprior@protonmail.com";
-        extraGroups = ["networkmanager" "wheel"];
-        theme = "kanagawa";
-        font = "FiraCode Nerd Font Mono";
+      userName = "harryp";
+      homeDir = "/home/${userName}";
+      hostName = "nixos";
+      settings = sharedSettings {
+        userName = userName;
+        homeDir = homeDir;
+        hostName = hostName;
       };
     in {
       nixos = lib.nixosSystem {
@@ -81,24 +92,19 @@
 
     darwinConfigurations = let
       system = "aarch64-darwin";
-      settings = rec {
-        uid = 1000;
-        userName = "harryp";
-        homeDir = "/Users/${userName}";
-        dotFiles = "${homeDir}/.dotfiles";
-        configDir = "${homeDir}/.config";
-        fullName = "Harry Joseph Prior";
-        email = "harryjosephprior@protonmail.com";
-        extraGroups = ["networkmanager" "wheel"];
-        theme = "kanagawa";
-        font = "FiraCode Nerd Font Mono";
+      userName = "harryp";
+      homeDir = "/Users/${userName}";
+      hostName = "Harrys-MacBook-Air";
+      settings = sharedSettings {
+        userName = userName;
+        homeDir = homeDir;
+        hostName = hostName;
       };
     in {
       "Harrys-MacBook-Air" = nix-darwin.lib.darwinSystem {
         inherit system;
         specialArgs = {
           inherit inputs;
-
           settings = settings;
         };
 
