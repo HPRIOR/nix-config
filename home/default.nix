@@ -108,6 +108,7 @@ in {
         protonmail-bridge
         discord
         docker
+        spotify
       ]
       ++ (lib.optionals isLinux [
         firefox # applications
