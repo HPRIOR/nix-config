@@ -33,26 +33,25 @@ csvcat(){
     column -s, -t < $1 | less -#2 -N -S
 }
 
-private fdir_helper() {
+fdir_helper() {
     local patharg="$1"
     local hidden="$2"
     local preview="$3"
     local enteropt="$4"
     local oopt="$5"
-
     local output
 
     if [[ -n "$patharg" ]]; then
         if [ $hidden = true ]; then
-            output=$(fd -u --type directory . "$patharg" | fzf --expect ctrl-o,enter --preview $preview)
-        else 
-            output=$(fd --type directory . "$3" | fzf --expect ctrl-o,enter --preview $preview)
+            output=$(fd -u --type directory . "$patharg" | fzf --expect ctrl-o,ctrl-r,enter --preview "$preview")
+        else
+            output=$(fd --type directory . "$patharg" | fzf --expect ctrl-o,ctrl-r,enter --preview "$preview")
         fi
     else
         if [ $hidden = true ]; then
-            output=$(fd -u --type directory | fzf --expect ctrl-o,enter --preview $preview)
-        else 
-            output=$(fd --type directory | fzf --expect ctrl-o,enter --preview $preview)
+            output=$(fd -u --type directory | fzf --expect ctrl-o,ctrl-r,enter --preview "$preview")
+        else
+            output=$(fd --type directory | fzf --expect ctrl-o,ctrl-r,enter --preview "$preview")
         fi
     fi
 
@@ -66,7 +65,7 @@ private fdir_helper() {
     case "$key" in
         enter)
             if [[ -n "$val" ]]; then
-                $enteropt $val
+                $enteropt "$val"
             fi
             ;;
         ctrl-o)
@@ -74,27 +73,20 @@ private fdir_helper() {
                 $oopt "$val"
             fi
             ;;
+        ctrl-r)
+            fdir_helper "$val" "$hidden" "$preview" "$enteropt" "$oopt"
+            ;;
     esac
 }
 
 fdir() {
-    fdir_helper \
-        "$1" \
-        false \
-        'exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension' \
-        "cd" \
-        "nvim"
+    local preview='exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
+    fdir_helper "$1" false "$preview" "cd" "nvim"
 }
 
 fdir-all() {
-    fdir_helper \
-        "$1" \
-        true \
-        'exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension' \
-        "cd" \
-        "nvim"
-        
-
+    local preview='exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
+    fdir_helper "$1" true "$preview" "cd" "nvim"
 }
 
 
