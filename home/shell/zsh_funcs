@@ -139,14 +139,17 @@ ff() {
 }
 
 ff-all() {
+
     local preview="bat --color=always --style=numbers --line-range :500 {}"
     ff_helper "$1" true "$preview" "nvim" "cd"
 }
 
 # search through code directory and preview files/dir as tree
 fic(){
-    cd $(fd -u -d 1 --type directory . $HOME/Code | fzf --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
+    local preview='exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
+    fdir_helper "$HOME/Code" false "$preview" "cd" "nvim"
 }
+
 
 # search unique file history and copy output to terminal 
 fh(){
