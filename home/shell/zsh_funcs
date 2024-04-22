@@ -89,66 +89,59 @@ fdir-all() {
     fdir_helper "$1" true "$preview" "cd" "nvim"
 }
 
+ff_helper() {
+    local patharg="$1"
+    local hidden="$2"
+    local preview="$3"
+    local enteropt="$4"
+    local oopt="$5"
+    local output
+
+    if [[ -n "$patharg" ]]; then
+        if [ $hidden = true ]; then
+            output=$(fd -u --type file . "$patharg" | fzf --expect ctrl-o,enter --preview "$preview")
+        else
+            output=$(fd --type file . "$patharg" | fzf --expect ctrl-o,enter --preview "$preview")
+        fi
+    else
+        if [ $hidden = true ]; then
+            output=$(fd -u --type file | fzf --expect ctrl-o,enter --preview "$preview")
+        else
+            output=$(fd --type file | fzf --expect ctrl-o,enter --preview "$preview")
+        fi
+    fi
+
+    if [[ -z "$output" ]]; then
+        return
+    fi
+
+    local key=$(echo "$output" | head -1)
+    local val=$(echo "$output" | tail -1)
+
+    case "$key" in
+        enter)
+            if [[ -n "$val" ]]; then
+                $enteropt "$val"
+            fi
+            ;;
+        ctrl-o)
+            if [[ -n "$val" ]]; then
+                $oopt $(dirname "$val")
+            fi
+            ;;
+    esac
+}
 
 
 ff() {
-  local output
-  if [[ -n "$1" ]]; then
-    output=$(fd --type file . "$1" | fzf --expect ctrl-o,enter --preview "bat --color=always --style=numbers --line-range :500 {}")
-  else
-    output=$(fd --type file | fzf --expect ctrl-o,enter --preview "bat --color=always --style=numbers --line-range :500 {}")
-  fi
-  
-  if [[ -z "$output" ]]; then
-    return
-  fi
-  
-  local key=$(echo "$output" | head -1)
-  local file=$(echo "$output" | tail -1)
-  
-  case "$key" in
-    enter)
-      if [[ -n "$file" ]]; then
-        nvim "$file"
-      fi
-      ;;
-    ctrl-o)
-      if [[ -n "$file" ]]; then
-        cd "$(dirname "$file")"
-      fi
-      ;;
-  esac
+    local preview="bat --color=always --style=numbers --line-range :500 {}"
+    ff_helper "$1" false "$preview" "nvim" "cd"
 }
 
 ff-all() {
-  local output
-  if [[ -n "$1" ]]; then
-    output=$(fd -u --type file . "$1" | fzf --expect ctrl-o,enter --preview "bat --color=always --style=numbers --line-range :500 {}")
-  else
-    output=$(fd -u --type file | fzf --expect ctrl-o,enter --preview "bat --color=always --style=numbers --line-range :500 {}")
-  fi
-  
-  if [[ -z "$output" ]]; then
-    return
-  fi
-  
-  local key=$(echo "$output" | head -1)
-  local file=$(echo "$output" | tail -1)
-  
-  case "$key" in
-    enter)
-      if [[ -n "$file" ]]; then
-        nvim "$file"
-      fi
-      ;;
-    ctrl-o)
-      if [[ -n "$file" ]]; then
-        cd "$(dirname "$file")"
-      fi
-      ;;
-  esac
+    local preview="bat --color=always --style=numbers --line-range :500 {}"
+    ff_helper "$1" true "$preview" "nvim" "cd"
 }
-
 
 # search through code directory and preview files/dir as tree
 fic(){
@@ -159,7 +152,6 @@ fic(){
 fh(){
      print -z $( history | cut -c 8- | sort | uniq | fzf --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g') 
 }
-
 
 # find in files
 # Will break if file path contains a colon!
