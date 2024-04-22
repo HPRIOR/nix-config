@@ -34,11 +34,124 @@ csvcat(){
 }
 
 
-# search directories, preview files/dir as tree and open directory
-f(){
-    cd $(fd -u --type directory | fzf --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension ")
-        
+# search directories, preview dir file tree and open directory
+fdir() {
+  local output
+  if [[ -n "$1" ]]; then
+    output=$(fd --type directory . "$1" | fzf --expect ctrl-o,enter --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
+  else
+    output=$(fd --type directory | fzf --expect ctrl-o,enter --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
+  fi
+  
+  if [[ -z "$output" ]]; then
+    return
+  fi
+  
+  local key=$(echo "$output" | head -1)
+  local dir=$(echo "$output" | tail -1)
+  
+  case "$key" in
+    enter)
+      if [[ -n "$dir" ]]; then
+        cd $dir
+      fi
+      ;;
+    ctrl-o)
+      if [[ -n "$dir" ]]; then
+        nvim "$dir"
+      fi
+      ;;
+  esac
 }
+
+fdir-all() {
+  local output
+  if [[ -n "$1" ]]; then
+    output=$(fd -u --type directory . "$1" | fzf --expect ctrl-o,enter --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
+  else
+    output=$(fd -u --type directory | fzf --expect ctrl-o,enter --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
+  fi
+  
+  if [[ -z "$output" ]]; then
+    return
+  fi
+  
+  local key=$(echo "$output" | head -1)
+  local dir=$(echo "$output" | tail -1)
+  
+  case "$key" in
+    enter)
+      if [[ -n "$dir" ]]; then
+        cd $dir
+      fi
+      ;;
+    ctrl-o)
+      if [[ -n "$dir" ]]; then
+        nvim "$dir"
+      fi
+      ;;
+  esac
+}
+
+
+ff() {
+  local output
+  if [[ -n "$1" ]]; then
+    output=$(fd --type file . "$1" | fzf --expect ctrl-o,enter --preview "bat --color=always --style=numbers --line-range :500 {}")
+  else
+    output=$(fd --type file | fzf --expect ctrl-o,enter --preview "bat --color=always --style=numbers --line-range :500 {}")
+  fi
+  
+  if [[ -z "$output" ]]; then
+    return
+  fi
+  
+  local key=$(echo "$output" | head -1)
+  local file=$(echo "$output" | tail -1)
+  
+  case "$key" in
+    enter)
+      if [[ -n "$file" ]]; then
+        nvim "$file"
+      fi
+      ;;
+    ctrl-o)
+      if [[ -n "$file" ]]; then
+        cd "$(dirname "$file")"
+      fi
+      ;;
+  esac
+}
+
+ff-all() {
+  local output
+  if [[ -n "$1" ]]; then
+    output=$(fd -u --type file . "$1" | fzf --expect ctrl-o,enter --preview "bat --color=always --style=numbers --line-range :500 {}")
+  else
+    output=$(fd -u --type file | fzf --expect ctrl-o,enter --preview "bat --color=always --style=numbers --line-range :500 {}")
+  fi
+  
+  if [[ -z "$output" ]]; then
+    return
+  fi
+  
+  local key=$(echo "$output" | head -1)
+  local file=$(echo "$output" | tail -1)
+  
+  case "$key" in
+    enter)
+      if [[ -n "$file" ]]; then
+        nvim "$file"
+      fi
+      ;;
+    ctrl-o)
+      if [[ -n "$file" ]]; then
+        cd "$(dirname "$file")"
+      fi
+      ;;
+  esac
+}
+
 
 # search through code directory and preview files/dir as tree
 fic(){

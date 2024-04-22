@@ -586,6 +586,15 @@ in {
       }
       {
         mode = ["n"];
+        key = "<leader>s";
+        action = "<cmd>lua require'telescope.builtin'.spell_suggest(require('telescope.themes').get_dropdown({ width = 0.8, previewer = false, prompt_title = false }))<cr>";
+        options = {
+          silent = true;
+          desc = "Toggle spell checker";
+        };
+      }
+      {
+        mode = ["n"];
         key = "<leader>vr";
         action = "<cmd>lua require('rust-tools.runnables').runnables()<CR>";
         options = {
