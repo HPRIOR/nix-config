@@ -34,13 +34,17 @@ csvcat(){
 }
 
 private fdir_helper() {
-    local hidden="$1"
-    local preview="$2"
+    local patharg="$1"
+    local hidden="$2"
+    local preview="$3"
+    local enteropt="$4"
+    local oopt="$5"
+
     local output
 
-    if [[ -n "$3" ]]; then
+    if [[ -n "$patharg" ]]; then
         if [ $hidden = true ]; then
-            output=$(fd -u --type directory . "$3" | fzf --expect ctrl-o,enter --preview $preview)
+            output=$(fd -u --type directory . "$patharg" | fzf --expect ctrl-o,enter --preview $preview)
         else 
             output=$(fd --type directory . "$3" | fzf --expect ctrl-o,enter --preview $preview)
         fi
@@ -62,23 +66,35 @@ private fdir_helper() {
     case "$key" in
         enter)
             if [[ -n "$val" ]]; then
-                cd $val
+                $enteropt $val
             fi
             ;;
         ctrl-o)
             if [[ -n "$val" ]]; then
-                nvim "$val"
+                $oopt "$val"
             fi
             ;;
     esac
 }
 
 fdir() {
-    fdir_helper false "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension" "$1"
+    fdir_helper \
+        "$1" \
+        false \
+        'exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension' \
+        "cd" \
+        "nvim"
 }
 
 fdir-all() {
-    fdir_helper true "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension"  "$1"
+    fdir_helper \
+        "$1" \
+        true \
+        'exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension' \
+        "cd" \
+        "nvim"
+        
+
 }
 
 
