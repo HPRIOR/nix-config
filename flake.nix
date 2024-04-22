@@ -102,6 +102,32 @@
         hostName = hostName;
       };
     in {
+      "Harrys-MacBook-Pro" = nix-darwin.lib.darwinSystem {
+        inherit system;
+        specialArgs = {
+          inherit inputs;
+          settings = settings;
+        };
+
+        modules = [
+          ./hosts/air/configuration.nix
+          home-manager.darwinModules.home-manager
+          {
+            # users.users.harryp.home = "/Users/harryp";
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.harryp.imports = [./hosts/air/home.nix];
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              settings = settings;
+            };
+            home-manager.sharedModules = [
+              inputs.sops-nix.homeManagerModules.sops
+            ];
+          }
+        ];
+      };
+
       "Harrys-MacBook-Air" = nix-darwin.lib.darwinSystem {
         inherit system;
         specialArgs = {

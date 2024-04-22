@@ -38,7 +38,6 @@ in {
     };
   };
 
-
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
   # hosts/YourHostName/default.nix - inside the returning attribute set
@@ -59,6 +58,8 @@ in {
       "obsidian"
       "vlc"
       "libreoffice"
+      "1password"
+      "protonmail-bridge"
     ];
   };
 }
