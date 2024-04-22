@@ -176,7 +176,7 @@ fif(){
 
 # Find program: search through executable command in path - preview with tldr page
 fp(){
-    local p=$(compgen -c | sed '/^_/d'| fzf --preview "tldr {}")
+    local p=$(compgen -c | sed '/^_/d'| fzf --preview "tldr {}" --bind "?:preview:man {}")
     print -z $p
 }
 
