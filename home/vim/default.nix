@@ -532,14 +532,14 @@ in {
                 ${gpt_config.telescope_ext_config}
             }
         })
-        require('telescope').load_extension('gpt')
+      require('telescope').load_extension('gpt')
 
-        function create_winbar()
+      function create_winbar()
             local navic = "%{%v:lua.require'nvim-navic'.get_location()%}"
             return "%{v:lua.string.gsub(expand('%'), '/', ' > ')} " .. navic
-        end
+      end
 
-        vim.opt.winbar = create_winbar()
+      vim.opt.winbar = create_winbar()
     '';
     keymaps = [
       {
