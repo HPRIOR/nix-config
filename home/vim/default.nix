@@ -3,9 +3,12 @@
   pkgs,
   config,
   lib,
+  settings,
   ...
 }: let
   isLinux = pkgs.stdenv.isLinux;
+  gpt_telescope_cmd_file = "${settings.configDir}/telescope_gpt/cmds.json";
+  gpt_config = import ./gpt-plugin.nix;
 in {
   imports = [inputs.nixvim.homeManagerModules.nixvim ./ideavim.nix];
 
@@ -520,28 +523,18 @@ in {
       }
 
       require("chatgpt").setup({
+        actions_paths = {
+            "${gpt_telescope_cmd_file}"
+        }
+      })
+      require("telescope").setup({
             extensions = {
-                gpt = {
-                    title = "Gpt Actions",
-                    commands = {
-                        "add_tests",
-                        "chat",
-                        "docstring",
-                        "explain_code",
-                        "fix_bugs",
-                        "grammar_correction",
-                        "interactive",
-                        "optimize_code",
-                        "summarize",
-                        "translate"
-                    },
-                    theme = require("telescope.themes").get_dropdown{}
-                }
+                ${gpt_config.telescope_ext_config}
             }
         })
         require('telescope').load_extension('gpt')
 
-        function create_winbar() 
+        function create_winbar()
             local navic = "%{%v:lua.require'nvim-navic'.get_location()%}"
             return "%{v:lua.string.gsub(expand('%'), '/', ' > ')} " .. navic
         end
@@ -823,4 +816,6 @@ in {
     globals.mapleader = " ";
     globals.maplocalleader = " ";
   };
+
+  home.file.${gpt_telescope_cmd_file}.text = gpt_config.telescope_gpt_cmds;
 }
