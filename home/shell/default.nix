@@ -4,6 +4,7 @@
   ...
 }: let
   isDarwin = pkgs.stdenv.isDarwin;
+  isLinux = pkgs.stdenv.isLinux;
   userName = settings.userName;
   homeDir = settings.homeDir;
   dotFiles = "${homeDir}/.dotfiles";
@@ -93,12 +94,18 @@ in {
       theme = "robbyrussell";
     };
     shellAliases = aliases;
-    initExtra = ''
+    initExtra = let
+        linuxFuncs = 
+            if isLinux then
+                builtins.readFile ./zsh_funcs_linux
+            else "";
+
+    in ''
       eval "$(zoxide init zsh)"
       eval $(thefuck --alias)
       source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
       ${builtins.readFile ./zsh_funcs}
-
+      ${linuxFuncs}
     '';
   };
 
