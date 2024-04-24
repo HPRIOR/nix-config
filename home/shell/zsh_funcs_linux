@@ -1,13 +1,17 @@
-
 fres() {
     # Step 1: Select the screen
-    local selected_screen=$(wlr-randr --json | jq -r '.[] | select(.enabled==true) | .name' | fzf)
+    local selected_screen=$(wlr-randr --json | jq -r '.[] | select(.enabled==true) | .name' | fzf --prompt="Select Screen: " --preview='echo "Current screen: {}"' --bind 'ctrl-c:abort')
+    if [ -z "$selected_screen" ]; then return; fi
     # Step 2: Select the resolution and refresh rate for the chosen screen
-    local mode=$(wlr-randr --json | jq -r --arg name "$selected_screen" '.[] | select(.name==$name) | .modes[] | "\(.width)x\(.height) @ \(.refresh)Hz \(if .preferred then "preferred" else "" end) \(if .current then "current" else "" end)"' | fzf)
+    local mode=$(wlr-randr --json | jq -r --arg name "$selected_screen" '.[] | select(.name==$name) | .modes[] | "\(.width)x\(.height) @ \(.refresh)Hz \(if .preferred then "preferred" else "" end) \(if .current then "current" else "" end)"' | fzf --prompt="Select Resolution and Refresh Rate: " --preview='echo "Screen: '$selected_screen'\nSelected mode: {}"' --bind 'ctrl-c:abort')
+    if [ -z "$mode" ]; then return; fi
     # Extract width, height, and refresh rate from the selected mode
     local width=$(echo $mode | awk '{print $1}' | cut -dx -f1)
     local height=$(echo $mode | awk '{print $1}' | cut -dx -f2)
     local refresh=$(echo $mode | awk '{print $3}' | sed 's/Hz//')
-    # Apply the selected mode to the selected screen
-    wlr-randr --output $selected_screen --mode ${width}x${height}@${refresh}
+    # Step 3: Select the orientation
+    local orientation=$(echo -e "normal\n90\n180\n270\nflipped\nflipped-90\nflipped-180\nflipped-270" | fzf --prompt="Select Orientation: " --preview='echo "Screen: '$selected_screen'\nMode: '$mode'\nSelected orientation: {}"' --bind 'ctrl-c:abort')
+    if [ -z "$orientation" ]; then return; fi
+    # Apply the selected mode and orientation to the selected screen
+    wlr-randr --output $selected_screen --mode ${width}x${height}@${refresh} --transform $orientation
 }
