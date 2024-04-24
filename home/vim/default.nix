@@ -64,6 +64,16 @@ in {
         }
 
         require("chatgpt").setup({
+          chat = {
+            welcome_message = ""
+          },
+          openai_params = {
+            model = "gpt-4-turbo",
+            max_tokens = 8192,
+          },
+          openai_edit_params = {
+            model = "gpt-4-turbo"
+          },
           actions_paths = {
               "${gpt_telescope_cmd_file}"
           }
