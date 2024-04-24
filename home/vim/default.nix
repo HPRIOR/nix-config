@@ -9,7 +9,8 @@
   isLinux = pkgs.stdenv.isLinux;
   gpt_telescope_cmd_file = "${settings.configDir}/telescope_gpt/cmds.json";
   gpt_config = import ./gpt-plugin.nix;
-  plugins = import ./plugins.nix pkgs;
+  keymaps = import ./keymap.nix;
+  plugins = import ./plugins pkgs;
   options = import ./options.nix;
 in {
   imports = [inputs.nixvim.homeManagerModules.nixvim ./ideavim.nix];
@@ -83,7 +84,7 @@ in {
 
         require'window-picker'.setup()
       '';
-      keymaps = import ./keymap.nix;
+      keymaps = keymaps;
       extraPackages = with pkgs; [
         # telescope deps
         ripgrep
