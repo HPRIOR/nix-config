@@ -65,57 +65,66 @@ in {
 
     home.packages = with pkgs;
       [
-        ranger
-        croc
-        eza # ls replacement
-        lazygit
-        lazydocker
-        difftastic
+        aichat
         bat # cat replacement
+        bottom
+        cargo
+        choose # user friendly cut (and awk)
+        clippy
+        croc
+        ctop
+        delta # git syntax highlighting pager
+        difftastic
+        discord
+        docker
         du-dust # intuitive du - view drive space
         duf
+        eva
+        eza # ls replacement
         fd # find alternative
-        ripgrep
         fzf
-        choose # user friendly cut (and awk)
-        jq # json processor
-        sd # sed alternative
-        tldr
-        bottom
-        glances
-        hyperfine # benchmarking tool
-        gping # ping with graph
-        procs # ps alternative
-        zoxide
-        delta # git syntax highlighting pager
-        kitty # terminal emulator
-        cargo
-        rustc
-        rustfmt
-        clippy
         gcc
+        glances
+        gping # ping with graph
+        hexyl
+        hyperfine # benchmarking tool
         iftop
-        aichat
-        sops
-        tree
-        thefuck
         jetbrains.clion
         jetbrains.idea-ultimate
         jetbrains.rider
-        syncthing
-        discord
-        docker
+        jq # json processor
+        kitty # terminal emulator
+        lazydocker
+        lazygit
+        mosh
+        procs # ps alternative
+        ranger
+        ripgrep
+        rustc
+        rustfmt
+        sd # sed alternative
+        sops
         spotify
+        syncthing
+        thefuck
+        tldr
+        tree
+        watchexec
+        zoxide
+        zathura
       ]
       ++ (lib.optionals isLinux [
-        firefox # applications
-        pavucontrol
-        obsidian
-        vlc
-        libreoffice
-        _1password-gui
         _1password
+        _1password-gui
+        feh
+        firefox # applications
+        grim
+        libreoffice
+        obsidian
+        pavucontrol
         protonmail-bridge
+        slurp
+        vlc
       ]);
 
     services.syncthing = {

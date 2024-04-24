@@ -179,6 +179,9 @@ in {
       windowrule=float,^(Mullvad.*)$
       windowrule=animation slide,^(Mullvad.*)$
 
+      windowrulev2 = stayfocused,class:(Rofi)
+      windowrulev2 = forceinput,class:(Rofi)
+
       # Monitor
       monitor=DP-3,3440x1440@74.983002,0x0,1
       monitor=DP-2,2560x2880@29.969999,3440x0,1.333333
@@ -208,7 +211,13 @@ in {
 
       bind = $mainMod, SPACE, exec, rofi -show drun -config "${settings.homeDir}/.config/rofi/config.rasi"
       bind = $mainMod, TAB, exec, rofi -show window -config "${settings.homeDir}/.config/rofi/config.rasi"
+      bind = $mainMod, grave, exec, rofi -show run -config "${settings.homeDir}/.config/rofi/config.rasi"
       bind = $mainMod, C, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
+      bind = , print, exec, grim -g "$(slurp)" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')
+
+
+      # Doesn't work as intended, possibly wayland issues
+      # bind = $mainMod, p, exec, rofi-capture
 
       bind = $mainMod, F, fullscreen, 0
       bind = $shiftMod, F, togglefloating,

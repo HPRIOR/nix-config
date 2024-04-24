@@ -8,6 +8,15 @@
   userName = settings.userName;
   homeDir = settings.homeDir;
   dotFiles = "${homeDir}/.dotfiles";
+  rofi-capture-cmds =
+    if isLinux
+    then
+      (import ./scripts/rofi-screen-capture.nix {
+        inherit pkgs;
+        inherit settings;
+      })
+      .cmds
+    else [];
 
   # Very simple rust project for piping into nvim and saving into random scratch dir or named file.
   # Defined here because zsh_funcs  has a dependency on it.
@@ -25,7 +34,12 @@
     cargoSha256 = "+5bF0/c4yoKAFWRE+/CSYpmD2IMGTuuHsb5nMKgS6SA=";
   };
 
-  aliases = rec {
+  aliases_linux = {
+    cap = "grim -g \"$(slurp)\" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')";
+    scap = "grim -g \"$(slurp -o)\" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')";
+  };
+
+  aliases_all = rec {
     buildnix = let
       buildcmd =
         if isDarwin
@@ -71,12 +85,18 @@
       then "pbpaste"
       else "wl-paste";
   };
+  aliases =
+    if isLinux
+    then aliases_linux // aliases_all
+    else aliases;
 in {
   imports = [];
 
-  home.packages = with pkgs; [
-    vdoc
-  ];
+  home.packages = with pkgs;
+    [
+      vdoc
+    ]
+    ++ rofi-capture-cmds;
 
   programs.bash = {
     enable = false;
@@ -95,11 +115,10 @@ in {
     };
     shellAliases = aliases;
     initExtra = let
-        linuxFuncs = 
-            if isLinux then
-                builtins.readFile ./zsh_funcs_linux
-            else "";
-
+      linuxFuncs =
+        if isLinux
+        then builtins.readFile ./zsh_funcs_linux
+        else "";
     in ''
       eval "$(zoxide init zsh)"
       eval $(thefuck --alias)

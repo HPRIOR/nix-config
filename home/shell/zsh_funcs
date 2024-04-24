@@ -166,10 +166,14 @@ ff-all() {
     ff_helper "$1" true "$preview" "nvim" "cd"
 }
 
-# search through code directory and preview files/dir as tree
-fic(){
-    cd $(fd -u -d 1 --type directory . $HOME/Code | fzf --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
+private search_and_cd(){
+    cd $(fd -u -d 1 --type directory . $1 | fzf --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
 }
+
+fic(){
+    search_and_cd $HOME/Code
+}
+
 
 
 # search unique file history and copy output to terminal 

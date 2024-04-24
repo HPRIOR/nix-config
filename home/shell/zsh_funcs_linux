@@ -15,3 +15,5 @@ fres() {
     # Apply the selected mode and orientation to the selected screen
     wlr-randr --output $selected_screen --mode ${width}x${height}@${refresh} --transform $orientation
 }
+
+
