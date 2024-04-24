@@ -1,0 +1,13 @@
+
+fres() {
+    # Step 1: Select the screen
+    local selected_screen=$(wlr-randr --json | jq -r '.[] | select(.enabled==true) | .name' | fzf)
+    # Step 2: Select the resolution and refresh rate for the chosen screen
+    local mode=$(wlr-randr --json | jq -r --arg name "$selected_screen" '.[] | select(.name==$name) | .modes[] | "\(.width)x\(.height) @ \(.refresh)Hz \(if .preferred then "preferred" else "" end) \(if .current then "current" else "" end)"' | fzf)
+    # Extract width, height, and refresh rate from the selected mode
+    local width=$(echo $mode | awk '{print $1}' | cut -dx -f1)
+    local height=$(echo $mode | awk '{print $1}' | cut -dx -f2)
+    local refresh=$(echo $mode | awk '{print $3}' | sed 's/Hz//')
+    # Apply the selected mode to the selected screen
+    wlr-randr --output $selected_screen --mode ${width}x${height}@${refresh}
+}
