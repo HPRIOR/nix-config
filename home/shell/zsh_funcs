@@ -33,6 +33,25 @@ csvcat(){
     column -s, -t < $1 | less -#2 -N -S
 }
 
+fif(){
+    local RG_PREFIX='rg --column --line-number --no-heading --color=always --smart-case  -g "!{node_modules/*,.git/*}"'
+    local INITIAL_QUERY="${*:-}"
+    local fzf_result=$(FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
+      fzf --ansi \
+          --disabled \
+          --query "$INITIAL_QUERY" \
+          --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+          --delimiter : \
+          --preview 'bat --color=always {1} --highlight-line {2}' \
+          --preview-window 'up,60%,border-bottom,+{2}+3/3,~3')
+    local result=${fzf_result%%:*}
+    local line_no=$(echo $fzf_result | cut -d: -f2)
+
+    if [ "x$result" != "x" ]; then
+        nvim +$line_no $result
+    fi
+}
+
 fdir_helper() {
     local patharg="$1"
     local hidden="$2"
@@ -43,15 +62,15 @@ fdir_helper() {
 
     if [[ -n "$patharg" ]]; then
         if [ $hidden = true ]; then
-            output=$(fd -u --type directory . "$patharg" | fzf --expect ctrl-o,ctrl-r,enter --preview "$preview")
+            output=$(fd -u --type directory . "$patharg" | fzf --expect ctrl-o,ctrl-r,ctrl-f,enter --preview "$preview")
         else
-            output=$(fd --type directory . "$patharg" | fzf --expect ctrl-o,ctrl-r,enter --preview "$preview")
+            output=$(fd --type directory . "$patharg" | fzf --expect ctrl-o,ctrl-r,ctrl-f,enter --preview "$preview")
         fi
     else
         if [ $hidden = true ]; then
-            output=$(fd -u --type directory | fzf --expect ctrl-o,ctrl-r,enter --preview "$preview")
+            output=$(fd -u --type directory | fzf --expect ctrl-o,ctrl-r,ctrl-f,enter --preview "$preview")
         else
-            output=$(fd --type directory | fzf --expect ctrl-o,ctrl-r,enter --preview "$preview")
+            output=$(fd --type directory | fzf --expect ctrl-o,ctrl-r,ctrl-f,enter --preview "$preview")
         fi
     fi
 
@@ -75,6 +94,9 @@ fdir_helper() {
             ;;
         ctrl-r)
             fdir_helper "$val" "$hidden" "$preview" "$enteropt" "$oopt"
+            ;;
+        ctrl-f)
+            cd $val && fif && cd -
             ;;
     esac
 }
@@ -153,27 +175,6 @@ fic(){
 # search unique file history and copy output to terminal 
 fh(){
      print -z $( history | cut -c 8- | sort | uniq | fzf --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g') 
-}
-
-# find in files
-# Will break if file path contains a colon!
-fif(){
-    local RG_PREFIX='rg --column --line-number --no-heading --color=always --smart-case  -g "!{node_modules/*,.git/*}"'
-    local INITIAL_QUERY="${*:-}"
-    local fzf_result=$(FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
-      fzf --ansi \
-          --disabled \
-          --query "$INITIAL_QUERY" \
-          --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
-          --delimiter : \
-          --preview 'bat --color=always {1} --highlight-line {2}' \
-          --preview-window 'up,60%,border-bottom,+{2}+3/3,~3')
-    local result=${fzf_result%%:*}
-    local line_no=$(echo $fzf_result | cut -d: -f2)
-
-    if [ "x$result" != "x" ]; then
-        nvim +$line_no $result
-    fi
 }
 
 # Find program: search through executable command in path - preview with tldr page

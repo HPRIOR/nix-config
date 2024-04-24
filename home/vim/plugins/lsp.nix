@@ -21,6 +21,7 @@
       ocamllsp.enable = true;
       omnisharp.enable = true;
       pyright.enable = true;
+      metals.enable = true;
       rust-analyzer = {
         enable = true;
         installCargo = true;

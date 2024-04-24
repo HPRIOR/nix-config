@@ -69,7 +69,7 @@ in {
           },
           openai_params = {
             model = "gpt-4-turbo",
-            max_tokens = 8192,
+            max_tokens = 4096,
           },
           openai_edit_params = {
             model = "gpt-4-turbo"
