@@ -8,10 +8,10 @@
   userName = settings.userName;
   homeDir = settings.homeDir;
   dotFiles = "${homeDir}/.dotfiles";
-  rofi-capture-cmds =
+  capture-cmds =
     if isLinux
     then
-      (import ./scripts/rofi-screen-capture.nix {
+      (import ./scripts/screen-capture.nix {
         inherit pkgs;
         inherit settings;
       })
@@ -96,7 +96,7 @@ in {
     [
       vdoc
     ]
-    ++ rofi-capture-cmds;
+    ++ capture-cmds;
 
   programs.bash = {
     enable = false;

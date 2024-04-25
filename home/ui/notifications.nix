@@ -24,7 +24,7 @@ in
         corner_radius = 10;
         ellipsize = "end";
         follow = "none";
-        font = settings.font;
+        font = settings.font + " ${toString settings.fontSize}";
         frame_color = "#${config.colorScheme.palette.base0D}";
         frame_width = 2;
         gap_size = 5;

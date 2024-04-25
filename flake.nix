@@ -52,6 +52,7 @@
       email = "harjp@pm.me";
       theme = "kanagawa";
       font = "FiraCode Nerd Font Mono";
+      fontSize = 12;
       extraGroups = ["networkmanager" "wheel"];
     };
   in {

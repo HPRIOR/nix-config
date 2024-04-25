@@ -7,7 +7,7 @@
     font = {
       name = settings.font;
       package = pkgs.nerdfonts.override {fonts = ["FiraCode"];};
-      size = 12;
+      size = settings.fontSize;
     };
     shellIntegration.enableZshIntegration = true;
     settings = {
