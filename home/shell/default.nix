@@ -88,7 +88,7 @@
   aliases =
     if isLinux
     then aliases_linux // aliases_all
-    else aliases;
+    else aliases_all;
 in {
   imports = [];
 
@@ -129,7 +129,6 @@ in {
           bindkey '^[[3;7~' kill-line
         ''
         else "";
-
     in ''
       eval "$(zoxide init zsh)"
       eval $(thefuck --alias)
