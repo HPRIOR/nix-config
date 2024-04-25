@@ -212,7 +212,7 @@ in {
 
       bind = $mainMod, SPACE, exec, rofi -show drun -log -config "${settings.homeDir}/.config/rofi/config.rasi"
       bind = $mainMod, TAB, exec, rofi -show window -config "${settings.homeDir}/.config/rofi/config.rasi"
-      bind = $mainMod, grave, exec, rofi -show run -log ~/rofi.log -config "${settings.homeDir}/.config/rofi/config.rasi"
+      bind = $mainMod, grave, exec, rofi -show run  -config "${settings.homeDir}/.config/rofi/config.rasi"
       bind = $mainMod, C, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
       bind = , print, exec, grim -g "$(slurp)" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')
 
