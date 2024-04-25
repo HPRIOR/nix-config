@@ -125,6 +125,7 @@ in {
         protonmail-bridge
         slurp
         vlc
+        papirus-icon-theme
       ]);
 
     services.syncthing = {

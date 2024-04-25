@@ -65,6 +65,9 @@
         homeDir = homeDir;
         hostName = hostName;
       };
+      linuxSettings = {
+        primaryMonitor = "DP-3";
+      };
     in {
       nixos = lib.nixosSystem {
         inherit system;
@@ -82,6 +85,7 @@
             home-manager.extraSpecialArgs = {
               inherit inputs;
               settings = settings;
+              linuxSettings = linuxSettings;
             };
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops

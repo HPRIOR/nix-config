@@ -18,6 +18,7 @@
 in {
   imports = [
     ./rofi.nix
+    ./dunst.nix
   ];
 
   programs.waybar = {

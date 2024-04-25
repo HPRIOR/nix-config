@@ -107,7 +107,6 @@ in {
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
 
-    dunst
     libnotify
     rofi-wayland
     wl-clipboard
