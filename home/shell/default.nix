@@ -119,12 +119,24 @@ in {
         if isLinux
         then builtins.readFile ./zsh_funcs_linux
         else "";
+
+      control-x-binds =
+        if isLinux
+        then ''
+          bindkey "^H" backward-delete-word
+          bindkey '^[^H' backward-kill-line
+          bindkey '^[[3;5~' kill-word
+          bindkey '^[[3;7~' kill-line
+        ''
+        else "";
+
     in ''
       eval "$(zoxide init zsh)"
       eval $(thefuck --alias)
       source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
       ${builtins.readFile ./zsh_funcs}
       ${linuxFuncs}
+      ${control-x-binds}
     '';
   };
 

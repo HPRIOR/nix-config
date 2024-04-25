@@ -21,6 +21,7 @@ in {
     ./terminal
     ./ui
     ./mac
+    ./ranger/default.nix
   ];
 
   options = {
@@ -110,8 +111,8 @@ in {
         tldr
         tree
         watchexec
-        zoxide
         zathura
+        zoxide
       ]
       ++ (lib.optionals isLinux [
         _1password
@@ -198,6 +199,8 @@ in {
 
       AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
       OPENAI_API_KEY = "$(cat ${config.sops.secrets.gpt-api-key.path})";
+      EDITOR = "nvim";
+      PAGER = "bat --paging always";
     };
 
     services.dropbox = {
