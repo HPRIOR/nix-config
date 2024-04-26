@@ -73,6 +73,7 @@ in {
           rust = ["rustfmt"];
           sh = ["shfmt"];
         };
+
       };
 
       leap.enable = true;

@@ -10,7 +10,7 @@
   {
     mode = ["n" "v"];
     key = "gf";
-    action = "<cmd>lua require('conform').format()<cr>";
+    action = "<cmd>lua require('conform').format({ lsp_fallback = true })<cr>";
     options = {
       silent = true;
       desc = "Format buffer or selection";

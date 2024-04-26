@@ -22,6 +22,7 @@
       omnisharp.enable = true;
       pyright.enable = true;
       metals.enable = true;
+      lemminx.enable = true;
       rust-analyzer = {
         enable = true;
         installCargo = true;
