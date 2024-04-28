@@ -69,9 +69,7 @@ in {
         aichat
         bat # cat replacement
         bottom
-        cargo
         choose # user friendly cut (and awk)
-        clippy
         croc
         ctop
         delta # git syntax highlighting pager
@@ -84,7 +82,6 @@ in {
         eza # ls replacement
         fd # find alternative
         fzf
-        gcc
         glances
         gping # ping with graph
         hexyl
@@ -101,8 +98,6 @@ in {
         procs # ps alternative
         ranger
         ripgrep
-        rustc
-        rustfmt
         sd # sed alternative
         sops
         spotify

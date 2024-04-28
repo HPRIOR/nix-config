@@ -22,7 +22,7 @@
   # Defined here because zsh_funcs  has a dependency on it.
   # TODO: not much logic involved so should probably be a bash script instead - although good simple example of the
   # power of nix. This should now be reproducible.
-  vdoc = pkgs.rustPlatform.buildRustPackage rec {
+  vdoc = pkgs.rustPlatform.buildRustPackage {
     pname = "vdoc";
     version = "0.1.0";
     src = pkgs.fetchFromGitHub {
@@ -59,6 +59,10 @@
     editnix = "cd ${dotFiles} && nvim && cd -";
 
     editdocs = "cd ${homeDir}/Documents/vdoc && nvim && cd -";
+
+    nixdev = "nix develop -c zsh";
+
+    ncg = "nix-collect-garbage";
     # lazy
     lzg = "lazygit";
     lzd = "lazydocker";
@@ -136,6 +140,12 @@ in {
       ${builtins.readFile ./zsh_funcs}
       ${linuxFuncs}
       ${control-x-binds}
+      set_nix_shell_prompt() {
+        if [[ -n "$IN_NIX_SHELL" ]]; then
+            echo "%F{cyan}%F{cyan} "
+        fi
+      }
+      PROMPT="$PROMPT$(set_nix_shell_prompt)"
     '';
   };
 
