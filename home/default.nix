@@ -123,6 +123,8 @@ in {
         slurp
         vlc
         papirus-icon-theme
+        strace
+
       ]);
 
     services.syncthing = {
