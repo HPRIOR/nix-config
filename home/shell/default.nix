@@ -67,6 +67,45 @@
     lzg = "lazygit";
     lzd = "lazydocker";
 
+    flake-init = let
+      flakeTemplate = ''
+        {
+          inputs = {
+            nixpkgs.url = \"github:NixOS/nixpkgs/nixos-unstable\";
+            flake-utils.url = \"github:numtide/flake-utils\";
+          };
+          outputs = {
+            self,
+            nixpkgs,
+            flake-utils
+          }:
+            flake-utils.lib.eachDefaultSystem
+            (
+              system: let
+                pkgs = import nixpkgs {
+                  inherit system;
+                };
+              in
+                with pkgs; {
+                  devShells.default = mkShell {
+                    buildInputs = [];
+                  };
+                }
+            );
+        }
+      '';
+    in "echo \"${flakeTemplate}\" > flake.nix";
+
+    direnv-init = let
+      dirEnvTemplate = ''
+        if ! has nix_direnv_version || ! nix_direnv_version 3.0.4; then
+            source_url \"https://raw.githubusercontent.com/nix-community/nix-direnv/3.0.4/direnvrc\" \"sha256-DzlYZ33mWF/Gs8DDeyjr8mnVmQGx7ASYqA5WlxwvBG4=\"
+        fi
+        use flake'';
+    in "echo \"${dirEnvTemplate}\" > .envrc";
+
+    proj-init = "${flake-init} && ${direnv-init} && direnv allow";
+
     # zsh
     sourcezsh = "source ${homeDir}/.zshrc";
 
