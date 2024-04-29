@@ -114,7 +114,7 @@ in {
     syntaxHighlighting.enable = true;
     oh-my-zsh = {
       enable = true;
-      plugins = ["git" "sudo" "copypath" "copyfile" "history"];
+      plugins = ["git" "sudo" "copypath" "copyfile" "history" "direnv"];
       theme = "robbyrussell";
     };
     shellAliases = aliases;
@@ -140,17 +140,24 @@ in {
       ${builtins.readFile ./zsh_funcs}
       ${linuxFuncs}
       ${control-x-binds}
-      set_nix_shell_prompt() {
-        if [[ -n "$IN_NIX_SHELL" ]]; then
-            echo "%F{cyan}%F{cyan} "
-        fi
-      }
-      PROMPT="$PROMPT$(set_nix_shell_prompt)"
+      ## not working correctly with direnv, because no change in shell occurs, so no refresh
+      ## set_nix_shell_prompt() {
+      ##   if [[ -n "$IN_NIX_SHELL" || -n "$DIRENV_FILE" ]]; then
+      ##       echo "%F{cyan}%F{cyan} "
+      ##   fi
+      ##  }
+      ## PROMPT="$PROMPT$(set_nix_shell_prompt)"
     '';
   };
 
   programs.zoxide = {
     enable = true;
     options = [];
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true; # see note on other shells below
+    nix-direnv.enable = true;
   };
 }

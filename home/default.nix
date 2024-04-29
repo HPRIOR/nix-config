@@ -90,6 +90,7 @@ in {
         jetbrains.clion
         jetbrains.idea-ultimate
         jetbrains.rider
+        jetbrains.rust-rover
         jq # json processor
         kitty # terminal emulator
         lazydocker
