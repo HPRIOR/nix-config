@@ -85,6 +85,7 @@ in {
         glances
         gping # ping with graph
         hexyl
+        hurl
         hyperfine # benchmarking tool
         iftop
         jetbrains.clion
