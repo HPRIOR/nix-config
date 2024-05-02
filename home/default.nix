@@ -67,6 +67,7 @@ in {
     home.packages = with pkgs;
       [
         aichat
+        atool
         bat # cat replacement
         bottom
         choose # user friendly cut (and awk)
@@ -75,7 +76,6 @@ in {
         delta # git syntax highlighting pager
         difftastic
         discord
-        docker
         du-dust # intuitive du - view drive space
         duf
         eva
@@ -107,6 +107,7 @@ in {
         thefuck
         tldr
         tree
+        unzip
         watchexec
         zathura
         zoxide

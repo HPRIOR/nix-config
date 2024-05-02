@@ -29,6 +29,7 @@
         installRustc = true;
       };
       yamlls.enable = true;
+      elixirls.enable = true;
     };
     keymaps.lspBuf = {
       "gD" = "references";
