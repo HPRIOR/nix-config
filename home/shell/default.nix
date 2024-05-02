@@ -40,6 +40,8 @@
   };
 
   aliases_all = rec {
+    v = "nvim";
+
     buildnix = let
       buildcmd =
         if isDarwin

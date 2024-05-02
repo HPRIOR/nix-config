@@ -82,6 +82,7 @@ in {
       comment.enable = true;
       rust-tools.enable = true;
       neo-tree.enable = true;
+      dap.enable = true;
     }
     // lsp
     // autocomplete
