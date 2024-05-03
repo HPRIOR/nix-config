@@ -53,7 +53,7 @@
       theme = "kanagawa";
       font = "FiraCode Nerd Font Mono";
       fontSize = 12;
-      extraGroups = ["networkmanager" "wheel"];
+      extraGroups = ["networkmanager" "wheel" "docker"];
     };
   in {
     nixosConfigurations = let

@@ -163,6 +163,10 @@ in {
       # Required for mouse to render
       env = WLR_NO_HARDWARE_CURSORS,1
 
+      env = HYPRCURSOR_THEME,macOS-BigSur-White
+      env = HYPRCURSOR_SIZE,24
+      env = XCURSOR_THEME,macOS-BigSur-White
+      env = XCURSOR_SIZE,24
       # Startup applications
       exec-once = waybar
       exec-once = blueman-applet
@@ -184,15 +188,14 @@ in {
       windowrulev2 = forceinput,class:(Rofi)
 
       # Monitor
+      monitor=DP-1,3840x2160@59.997002,-1440x-400,1.5,transform,1
       monitor=DP-3,3440x1440@74.983002,0x0,1
-      monitor=DP-2,2560x2880@29.969999,3440x0,1.333333
-      monitor=DP-1,3840x2160,-1440x-400,1.5,transform,1
+      monitor=HDMI-A-1,2560x2880@59.966999,3440x0,1.333333
       monitor=,preferred,auto,1
-      monitor=HDMI-A-1,disable
 
       workspace=1,monitor:DP-1,default:true
       workspace=2,monitor:DP-3,defualt:true
-      workspace=3,monitor:DP-2,default:true
+      workspace=3,monitor:HDMI-A-1,default:true
 
       # Key bindings
       $mainMod = SUPER
