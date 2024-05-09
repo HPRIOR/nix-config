@@ -16,4 +16,7 @@ fres() {
     wlr-randr --output $selected_screen --mode ${width}x${height}@${refresh} --transform $orientation
 }
 
+nix-installed(){
+    nix-store -q --requisites /run/current-system | cut -d'-' -f2- | sed 's/^.*\///'| fzf
+}
 
