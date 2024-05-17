@@ -119,14 +119,14 @@ in {
         firefox # applications
         grim
         libreoffice
+        nfs-utils
         obsidian
+        papirus-icon-theme
         pavucontrol
         protonmail-bridge
         slurp
-        vlc
-        papirus-icon-theme
         strace
-
+        vlc
       ]);
 
     services.syncthing = {

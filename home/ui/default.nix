@@ -15,6 +15,32 @@
     windowrule=float,^(${app})$
     windowrule=animation slide,^(${app})$
   '';
+
+  # Todo create a function that will generate the position of each screan automatically 
+  monitorLeft = {
+    screen = "DP-2";
+    res = "3840x2160";
+    hertz = "59.997002";
+    pos = "-1440x-400";
+    scale = "1.5";
+    transform = "1";
+  };
+  monitorCentre = {
+    screen = "HDMI-A-1";
+    res = "3440x1440";
+    hertz = "74.983002";
+    pos = "0x0";
+    scale = "1";
+    transform = throw "No transform set for monitor centre";
+  };
+  monitorRight = {
+    screen = "DP-1";
+    res = "2560x2880";
+    hertz = "59.966999";
+    pos = "3440x0";
+    scale = "1.333333";
+    transform = throw "No transform set for monitor centre";
+  };
 in {
   imports = [
     ./rofi.nix
@@ -31,7 +57,7 @@ in {
         margin-bottom = 1;
         margin-right = 6;
         margin-left = 6;
-        output = "DP-3";
+        output = monitorCentre.screen;
         reload_style_on_change = true;
         modules-left = ["hyprland/workspaces" "hyprland/submap"];
         modules-right = ["tray" "pulseaudio" "disk#root" "disk#home" "memory" "cpu" "temperature" "network" "clock"];
@@ -147,8 +173,8 @@ in {
         color: #${config.colorScheme.palette.base05};
         padding-left: 10px;
         padding-right: 10px;
-        margin-left: 1;
-        margin-right: 1;
+        margin-left: 1px;
+        margin-right: 1pX;
       }
       #temperature.critical {
         background-color:  #${config.colorScheme.palette.base08};
@@ -187,15 +213,19 @@ in {
       windowrulev2 = stayfocused,class:(Rofi)
       windowrulev2 = forceinput,class:(Rofi)
 
-      # Monitor
-      monitor=DP-1,3840x2160@59.997002,-1440x-400,1.5,transform,1
-      monitor=DP-3,3440x1440@74.983002,0x0,1
-      monitor=HDMI-A-1,2560x2880@59.966999,3440x0,1.333333
+      # Monitor left
+      monitor=${monitorLeft.screen},${monitorLeft.res}@${monitorLeft.hertz},${monitorLeft.pos},${monitorLeft.scale},transform,${monitorLeft.transform}
+
+      # Monitor centre
+      monitor=${monitorCentre.screen},${monitorCentre.res}@${monitorCentre.hertz},${monitorCentre.pos},${monitorCentre.scale}
+
+      # Monitor right
+      monitor=${monitorRight.screen},${monitorRight.res}@${monitorRight.hertz},${monitorRight.pos},${monitorRight.scale}
       monitor=,preferred,auto,1
 
-      workspace=1,monitor:DP-1,default:true
-      workspace=2,monitor:DP-3,defualt:true
-      workspace=3,monitor:HDMI-A-1,default:true
+      workspace=1,monitor:DP-2,default:true
+      workspace=2,monitor:HDMI-A-1,defualt:true
+      workspace=3,monitor:DP-1,default:true
 
       # Key bindings
       $mainMod = SUPER

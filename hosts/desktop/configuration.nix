@@ -147,7 +147,14 @@ in {
 
   virtualisation.docker.enable = true;
 
+  fileSystems."${settings.homeDir}/Mnt/server-nfs" = {
+    device = "home.server.com:/export/Root";
+    fsType = "nfs";
+    options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=1200" "nfsvers=4.2"];
+  };
+
   networking.firewall.enable = true;
+  # syncthing for others
   networking.firewall.allowedTCPPorts = [8384 22000 80 443 1401];
   networking.firewall.allowedUDPPorts = [22000 21027 53 1194 1195 1196 1197 1300 1301 1302 1303 1400];
 
