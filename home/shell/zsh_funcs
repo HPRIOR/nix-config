@@ -234,5 +234,17 @@ nix-installed(){
 
 }
 
+show-path(){
+    local dir=$(tr ':' '\n' <<< "$PATH" | fzf --preview 'exa -1 {}')
+    if [[ -n $dir ]]; then
+        cd "$dir"
+    else
+        return
+    fi
+}
+
+show-env(){
+    env | cut -d '=' -f 1 | fzf --preview 'printenv {}'
+}
 
 

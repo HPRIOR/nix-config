@@ -42,6 +42,8 @@
   aliases_all = rec {
     v = "nvim";
 
+    ai = "aichat --model openai:gpt-4o";
+
     buildnix = let
       buildcmd =
         if isDarwin

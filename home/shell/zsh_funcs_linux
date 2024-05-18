@@ -20,3 +20,4 @@ nix-installed(){
     nix-store -q --requisites /run/current-system | cut -d'-' -f2- | sed 's/^.*\///'| fzf
 }
 
+
