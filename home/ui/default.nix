@@ -18,7 +18,7 @@
 
   # Todo create a function that will generate the position of each screan automatically 
   monitorLeft = {
-    screen = "DP-2";
+    screen = "DP-1";
     res = "3840x2160";
     hertz = "59.997002";
     pos = "-1440x-400";
@@ -34,7 +34,7 @@
     transform = throw "No transform set for monitor centre";
   };
   monitorRight = {
-    screen = "DP-1";
+    screen = "DP-2";
     res = "2560x2880";
     hertz = "59.966999";
     pos = "3440x0";
