@@ -49,14 +49,14 @@
         if isDarwin
         then "darwin-rebuild switch --flake ${dotFiles}"
         else "sudo nixos-rebuild switch --flake ${dotFiles}";
-    in "echo 'Building nix config' && ${buildcmd} && echo 'Cleaning old generations' && nix-env --delete-generations +20";
+    in "echo 'Building nix config' && ${buildcmd} && echo 'Cleaning old generations' && sudo nix-env --delete-generations +20 --profile /nix/var/nix/profiles/system";
 
     buildnix-dev = let
       buildcmd =
         if isDarwin
         then "darwin-rebuild switch --flake ${dotFiles}"
         else "sudo nixos-rebuild switch --flake ${dotFiles}";
-    in "echo 'Building nix config' && ${buildcmd} && echo 'Cleaning old generations'";
+    in "echo 'Building nix config' && ${buildcmd}";
 
     updatenix = "nix flake update ${dotFiles} && ${buildnix}";
 
@@ -66,7 +66,9 @@
 
     nixdev = "nix develop -c zsh";
 
-    ncg = "nix-collect-garbage";
+    nix-clean-generations = "sudo nix-env --delete-generations +20 --profile /nix/var/nix/profiles/system";
+
+    ncg = "nix-collect-garbage -d";
     # lazy
     lzg = "lazygit";
     lzd = "lazydocker";

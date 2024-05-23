@@ -88,10 +88,6 @@ in {
         hurl
         hyperfine # benchmarking tool
         iftop
-        jetbrains.clion
-        jetbrains.idea-ultimate
-        jetbrains.rider
-        jetbrains.rust-rover
         jq # json processor
         kitty # terminal emulator
         lazydocker
@@ -119,6 +115,7 @@ in {
         firefox # applications
         grim
         libreoffice
+        libtree
         nfs-utils
         obsidian
         papirus-icon-theme
