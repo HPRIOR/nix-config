@@ -223,9 +223,9 @@ in {
       monitor=${monitorRight.screen},${monitorRight.res}@${monitorRight.hertz},${monitorRight.pos},${monitorRight.scale}
       monitor=,preferred,auto,1
 
-      workspace=1,monitor:DP-2,default:true
-      workspace=2,monitor:HDMI-A-1,defualt:true
-      workspace=3,monitor:DP-1,default:true
+      workspace=1,monitor:${monitorLeft.screen},default:true
+      workspace=2,monitor:${monitorCentre.screen},defualt:true
+      workspace=3,monitor:${monitorRight.screen},default:true
 
       # Key bindings
       $mainMod = SUPER
