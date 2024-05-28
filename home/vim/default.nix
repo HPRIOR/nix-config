@@ -84,6 +84,7 @@ in {
               }
           })
         require('telescope').load_extension('gpt')
+        require('telescope').load_extension('notify')
 
         function create_winbar()
               local navic = "%{%v:lua.require'nvim-navic'.get_location()%}"

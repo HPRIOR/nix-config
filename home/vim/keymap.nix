@@ -253,4 +253,13 @@
       desc = "Open chat gpt telescope extension";
     };
   }
+  {
+    mode = ["n"];
+    key = "<leader>vn";
+    action = "<cmd>Telescope notify<cr>";
+    options = {
+      silent = true;
+      desc = "Search through notify messages extension";
+    };
+  }
 ]
