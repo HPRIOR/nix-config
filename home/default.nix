@@ -114,6 +114,7 @@ in {
         feh
         firefox # applications
         grim
+        jetbrains-toolbox
         libreoffice
         libtree
         nfs-utils
