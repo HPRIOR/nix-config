@@ -60,6 +60,7 @@ in {
       "libreoffice"
       "1password"
       "protonmail-bridge"
+      "rustdesk"
     ];
   };
 }

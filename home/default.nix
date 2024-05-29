@@ -92,6 +92,7 @@ in {
         kitty # terminal emulator
         lazydocker
         lazygit
+        inetutils
         mosh
         procs # ps alternative
         ranger
@@ -112,6 +113,7 @@ in {
         _1password
         _1password-gui
         feh
+        rustdesk
         firefox # applications
         grim
         jetbrains-toolbox
