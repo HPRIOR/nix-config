@@ -113,6 +113,7 @@ in {
     wlr-randr
     cliphist
     wl-clip-persist
+    kdePackages.qtwayland
   ];
 
   environment.shells = with pkgs; [zsh];
