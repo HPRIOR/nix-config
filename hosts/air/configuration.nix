@@ -62,6 +62,7 @@ in {
       "protonmail-bridge"
       "rustdesk"
       "citrix-workspace"
+      "jetbrains-toolbox"
     ];
   };
 }
