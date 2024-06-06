@@ -112,8 +112,10 @@ in {
       ++ (lib.optionals isLinux [
         _1password
         _1password-gui
+        # Some declarative prerequisites for this package
+        # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
+        citrix_workspace
         feh
-        rustdesk
         firefox # applications
         grim
         jetbrains-toolbox
@@ -124,6 +126,7 @@ in {
         papirus-icon-theme
         pavucontrol
         protonmail-bridge
+        rustdesk
         slurp
         strace
         vlc
