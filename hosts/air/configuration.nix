@@ -61,6 +61,7 @@ in {
       "1password"
       "protonmail-bridge"
       "rustdesk"
+      "citrix-workspace"
     ];
   };
 }
