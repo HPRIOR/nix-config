@@ -6,6 +6,12 @@ pkgs: let
 in {
   plugins =
     {
+      toggleterm = {
+        enable = true;
+        settings = {
+            open_mapping = "[[<c-/>]]";
+        };
+      };
       navic = {
         enable = true;
         lsp.autoAttach = true;
@@ -73,7 +79,6 @@ in {
           rust = ["rustfmt"];
           sh = ["shfmt"];
         };
-
       };
 
       leap.enable = true;

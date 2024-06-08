@@ -67,6 +67,8 @@
     nixdev = "nix develop -c zsh";
 
     nix-clean-generations = "sudo nix-env --delete-generations +20 --profile /nix/var/nix/profiles/system";
+    
+    cdstore = ''cd "/nix/store/$(ls -D /nix/store | fzf)"'';
 
     ncg = "nix-collect-garbage -d";
     # lazy
