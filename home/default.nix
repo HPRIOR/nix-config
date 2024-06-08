@@ -166,6 +166,7 @@ in {
         core.autocrlf = "input";
         merge.conflictstyle = "diff3";
         diff.colorMoved = "default";
+        init.defaultBranch = "main";
       };
       delta = {
         enable = true;

@@ -247,5 +247,29 @@ show-env(){
     env | cut -d '=' -f 1 | fzf --preview 'printenv {}'
 }
 
+mkcode(){
+    if [ -z "$1" ]; then
+        echo "You must specify a directory name."
+        return 1
+    fi
 
+    mkdir -p "$HOME/Code/$1"
+    cd "$HOME/Code/$1"
+}
+
+function gi() {
+    local templates=$(curl -sL "https://www.toptal.com/developers/gitignore/api/list" | tr "," "\n")
+    local selections=$(echo "$templates" | fzf -m --height=40% --preview="curl -sL https://www.toptal.com/developers/gitignore/api/{}")
+    
+    if [[ -n "$selections" ]]; then
+        if [[ -f ".gitignore" ]]; then
+            echo "" >> .gitignore  # Ensure there is a newline at the end of the existing file
+            echo "# Added on $(date)" >> .gitignore  # Optionally, add a comment indicating when new sections were added
+        fi
+        echo "$selections" | xargs -I {} curl -sL "https://www.toptal.com/developers/gitignore/api/{}" >> .gitignore
+        echo ".gitignore file updated successfully."
+    else
+        echo "No selections made. No changes to .gitignore."
+    fi
+}
 
