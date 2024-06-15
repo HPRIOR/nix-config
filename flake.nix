@@ -67,7 +67,7 @@
         hostName = hostName;
       };
       linuxSettings = {
-        primaryMonitor = "DP-3";
+        primaryMonitor = "HDMI-A-1";
       };
     in {
       nixos = lib.nixosSystem {
@@ -94,7 +94,33 @@
           }
         ];
       };
+
+      work = lib.nixosSystem {
+        inherit system;
+        specialArgs = {
+          inherit inputs;
+          settings = settings;
+        };
+        modules = [
+          ./hosts/work/configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.harryp.imports = [./hosts/work/home.nix];
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              settings = settings;
+              linuxSettings = linuxSettings;
+            };
+            home-manager.sharedModules = [
+              inputs.sops-nix.homeManagerModules.sops
+            ];
+          }
+        ];
+      };
     };
+
 
     darwinConfigurations = let
       system = "aarch64-darwin";

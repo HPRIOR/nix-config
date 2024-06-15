@@ -35,6 +35,8 @@
   };
 
   aliases_linux = {
+    buildwork = "sudo nixos-rebuild switch --flake ${dotFiles}#work";
+
     cap = "grim -g \"$(slurp)\" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')";
     scap = "grim -g \"$(slurp -o)\" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')";
   };
@@ -67,7 +69,7 @@
     nixdev = "nix develop -c zsh";
 
     nix-clean-generations = "sudo nix-env --delete-generations +20 --profile /nix/var/nix/profiles/system";
-    
+
     cdstore = ''cd "/nix/store/$(ls -D /nix/store | fzf)"'';
 
     ncg = "nix-collect-garbage -d";
@@ -121,9 +123,9 @@
     diff = "difft";
     cat = "bat";
     ls = "exa";
-    ll = "exa -l";
-    lla = "exa -la";
-    la = "exa -a";
+    ll = "exa -l --git";
+    lla = "exa -la --git";
+    la = "exa -a --git";
     changes = "git diff */**";
 
     copy =

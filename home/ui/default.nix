@@ -223,6 +223,8 @@ in {
       monitor=${monitorRight.screen},${monitorRight.res}@${monitorRight.hertz},${monitorRight.pos},${monitorRight.scale}
       monitor=,preferred,auto,1
 
+      monitor=Unknown-1,disable
+
       workspace=1,monitor:${monitorLeft.screen},default:true
       workspace=2,monitor:${monitorCentre.screen},defualt:true
       workspace=3,monitor:${monitorRight.screen},default:true

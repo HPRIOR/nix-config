@@ -6,6 +6,33 @@
   settings,
   ...
 }: let
+  custom_citrix_workspace = pkgs.citrix_workspace.overrideAttrs (oldAttrs: {
+    nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.xmlstarlet]; # adding xmlstarlet to the build inputs
+
+    postInstall =
+      oldAttrs.postInstall
+      + ''
+        # Path to the configuration file
+        configPath=$out/opt/citrix-icaclient/config/AuthManConfig.xml
+        echo "hello" > $out/test.txt
+
+        # Create a new XML configuration file with your specific settings
+        # cat >$configPath <<EOF
+        # <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+        # <dict>
+        #   <key>ScreenPinEnabled</key>
+        #   <value>true</value>
+        #   <!-- Other existing keys and values should be included here -->
+        # </dict>
+        # EOF
+
+        # Use xmlstarlet or other tool to manipulate XML if the file needs to be modified based on existing content
+        # Example to add new keys using xmlstarlet
+        # xmlstarlet ed -L -s /dict -t elem -n key -v "NewKey" $configPath
+        # xmlstarlet ed -L -s /dict/key[last()] -t elem -n value -v "NewValue" $configPath
+      '';
+  });
+
   userName = settings.userName;
   homeDir = settings.homeDir;
   dotFiles = settings.dotFiles;
@@ -13,25 +40,12 @@
 
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
-
-  custom_citrix_workspace = pkgs.citrix_workspace.overrideAttrs (oldAttrs: {
-    nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.xmlstarlet]; # adding xmlstarlet to the build inputs
-
-    postFixup =
-      (lib.optionalString (lib.hasAttr "postFixup" oldAttrs) oldAttrs.postFixup)
-      + ''
-        # Path to the configuration file
-        configPath=$out/opt/citrix-icaclient/config/AuthManConfig.xml
-        xmlstarlet ed -L -s /dict -t elem -n key -v "ScreenPinEnabled" -s /dict -t elem -n value -v "true" "$configPath"
-      '';
-  });
 in {
   imports = [
     inputs.nix-colours.homeManagerModules.default
     ./shell
     ./vim
     ./terminal
-    ./ui
     ./mac
     ./ranger/default.nix
   ];

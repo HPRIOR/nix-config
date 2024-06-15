@@ -102,12 +102,12 @@ fdir_helper() {
 }
 
 fdir() {
-    local preview='exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
+    local preview='exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
     fdir_helper "$1" false "$preview" "cd" "nvim"
 }
 
 fdir-all() {
-    local preview='exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
+    local preview='exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
     fdir_helper "$1" true "$preview" "cd" "nvim"
 }
 
@@ -167,7 +167,7 @@ ff-all() {
 }
 
 private search_and_cd(){
-    cd $(fd -u -d 1 --type directory . $1 | fzf --preview "exa {} -T -L 1 --long --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
+    cd $(fd -u -d 1 --type directory . $1 | fzf --preview "exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
 }
 
 fic(){
