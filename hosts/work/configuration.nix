@@ -79,11 +79,11 @@ in {
   ];
   services.displayManager.defaultSession = "plasma";
   services.displayManager.sddm.wayland.enable = true;
-  qt = {
-    enable = true;
-    platformTheme = "gnome";
-    style = "adwaita-dark";
-  };
+  # qt = {
+  #   enable = true;
+  #   platformTheme = "gnome";
+  #   style = "adwaita-dark";
+  # };
 
   services.blueman.enable = true;
 

@@ -80,6 +80,7 @@
           ./hosts/desktop/configuration.nix
           home-manager.nixosModules.home-manager
           {
+            nixpkgs.overlays = [(import ./overlays/citrix.nix)];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.harryp.imports = [./hosts/desktop/home.nix];
@@ -105,6 +106,7 @@
           ./hosts/work/configuration.nix
           home-manager.nixosModules.home-manager
           {
+            nixpkgs.overlays = [(import ./overlays/citrix.nix)];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.harryp.imports = [./hosts/work/home.nix];
@@ -120,7 +122,6 @@
         ];
       };
     };
-
 
     darwinConfigurations = let
       system = "aarch64-darwin";

@@ -14,17 +14,6 @@
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
 
-  custom_citrix_workspace = pkgs.citrix_workspace.overrideAttrs (oldAttrs: {
-    nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.xmlstarlet]; # adding xmlstarlet to the build inputs
-
-    postFixup =
-      (lib.optionalString (lib.hasAttr "postFixup" oldAttrs) oldAttrs.postFixup)
-      + ''
-        # Path to the configuration file
-        configPath=$out/opt/citrix-icaclient/config/AuthManConfig.xml
-        xmlstarlet ed -L -s /dict -t elem -n key -v "ScreenPinEnabled" -s /dict -t elem -n value -v "true" "$configPath"
-      '';
-  });
 in {
   imports = [
     inputs.nix-colours.homeManagerModules.default
@@ -128,7 +117,7 @@ in {
         # Some declarative prerequisites for this package
         _1password
         _1password-gui
-        custom_citrix_workspace
+        citrix_workspace
         feh
         firefox # applications
         glibc

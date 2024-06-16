@@ -6,33 +6,6 @@
   settings,
   ...
 }: let
-  custom_citrix_workspace = pkgs.citrix_workspace.overrideAttrs (oldAttrs: {
-    nativeBuildInputs = oldAttrs.nativeBuildInputs ++ [pkgs.xmlstarlet]; # adding xmlstarlet to the build inputs
-
-    postInstall =
-      oldAttrs.postInstall
-      + ''
-        # Path to the configuration file
-        configPath=$out/opt/citrix-icaclient/config/AuthManConfig.xml
-        echo "hello" > $out/test.txt
-
-        # Create a new XML configuration file with your specific settings
-        # cat >$configPath <<EOF
-        # <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-        # <dict>
-        #   <key>ScreenPinEnabled</key>
-        #   <value>true</value>
-        #   <!-- Other existing keys and values should be included here -->
-        # </dict>
-        # EOF
-
-        # Use xmlstarlet or other tool to manipulate XML if the file needs to be modified based on existing content
-        # Example to add new keys using xmlstarlet
-        # xmlstarlet ed -L -s /dict -t elem -n key -v "NewKey" $configPath
-        # xmlstarlet ed -L -s /dict/key[last()] -t elem -n value -v "NewValue" $configPath
-      '';
-  });
-
   userName = settings.userName;
   homeDir = settings.homeDir;
   dotFiles = settings.dotFiles;
@@ -142,7 +115,7 @@ in {
         # Some declarative prerequisites for this package
         _1password
         _1password-gui
-        custom_citrix_workspace
+        citrix_workspace
         feh
         firefox # applications
         glibc
