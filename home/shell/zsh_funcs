@@ -51,6 +51,24 @@ fif(){
         nvim +$line_no $result
     fi
 }
+fifa(){
+    local RG_PREFIX='rg --column --line-number --no-heading --color=always --smart-case --no-ignore -g "!{node_modules/*,.git/*}"'
+    local INITIAL_QUERY="${*:-}"
+    local fzf_result=$(FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
+      fzf --ansi \
+          --disabled \
+          --query "$INITIAL_QUERY" \
+          --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+          --delimiter : \
+          --preview 'bat --color=always {1} --highlight-line {2}' \
+          --preview-window 'up,60%,border-bottom,+{2}+3/3,~3')
+    local result=${fzf_result%%:*}
+    local line_no=$(echo $fzf_result | cut -d: -f2)
+
+    if [ "x$result" != "x" ]; then
+        nvim +$line_no $result
+    fi
+}
 
 fdir_helper() {
     local patharg="$1"
@@ -106,7 +124,7 @@ fdir() {
     fdir_helper "$1" false "$preview" "cd" "nvim"
 }
 
-fdir-all() {
+fdira() {
     local preview='exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
     fdir_helper "$1" true "$preview" "cd" "nvim"
 }
@@ -160,7 +178,7 @@ ff() {
     ff_helper "$1" false "$preview" "nvim" "cd"
 }
 
-ff-all() {
+ffa() {
 
     local preview="bat --color=always --style=numbers --line-range :500 {}"
     ff_helper "$1" true "$preview" "nvim" "cd"
