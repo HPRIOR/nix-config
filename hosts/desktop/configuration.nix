@@ -14,10 +14,8 @@ in {
     ./hardware-configuration.nix
   ];
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = pkgs.lib.mkDefault true;
-    driSupport = true;
-    driSupport32Bit = true;
   };
 
   hardware.nvidia = {

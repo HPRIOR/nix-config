@@ -30,6 +30,8 @@
       };
       yamlls.enable = true;
       elixirls.enable = true;
+      tsserver.enable = true;
+      tailwindcss.enable = true;
     };
     keymaps.lspBuf = {
       "gD" = "references";

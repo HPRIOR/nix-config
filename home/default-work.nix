@@ -111,10 +111,10 @@ in {
         zoxide
       ]
       ++ (lib.optionals isLinux [
-        # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
-        # Some declarative prerequisites for this package
         _1password
         _1password-gui
+        # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
+        # Some declarative prerequisites for this package
         citrix_workspace
         feh
         firefox # applications
