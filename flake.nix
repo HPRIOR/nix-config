@@ -2,7 +2,7 @@
   description = "System config";
   inputs = {
     nixpkgs = {
-      url = "nixpkgs/nixos-unstable";
+      url = "nixpkgs/nixos-24.05";
     };
 
     nix-darwin = {
@@ -11,12 +11,12 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixvim = {
-      url = "github:nix-community/nixvim";
+      url = "github:nix-community/nixvim/nixos-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
