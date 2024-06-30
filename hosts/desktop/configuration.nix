@@ -14,7 +14,7 @@ in {
     ./hardware-configuration.nix
   ];
 
-  hardware.graphics = {
+  hardware.opengl = {
     enable = pkgs.lib.mkDefault true;
   };
 
