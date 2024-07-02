@@ -107,5 +107,14 @@ in {
         hash = "sha256-fGCgayTQKdyx6UElUx4+2jQr3HPUfmaaONjcuW2PDDU=";
       };
     })
+    (pkgs.vimUtils.buildVimPlugin {
+      name = "aerial";
+      src = pkgs.fetchFromGitHub {
+        owner = "stevearc";
+        repo = "aerial.nvim";
+        rev = "master";
+        hash = "sha256-5lZ/PBVd2VNoWTm7MnC6Qa6Ces0u4t+4gySKXEs3KrI=";
+      };
+    })
   ];
 }
