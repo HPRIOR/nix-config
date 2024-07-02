@@ -113,7 +113,7 @@ in {
         owner = "stevearc";
         repo = "aerial.nvim";
         rev = "master";
-        hash = "sha256-5lZ/PBVd2VNoWTm7MnC6Qa6Ces0u4t+4gySKXEs3KrI=";
+        hash = "sha256-9AsKJujcQp6kxW3A9VRR1mDutjvNhhL+qV3nCxgxAGw=";
       };
     })
   ];
