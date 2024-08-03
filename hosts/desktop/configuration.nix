@@ -135,6 +135,8 @@ in {
     portalPackage = pkgs.xdg-desktop-portal-wlr;
   };
 
+  programs.nix-ld.enable = true;
+
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
     xdg-desktop-portal-gtk

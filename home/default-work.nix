@@ -128,7 +128,7 @@ in {
         papirus-icon-theme
         pavucontrol
         protonmail-bridge
-        rustdesk
+        # rustdesk broken for now
         slurp
         strace
         v4l-utils

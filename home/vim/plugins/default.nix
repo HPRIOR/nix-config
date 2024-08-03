@@ -107,14 +107,15 @@ in {
         hash = "sha256-fGCgayTQKdyx6UElUx4+2jQr3HPUfmaaONjcuW2PDDU=";
       };
     })
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "aerial";
-      src = pkgs.fetchFromGitHub {
-        owner = "stevearc";
-        repo = "aerial.nvim";
-        rev = "master";
-        hash = "sha256-9AsKJujcQp6kxW3A9VRR1mDutjvNhhL+qV3nCxgxAGw=";
-      };
-    })
+    # This is too volatile to include, todo: add it to nixvim
+    # (pkgs.vimUtils.buildVimPlugin {
+    #   name = "aerial";
+    #   src = pkgs.fetchFromGitHub {
+    #     owner = "stevearc";
+    #     repo = "aerial.nvim";
+    #     rev = "master";
+    #     hash = "sha256-9AsKJujcQp6kxW3A9VRR1mDutjvNhhL+qV3nCxgxAGw=";
+    #   };
+    # })
   ];
 }
