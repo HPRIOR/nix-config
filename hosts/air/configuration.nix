@@ -64,6 +64,7 @@ in {
       "rustdesk"
       "citrix-workspace"
       "jetbrains-toolbox"
+      "docker"
     ];
   };
 }
