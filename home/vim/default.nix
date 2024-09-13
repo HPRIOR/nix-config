@@ -79,6 +79,14 @@ in {
           }
         })
         require("telescope").setup({
+            defaults = {
+                mappings = {
+                i = {
+                    ["<S-Tab>"] = "move_selection_next",      -- Move down
+                    ["<Tab>"] = "move_selection_previous", -- Move up
+                },
+                },
+            },
               extensions = {
                   ${gpt_config.telescope_ext_config}
               }
