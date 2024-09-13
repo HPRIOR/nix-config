@@ -236,6 +236,16 @@
     };
   }
   {
+    #  todo change severity, currently showing warnings too
+    mode = ["n"];
+    key = "<leader>vl";
+    action = "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>";
+    options = {
+      silent = true;
+      desc = "Telescope lsp workspace symbols";
+    };
+  }
+  {
     mode = ["n" "v"];
     key = "<C-c>";
     action = ":ChatGPT<CR>";
