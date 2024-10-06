@@ -114,7 +114,7 @@ let
       use flake'';
   in "echo \"${dirEnvTemplate}\" > .envrc";
 
-  flake-init = flake: "echo \"${flake}\" > flake.nix && ${direnv-init} && direnv allow";
+  flake-init = flake: "echo \"${flake}\" > flake.nix && echo '.direnv' >> .gitignore  && ${direnv-init} && git add flake.nix .envrc && direnv allow";
 in {
   flake-init = flake-init base;
   rust-init = flake-init rust;
