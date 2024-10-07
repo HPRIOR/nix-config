@@ -25,8 +25,8 @@
       lemminx.enable = true;
       rust-analyzer = {
         enable = true;
-        installCargo = true;
-        installRustc = true;
+        installCargo = false;
+        installRustc = false;
       };
       yamlls.enable = true;
       elixirls.enable = true;
