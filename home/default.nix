@@ -8,8 +8,8 @@
 }: let
   userName = settings.userName;
   homeDir = settings.homeDir;
-  dotFiles = settings.dotFiles;
-  configDir = settings.configDir;
+  # dotFiles = settings.dotFiles;
+  # configDir = settings.configDir;
 
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;

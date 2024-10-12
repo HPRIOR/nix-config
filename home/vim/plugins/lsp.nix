@@ -27,7 +27,7 @@
         enable = true;
         installCargo = false;
         installRustc = false;
-        settings.files.excludeDirs = [".direnv"];
+        settings.files.excludeDirs = [".direnv" ".cargo"];
       };
       yamlls.enable = true;
       elixirls.enable = true;
