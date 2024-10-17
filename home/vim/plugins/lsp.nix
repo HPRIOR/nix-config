@@ -27,7 +27,15 @@
         enable = true;
         installCargo = false;
         installRustc = false;
-        settings.files.excludeDirs = [".direnv" ".cargo"];
+        settings = {
+          files.excludeDirs = [".direnv" ".cargo"];
+          checkOnSave = true;
+          check.command = "clippy";
+          completion = {
+            fullFunctionSignatures.enable = false;
+            callable.snippets = "none";
+          };
+        };
       };
       yamlls.enable = true;
       elixirls.enable = true;
