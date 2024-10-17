@@ -31,6 +31,16 @@
           files.excludeDirs = [".direnv" ".cargo"];
           checkOnSave = true;
           check.command = "clippy";
+          cargo.features = "all";
+          check.features = "all";
+          check.extraArgs = [
+            "--"
+            "--no-deps"
+            "-Dclippy::correctness"
+            "-Dclippy::complexity"
+            "-Wclippy::perf"
+            "-Wclippy::pedantic"
+          ];
           completion = {
             fullFunctionSignatures.enable = false;
             callable.snippets = "none";
