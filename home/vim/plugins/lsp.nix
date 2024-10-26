@@ -1,4 +1,4 @@
-{
+pkgs: {
   lsp = {
     enable = true;
     onAttach = ''
@@ -25,8 +25,11 @@
       lemminx.enable = true;
       rust-analyzer = {
         enable = true;
-        installCargo = false;
-        installRustc = false;
+        package = pkgs.fenix.complete.rust-analyzer;
+        cargoPackage = pkgs.fenix.complete.cargo;
+        rustcPackage = pkgs.fenix.complete.rustc;
+        installCargo = true;
+        installRustc = true;
         settings = {
           files.excludeDirs = [".direnv" ".cargo"];
           checkOnSave = true;

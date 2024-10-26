@@ -13,7 +13,6 @@
 
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
-
 in {
   imports = [
     inputs.nix-colours.homeManagerModules.default
@@ -111,6 +110,14 @@ in {
         zathura
         zoom-us
         zoxide
+        (fenix.complete.withComponents [
+          "cargo"
+          "clippy"
+          "rust-src"
+          "rustc"
+          "rustfmt"
+        ])
+        (fenix.complete.rust-analyzer)
       ]
       ++ (lib.optionals isLinux [
         # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile

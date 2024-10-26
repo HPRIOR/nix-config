@@ -27,6 +27,11 @@
     };
 
     nix-colours.url = "github:Misterio77/nix-colors";
+
+    fenix = {
+      url = "github:nix-community/fenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -36,6 +41,7 @@
     nix-darwin,
     nixpkgs,
     nixvim,
+    fenix,
     sops-nix,
   } @ inputs: let
     lib = nixpkgs.lib;
@@ -82,7 +88,10 @@
           ./hosts/desktop/configuration.nix
           home-manager.nixosModules.home-manager
           {
-            nixpkgs.overlays = [(import ./overlays/citrix.nix)];
+            nixpkgs.overlays = [
+              (import ./overlays/citrix.nix)
+              fenix.overlays.default
+            ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.harryp.imports = [./hosts/desktop/home.nix];
@@ -92,7 +101,7 @@
               linuxSettings = linuxSettings;
             };
             home-manager.sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
+              sops-nix.homeManagerModules.sops
             ];
           }
         ];
@@ -108,7 +117,10 @@
           ./hosts/work/configuration.nix
           home-manager.nixosModules.home-manager
           {
-            nixpkgs.overlays = [(import ./overlays/citrix.nix)];
+            nixpkgs.overlays = [
+              (import ./overlays/citrix.nix)
+              fenix.overlays.default
+            ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.users.harryp.imports = [./hosts/work/home.nix];
@@ -147,6 +159,9 @@
           ./hosts/air/configuration.nix
           home-manager.darwinModules.home-manager
           {
+            nixpkgs.overlays = [
+              fenix.overlays.default
+            ];
             # users.users.harryp.home = "/Users/harryp";
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -173,6 +188,9 @@
           ./hosts/air/configuration.nix
           home-manager.darwinModules.home-manager
           {
+            nixpkgs.overlays = [
+              fenix.overlays.default
+            ];
             # users.users.harryp.home = "/Users/harryp";
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

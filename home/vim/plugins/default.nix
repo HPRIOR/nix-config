@@ -1,5 +1,5 @@
 pkgs: let
-  lsp = import ./lsp.nix;
+  lsp = (import ./lsp.nix pkgs);
   autocomplete = import ./auto-completion.nix pkgs;
   lualine = import ./lualine.nix;
   splash-screen = import ./splash-screen.nix;
