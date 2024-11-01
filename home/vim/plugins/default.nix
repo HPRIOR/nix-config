@@ -1,15 +1,23 @@
 pkgs: let
-  lsp = (import ./lsp.nix pkgs);
+  lsp = import ./lsp.nix pkgs;
   autocomplete = import ./auto-completion.nix pkgs;
   lualine = import ./lualine.nix;
   splash-screen = import ./splash-screen.nix;
 in {
   plugins =
-    {
+    { 
+      # todo enable these when available in systems pkgs
+      # avante = {
+      #   enable = true;
+      # };
+      # render-markdown = {
+      #   enable = true;
+      #   settings.overrides.filetype = ["markdown" "Avante"];
+      # };
       toggleterm = {
         enable = true;
         settings = {
-            open_mapping = "[[<c-/>]]";
+          open_mapping = "[[<c-/>]]";
         };
       };
       navic = {
