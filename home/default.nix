@@ -217,6 +217,7 @@ in {
       OPENAI_API_KEY = "$(cat ${config.sops.secrets.gpt-api-key.path})";
       EDITOR = "nvim";
       PAGER = "bat --paging always";
+      RUST_SRC_PATH = "${pkgs.fenix.complete.rust-src}/lib/rustlib/src/rust/library";
     };
 
     services.dropbox = {

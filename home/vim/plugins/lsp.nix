@@ -32,7 +32,7 @@ pkgs: {
         installRustc = true;
         settings = {
           files.excludeDirs = [".direnv" ".cargo"];
-          checkOnSave = true;
+          # checkOnSave = true;
           check.command = "clippy";
           cargo.features = "all";
           check.features = "all";
