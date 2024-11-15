@@ -68,6 +68,10 @@
 
     editdocs = "cd ${homeDir}/Documents/vdoc && nvim && cd -";
 
+    editnotes = "cd ${homeDir}/Documents/Notes && nvim && cd -";
+
+
+
     nixdev = "nix develop -c zsh";
 
     nix-clean-generations = "sudo nix-env --delete-generations +20 --profile /nix/var/nix/profiles/system";
