@@ -1,11 +1,14 @@
-pkgs: let
-  lsp = import ./lsp.nix pkgs;
+{
+  pkgs,
+  rust-packages,
+}: let
+  lsp = import ./lsp.nix {inherit pkgs rust-packages;};
   autocomplete = import ./auto-completion.nix pkgs;
   lualine = import ./lualine.nix;
   splash-screen = import ./splash-screen.nix;
 in {
   plugins =
-    { 
+    {
       # todo enable these when available in systems pkgs
       # avante = {
       #   enable = true;
@@ -115,15 +118,5 @@ in {
         hash = "sha256-fGCgayTQKdyx6UElUx4+2jQr3HPUfmaaONjcuW2PDDU=";
       };
     })
-    # This is too volatile to include, todo: add it to nixvim
-    # (pkgs.vimUtils.buildVimPlugin {
-    #   name = "aerial";
-    #   src = pkgs.fetchFromGitHub {
-    #     owner = "stevearc";
-    #     repo = "aerial.nvim";
-    #     rev = "master";
-    #     hash = "sha256-9AsKJujcQp6kxW3A9VRR1mDutjvNhhL+qV3nCxgxAGw=";
-    #   };
-    # })
   ];
 }

@@ -1,16 +1,15 @@
 {
   inputs,
   pkgs,
-  config,
-  lib,
   settings,
+  rust-packages,
   ...
 }: let
   isLinux = pkgs.stdenv.isLinux;
   gpt_telescope_cmd_file = "${settings.configDir}/telescope_gpt/cmds.json";
   gpt_config = import ./gpt-plugin.nix;
   keymaps = import ./keymap.nix;
-  plugins = import ./plugins pkgs;
+  plugins = import ./plugins {inherit pkgs rust-packages;};
   options = import ./options.nix;
 in {
   imports = [inputs.nixvim.homeManagerModules.nixvim ./ideavim.nix];
@@ -117,29 +116,21 @@ in {
         --         vim.keymap.set("n", "<leader>T", "<cmd>AerialToggle!<CR>")
       '';
       keymaps = keymaps;
-      extraPackages = with pkgs; [
-        (fenix.stable.withComponents [
-          "cargo"
-          "clippy"
-          "rust-src"
-          "rustc"
-          "rustfmt"
-        ])
-        (fenix.stable.rust-analyzer)
-
+      extraPackages = [
+        rust-packages.toolchain
         # telescope deps
-        ripgrep
-        fzf
+        pkgs.ripgrep
+        pkgs.fzf
         # formatters requred by conform
-        alejandra
-        prettierd
-        nodePackages.prettier
-        black
-        stylua
-        yamlfmt
-        rustfmt
-        shfmt
-        jq
+        pkgs.alejandra
+        pkgs.prettierd
+        pkgs.nodePackages.prettier
+        pkgs.black
+        pkgs.stylua
+        pkgs.yamlfmt
+        pkgs.rustfmt
+        pkgs.shfmt
+        pkgs.jq
       ];
 
       globals.mapleader = " ";

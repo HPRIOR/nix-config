@@ -13,11 +13,29 @@
 
   isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
+
+  rust-packages = rec {
+    toolchain-version = "stable";
+    toolchain = pkgs.fenix.${toolchain-version}.withComponents [
+      "cargo"
+      "clippy"
+      "rust-src"
+      "rustc"
+      "rustfmt"
+    ];
+    analyzer = pkgs.fenix.${toolchain-version}.rust-analyzer;
+    src = pkgs.fenix.${toolchain-version}.rust-src;
+    cargo = pkgs.fenix.${toolchain-version}.cargo;
+    rustc = pkgs.fenix.${toolchain-version}.rustc;
+  };
 in {
   imports = [
     inputs.nix-colours.homeManagerModules.default
     ./shell
-    ./vim
+    (import ./vim {
+      inherit pkgs inputs settings;
+      rust-packages = rust-packages;
+    })
     ./terminal
     ./ui
     ./mac
@@ -110,14 +128,8 @@ in {
         zathura
         zoom-us
         zoxide
-        (fenix.stable.withComponents [
-          "cargo"
-          "clippy"
-          "rust-src"
-          "rustc"
-          "rustfmt"
-        ])
-        (fenix.stable.rust-analyzer)
+        rust-packages.toolchain
+        rust-packages.analyzer
       ]
       ++ (lib.optionals isLinux [
         # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
@@ -217,7 +229,7 @@ in {
       OPENAI_API_KEY = "$(cat ${config.sops.secrets.gpt-api-key.path})";
       EDITOR = "nvim";
       PAGER = "bat --paging always";
-      RUST_SRC_PATH = "${pkgs.fenix.stable.rust-src}/lib/rustlib/src/rust/library";
+      RUST_SRC_PATH = "${rust-packages.src}/lib/rustlib/src/rust/library";
     };
 
     services.dropbox = {

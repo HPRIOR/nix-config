@@ -1,4 +1,7 @@
-pkgs: {
+{
+  pkgs,
+  rust-packages,
+}: {
   lsp = {
     enable = true;
     onAttach = ''
@@ -25,9 +28,9 @@ pkgs: {
       lemminx.enable = true;
       rust-analyzer = {
         enable = true;
-        package = pkgs.fenix.stable.rust-analyzer;
-        cargoPackage = pkgs.fenix.stable.cargo;
-        rustcPackage = pkgs.fenix.stable.rustc;
+        package = rust-packages.analyzer;
+        cargoPackage = rust-packages.cargo;
+        rustcPackage = rust-packages.rustc;
         installCargo = true;
         installRustc = true;
         settings = {
