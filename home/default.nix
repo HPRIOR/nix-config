@@ -110,14 +110,14 @@ in {
         zathura
         zoom-us
         zoxide
-        (fenix.complete.withComponents [
+        (fenix.stable.withComponents [
           "cargo"
           "clippy"
           "rust-src"
           "rustc"
           "rustfmt"
         ])
-        (fenix.complete.rust-analyzer)
+        (fenix.stable.rust-analyzer)
       ]
       ++ (lib.optionals isLinux [
         # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile

@@ -118,14 +118,14 @@ in {
       '';
       keymaps = keymaps;
       extraPackages = with pkgs; [
-        (fenix.complete.withComponents [
+        (fenix.stable.withComponents [
           "cargo"
           "clippy"
           "rust-src"
           "rustc"
           "rustfmt"
         ])
-        (fenix.complete.rust-analyzer)
+        (fenix.stable.rust-analyzer)
 
         # telescope deps
         ripgrep
