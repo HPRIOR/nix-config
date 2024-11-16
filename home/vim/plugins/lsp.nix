@@ -25,9 +25,9 @@ pkgs: {
       lemminx.enable = true;
       rust-analyzer = {
         enable = true;
-        package = pkgs.fenix.complete.rust-analyzer;
-        cargoPackage = pkgs.fenix.complete.cargo;
-        rustcPackage = pkgs.fenix.complete.rustc;
+        package = pkgs.fenix.stable.rust-analyzer;
+        cargoPackage = pkgs.fenix.stable.cargo;
+        rustcPackage = pkgs.fenix.stable.rustc;
         installCargo = true;
         installRustc = true;
         settings = {
