@@ -6,7 +6,7 @@
     };
 
     ghostscript-fix = {
-      url = "github:carlocab/nixpkgs/fix-ghostscript"; # Fixed URL format
+      url = "github:carlocab/nixpkgs/fix-ghostscript"; 
     };
 
     nix-darwin = {
