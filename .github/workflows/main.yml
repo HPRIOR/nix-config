@@ -23,8 +23,8 @@ jobs:
           diagnostic-endpoint: ""
       - name: Build NixOS configuration (${{ matrix.config.name }})
         run: |
-          nix build .#nixosConfigurations.${{ matrix.config.name }}.config.system.build.toplevel --exclude citrix_workspace
-
+          nix build .#nixosConfigurations.${{ matrix.config.name }}.config.system.build.toplevel \
+            --override-input citrix_workspace "$(nix build .#citrix_workspace --no-link --print-out-paths)"
 # darwin-builds:
 #   runs-on: macos-14  # Apple Silicon
 #   strategy:
