@@ -15,16 +15,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@main
-        with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
       - uses: DeterminateSystems/magic-nix-cache-action@v8
         with:
           diagnostic-endpoint: ""
       - name: Build NixOS configuration (${{ matrix.config.name }})
         run: |
-          nix build .#nixosConfigurations.${{ matrix.config.name }}.config.system.build.toplevel \
-            --override-input citrix_workspace "$(nix build .#citrix_workspace --no-link --print-out-paths)"
+          nix build .#nixosConfigurations.${{ matrix.config.name }}.config.system.build.toplevel 
 # darwin-builds:
 #   runs-on: macos-14  # Apple Silicon
 #   strategy:

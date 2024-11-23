@@ -136,7 +136,7 @@ in {
         # Some declarative prerequisites for this package
         _1password
         _1password-gui
-        citrix_workspace
+        # citrix_workspace
         feh
         firefox # applications
         glibc
