@@ -109,6 +109,22 @@
         "type": "github"
       }
     },
+    "ghostscript-fix": {
+      "locked": {
+        "lastModified": 1732262885,
+        "narHash": "sha256-YslfcOM7Aq+cfrn2MzwFAU+9wxDyvekuuvahghUbK2g=",
+        "owner": "carlocab",
+        "repo": "nixpkgs",
+        "rev": "8b3d3d5854495297ee537e505bab522c21e0762f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "carlocab",
+        "ref": "fix-ghostscript",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "git-hooks": {
       "inputs": {
         "flake-compat": "flake-compat_2",
@@ -338,6 +354,7 @@
     "root": {
       "inputs": {
         "fenix": "fenix",
+        "ghostscript-fix": "ghostscript-fix",
         "home-manager": "home-manager",
         "nix-colours": "nix-colours",
         "nix-darwin": "nix-darwin",

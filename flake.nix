@@ -5,6 +5,10 @@
       url = "nixpkgs/nixos-24.05";
     };
 
+    ghostscript-fix = {
+      url = "github:carlocab/nixpkgs/fix-ghostscript"; # Fixed URL format
+    };
+
     nix-darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -43,6 +47,7 @@
     nixvim,
     fenix,
     sops-nix,
+    ghostscript-fix,
   } @ inputs: let
     lib = nixpkgs.lib;
     sharedSettings = {
@@ -161,6 +166,9 @@
           {
             nixpkgs.overlays = [
               fenix.overlays.default
+              (final: prev: {
+                ghostscript = ghostscript-fix.legacyPackages.${prev.system}.ghostscript;
+              })
             ];
             # users.users.harryp.home = "/Users/harryp";
             home-manager.useGlobalPkgs = true;
