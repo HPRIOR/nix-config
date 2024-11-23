@@ -1,44 +1,42 @@
 name: "Test Nix Build"
-
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
-
+    branches: ["main"]
 jobs:
   linux-builds:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         config:
-          - {name: 'nixos'}
-          - {name: 'work'}
+          - {name: 'nixos',}
+          # - {name: 'work'}
     steps:
       - uses: actions/checkout@v4
-      - uses: cachix/install-nix-action@v25
+      - uses: DeterminateSystems/nix-installer-action@main
+      - uses: DeterminateSystems/magic-nix-cache-action@v8
         with:
-          extra_nix_config: |
-            experimental-features = nix-command flakes
+          diagnostic-endpoint: ""
       - name: Build NixOS configuration (${{ matrix.config.name }})
         run: |
-          nix build .#nixosConfigurations.${{ matrix.config.name }}.config.system.build.toplevel --option keep-outputs false --option keep-derivations false
+          nix build .#nixosConfigurations.${{ matrix.config.name }}.config.system.build.toplevel nix-build --keep-going --option keep-outputs false --option keep-derivations false
 
+# darwin-builds:
+#   runs-on: macos-14  # Apple Silicon
+#   strategy:
+#     matrix:
+#       config:
+#         - {name: 'Harrys-MacBook-Pro'}
+#         - {name: 'Harrys-MacBook-Air'}
+#   steps:
+#     - uses: actions/checkout@v4
+#     - uses: cachix/install-nix-action@v25
+#       with:
+#         extra_nix_config: |
+#           experimental-features = nix-command flakes
+#           extra-platforms = aarch64-darwin x86_64-darwin
+#     - name: Build Darwin configuration (${{ matrix.config.name }})
+#       run: |
+#         nix build .#darwinConfigurations.${{ matrix.config.name }}.system
 
-  # darwin-builds:
-  #   runs-on: macos-14  # Apple Silicon
-  #   strategy:
-  #     matrix:
-  #       config:
-  #         - {name: 'Harrys-MacBook-Pro'}
-  #         - {name: 'Harrys-MacBook-Air'}
-  #   steps:
-  #     - uses: actions/checkout@v4
-  #     - uses: cachix/install-nix-action@v25
-  #       with:
-  #         extra_nix_config: |
-  #           experimental-features = nix-command flakes
-  #           extra-platforms = aarch64-darwin x86_64-darwin
-  #     - name: Build Darwin configuration (${{ matrix.config.name }})
-  #       run: |
-  #         nix build .#darwinConfigurations.${{ matrix.config.name }}.system
