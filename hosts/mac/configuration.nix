@@ -14,7 +14,6 @@ in {
 
   users.users.harryp.home = lib.mkForce homeDir;
   nix.settings.experimental-features = "nix-command flakes";
-
   nix.extraOptions = ''
     extra-platforms = x86_64-darwin aarch64-darwin
   '';

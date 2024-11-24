@@ -1,13 +1,9 @@
 {
   config,
   pkgs,
-  inputs,
   settings,
   ...
 }: let
-  userName = settings.userName;
-  homeDir = settings.homeDir;
-  configDir = settings.configDir;
   defaultLocale = "en_GB.UTF-8";
 in {
   imports = [
