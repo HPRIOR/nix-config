@@ -136,7 +136,7 @@
               linuxSettings = linuxSettings;
             };
             home-manager.sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
+              sops-nix.homeManagerModules.sops
             ];
           }
         ];
