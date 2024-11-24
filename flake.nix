@@ -162,7 +162,7 @@
         };
 
         modules = [
-          ./hosts/air/configuration.nix
+          ./hosts/mac/configuration.nix
           mac-app-util.darwinModules.default
           home-manager.darwinModules.home-manager
           {
@@ -172,10 +172,9 @@
                 ghostscript = ghostscript-fix.legacyPackages.${prev.system}.ghostscript;
               })
             ];
-            # users.users.harryp.home = "/Users/harryp";
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.harryp.imports = [./hosts/air/home.nix];
+            home-manager.users.harryp.imports = [./hosts/mac/home.nix];
             home-manager.extraSpecialArgs = {
               inherit inputs;
               settings = settings;
@@ -197,16 +196,15 @@
 
         modules = [
           mac-app-util.darwinModules.default
-          ./hosts/air/configuration.nix
+          ./hosts/mac/configuration.nix
           home-manager.darwinModules.home-manager
           {
             nixpkgs.overlays = [
               fenix.overlays.default
             ];
-            # users.users.harryp.home = "/Users/harryp";
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.harryp.imports = [./hosts/air/home.nix];
+            home-manager.users.harryp.imports = [./hosts/mac/home.nix];
             home-manager.extraSpecialArgs = {
               inherit inputs;
               settings = settings;

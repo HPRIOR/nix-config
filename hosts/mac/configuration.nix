@@ -22,6 +22,10 @@ in {
   programs.zsh.enable = true; # default shell on catalina
 
   system = {
+    keyboard = {
+      enableKeyMapping = true;
+      remapCapsLockToEscape = true;
+    };
     stateVersion = 4;
     defaults = {
       dock = {
