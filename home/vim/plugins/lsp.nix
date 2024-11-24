@@ -31,8 +31,8 @@
         package = rust-packages.analyzer;
         cargoPackage = rust-packages.cargo;
         rustcPackage = rust-packages.rustc;
-        installCargo = true;
-        installRustc = true;
+        installCargo = false;
+        installRustc = false;
         settings = {
           files.excludeDirs = [".direnv" ".cargo"];
           # checkOnSave = true;

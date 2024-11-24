@@ -6,7 +6,7 @@
     };
 
     ghostscript-fix = {
-      url = "github:carlocab/nixpkgs/fix-ghostscript"; 
+      url = "github:carlocab/nixpkgs/fix-ghostscript";
     };
 
     nix-darwin = {
@@ -36,18 +36,19 @@
       url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    mac-app-util.url = "github:hraban/mac-app-util";
   };
 
   outputs = {
-    self,
     home-manager,
-    nix-colours,
     nix-darwin,
     nixpkgs,
-    nixvim,
     fenix,
     sops-nix,
     ghostscript-fix,
+    mac-app-util,
+    ...
   } @ inputs: let
     lib = nixpkgs.lib;
     sharedSettings = {
@@ -162,6 +163,7 @@
 
         modules = [
           ./hosts/air/configuration.nix
+          mac-app-util.darwinModules.default
           home-manager.darwinModules.home-manager
           {
             nixpkgs.overlays = [
@@ -180,6 +182,7 @@
             };
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
+              mac-app-util.homeManagerModules.default
             ];
           }
         ];
@@ -193,6 +196,7 @@
         };
 
         modules = [
+          mac-app-util.darwinModules.default
           ./hosts/air/configuration.nix
           home-manager.darwinModules.home-manager
           {
@@ -209,6 +213,7 @@
             };
             home-manager.sharedModules = [
               inputs.sops-nix.homeManagerModules.sops
+              mac-app-util.homeManagerModules.default
             ];
           }
         ];

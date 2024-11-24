@@ -164,19 +164,19 @@ in {
     #  https://github.com/nix-community/home-manager/issues/1341 is closed.
     # creates aliases to nix store so that spotlight can search for nix installed packages
     # need to fix this so a check is done against $genProfilePath/home-path/Applications before executing
-    home.activation = lib.mkIf isDarwin {
-      aliasHomeManagerApplications = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        app_folder="${config.home.homeDirectory}/Applications/Home Manager Trampolines"
-        rm -rf "$app_folder"
-        mkdir -p "$app_folder"
-        find "$genProfilePath/home-path/Applications" -type l -print | while read -r app; do
-            app_target="$app_folder/$(basename "$app")"
-            real_app="$(readlink "$app")"
-            echo "mkalias \"$real_app\" \"$app_target\"" >&2
-            $DRY_RUN_CMD ${pkgs.mkalias}/bin/mkalias "$real_app" "$app_target"
-        done
-      '';
-    };
+    # home.activation = lib.mkIf isDarwin {
+    #   aliasHomeManagerApplications = lib.hm.dag.entryAfter ["writeBoundary"] ''
+    #     app_folder="${config.home.homeDirectory}/Applications/Home Manager Trampolines"
+    #     rm -rf "$app_folder"
+    #     mkdir -p "$app_folder"
+    #     find "$genProfilePath/home-path/Applications" -type l -print | while read -r app; do
+    #         app_target="$app_folder/$(basename "$app")"
+    #         real_app="$(readlink "$app")"
+    #         echo "mkalias \"$real_app\" \"$app_target\"" >&2
+    #         $DRY_RUN_CMD ${pkgs.mkalias}/bin/mkalias "$real_app" "$app_target"
+    #     done
+    #   '';
+    # };
 
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
