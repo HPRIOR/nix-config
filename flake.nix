@@ -201,6 +201,9 @@
           {
             nixpkgs.overlays = [
               fenix.overlays.default
+              (final: prev: {
+                ghostscript = ghostscript-fix.legacyPackages.${prev.system}.ghostscript;
+              })
             ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
