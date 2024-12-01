@@ -3,18 +3,14 @@
   pkgs,
   settings,
   lib,
+  inputs,
   ...
 }: let
-  userName = settings.userName;
   defaultLocale = "en_GB.UTF-8";
 in {
   imports = [
     ./hardware-configuration.nix
   ];
-
-  hardware.opengl = {
-    enable = pkgs.lib.mkDefault true;
-  };
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -22,15 +18,7 @@ in {
     powerManagement.finegrained = false;
     open = false;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-      version = "555.58";
-
-      sha256_64bit = "sha256-bXvcXkg2kQZuCNKRZM5QoTaTjF4l2TtrsKUvyicj5ew=";
-      sha256_aarch64 = lib.fakeSha256;
-      openSha256 = lib.fakeSha256;
-      settingsSha256 = "sha256-vWnrXlBCb3K5uVkDFmJDVq51wrCoqgPF03lSjZOuU8M=";
-      persistencedSha256 = lib.fakeSha256;
-    };
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   hardware.bluetooth.enable = true;
@@ -39,6 +27,7 @@ in {
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  hardware.cpu.amd.updateMicrocode = true;
 
   networking.hostName = settings.hostName; # Define your hostname.
 
@@ -64,27 +53,36 @@ in {
   };
 
   # Configure keymap in X11
-  services.xserver = {
-    videoDrivers = ["nvidia"];
-    xkb = {
-      variant = "";
-      options = "caps:swapescape";
-      layout = "gb";
-    };
-  };
+  # services.xserver = {
+  #   enable = true;
+  #   videoDrivers = ["nvidia"];
+  #   xkb = {
+  #     variant = "";
+  #     options = "caps:swapescape";
+  #     layout = "gb";
+  #   };
+  # };
 
   services.blueman.enable = true;
 
   # Not sure this works as expected. Still get tty login, but launched hyprland after so I'm happy with it for now
-  services.greetd = {
+  services.greetd = let
+    tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
+  in {
     enable = true;
     settings = rec {
       initial_session = {
-        command = "${pkgs.greetd.greetd}/bin/agreety --cmd ${pkgs.hyprland}/bin/Hyprland";
-        user = userName;
+        command = "${tuigreet} --greeting 'Welcome to NixOS!' --asterisks --remember --remember-user-session --time";
+        user = "harryp";
       };
       default_session = initial_session;
     };
+
+    # settings = {
+    #   default_session = {
+    #     command = "${pkgs.greetd.greetd}/bin/agreety --cmd ${pkgs.hyprland}/bin/Hyprland";
+    #   };
+    # };
   };
 
   console.useXkbConfig = true;
@@ -104,20 +102,21 @@ in {
     vim
     wget
     git
+    kitty
 
-    # hyprland and wm stuff
-    waybar
-    (waybar.overrideAttrs (oldAttrs: {
-      mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
-    }))
-
-    libnotify
-    rofi-wayland
-    wl-clipboard
-    wlr-randr
-    cliphist
-    wl-clip-persist
-    kdePackages.qtwayland
+    # # hyprland and wm stuff
+    # waybar
+    # (waybar.overrideAttrs (oldAttrs: {
+    #   mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+    # }))
+    #
+    # libnotify
+    # rofi-wayland
+    # wl-clipboard
+    # wlr-randr
+    # cliphist
+    # wl-clip-persist
+    # kdePackages.qtwayland
   ];
 
   environment.shells = with pkgs; [zsh];
@@ -129,19 +128,23 @@ in {
 
   programs.hyprland = {
     enable = true;
-    portalPackage = pkgs.xdg-desktop-portal-wlr;
+    # set the flake package
+    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # make sure to also set the portal package, so that they are in sync
+    # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    withUWSM = true; # recommended for most users
+    xwayland.enable = true;
   };
 
   programs.nix-ld.enable = true;
 
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-gtk
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-hyprland
-  ];
+  # xdg.portal.enable = true;
+  # xdg.portal.extraPortals = with pkgs; [
+  #   # xdg-desktop-portal-gtk
+  #   # xdg-desktop-portal-wlr
+  #   # xdg-desktop-portal-hyprland
+  # ];
 
-  sound.enable = true;
   security.rtkit.enable = true;
   # security.polkit.enable = true;
   services.pipewire = {
@@ -159,11 +162,11 @@ in {
 
   virtualisation.docker.enable = true;
 
-  fileSystems."${settings.homeDir}/Mnt/server-nfs" = {
-    device = "home.server.com:/export/Root";
-    fsType = "nfs";
-    options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=1200" "nfsvers=4.2"];
-  };
+  # fileSystems."${settings.homeDir}/Mnt/server-nfs" = {
+  #   device = "home.server.com:/export/Root";
+  #   fsType = "nfs";
+  #   options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=1200" "nfsvers=4.2"];
+  # };
 
   networking.firewall.enable = true;
   # syncthing for others
