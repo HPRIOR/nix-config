@@ -9,6 +9,8 @@
 in {
   plugins =
     {
+      web-devicons.enable = true;
+
       # todo enable these when available in systems pkgs
       # avante = {
       #   enable = true;
@@ -25,7 +27,7 @@ in {
       };
       navic = {
         enable = true;
-        lsp.autoAttach = true;
+        settings.lsp.autoAttach = true;
       };
       notify = {
         enable = true;
@@ -63,8 +65,10 @@ in {
       };
       nvim-autopairs.enable = true;
       treesitter = {
+        settings = {
+          indent.enable = true;
+        };
         enable = true;
-        indent = true;
       };
       # Code formatting
       conform-nvim = {
@@ -73,8 +77,8 @@ in {
         #   lspFallback = true;
         #   timeoutMs = 500;
         # };
-        notifyOnError = true;
-        formattersByFt = {
+        settings.notifyOnError = true;
+        settings.formatters_by_ft = {
           html = [["prettierd" "prettier"]];
           css = [["prettierd" "prettier"]];
           json = [["jq"]];
@@ -94,7 +98,7 @@ in {
 
       leap.enable = true;
       illuminate.enable = true;
-      surround.enable = true;
+      vim-surround.enable = true;
       comment.enable = true;
       rust-tools.enable = true;
       neo-tree.enable = true;

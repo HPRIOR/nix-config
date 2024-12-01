@@ -18,7 +18,7 @@
       fsautocomplete.enable = true;
       html.enable = true;
       jsonls.enable = true;
-      lua-ls.enable = true;
+      lua_ls.enable = true;
       marksman.enable = true;
       nixd.enable = true;
       # ocamllsp.enable = true;
@@ -26,7 +26,7 @@
       pyright.enable = true;
       metals.enable = true;
       lemminx.enable = true;
-      rust-analyzer = {
+      rust_analyzer = {
         enable = true;
         package = rust-packages.analyzer;
         cargoPackage = rust-packages.cargo;
@@ -55,7 +55,7 @@
       };
       yamlls.enable = true;
       elixirls.enable = true;
-      tsserver.enable = true;
+      ts_ls.enable = true;
       tailwindcss.enable = true;
     };
     keymaps.lspBuf = {
