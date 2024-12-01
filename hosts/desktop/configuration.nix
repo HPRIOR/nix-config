@@ -53,19 +53,18 @@ in {
   };
 
   # Configure keymap in X11
-  # services.xserver = {
-  #   enable = true;
-  #   videoDrivers = ["nvidia"];
-  #   xkb = {
-  #     variant = "";
-  #     options = "caps:swapescape";
-  #     layout = "gb";
-  #   };
-  # };
+  services.xserver = {
+    # enable = true;
+    videoDrivers = ["nvidia"];
+    xkb = {
+      variant = "";
+      options = "caps:swapescape";
+      layout = "gb";
+    };
+  };
 
   services.blueman.enable = true;
 
-  # Not sure this works as expected. Still get tty login, but launched hyprland after so I'm happy with it for now
   services.greetd = let
     tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
   in {
@@ -77,12 +76,6 @@ in {
       };
       default_session = initial_session;
     };
-
-    # settings = {
-    #   default_session = {
-    #     command = "${pkgs.greetd.greetd}/bin/agreety --cmd ${pkgs.hyprland}/bin/Hyprland";
-    #   };
-    # };
   };
 
   console.useXkbConfig = true;
@@ -105,18 +98,18 @@ in {
     kitty
 
     # # hyprland and wm stuff
-    # waybar
-    # (waybar.overrideAttrs (oldAttrs: {
-    #   mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
-    # }))
+    waybar
+    (waybar.overrideAttrs (oldAttrs: {
+      mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
+    }))
     #
-    # libnotify
-    # rofi-wayland
-    # wl-clipboard
-    # wlr-randr
-    # cliphist
-    # wl-clip-persist
-    # kdePackages.qtwayland
+    libnotify
+    rofi-wayland
+    wl-clipboard
+    wlr-randr
+    cliphist
+    wl-clip-persist
+    kdePackages.qtwayland
   ];
 
   environment.shells = with pkgs; [zsh];

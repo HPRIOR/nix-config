@@ -89,30 +89,30 @@
         };
         modules = [
           ./hosts/desktop/configuration.nix
-          # home-manager.nixosModules.home-manager
-          # {
-          #   nixpkgs.config.permittedInsecurePackages = [
-          #     "dotnet-core-combined"
-          #     "dotnet-sdk-6.0.428"
-          #     "dotnet-sdk-7.0.410"
-          #     "dotnet-sdk-wrapped-6.0.428"
-          #   ];
-          #   nixpkgs.overlays = [
-          #     (import ./overlays/citrix.nix)
-          #     fenix.overlays.default
-          #   ];
-          #   home-manager.useGlobalPkgs = true;
-          #   home-manager.useUserPackages = true;
-          #   home-manager.users.harryp.imports = [./hosts/desktop/home.nix];
-          #   home-manager.extraSpecialArgs = {
-          #     inherit inputs;
-          #     settings = settings;
-          #     linuxSettings = linuxSettings;
-          #   };
-          #   home-manager.sharedModules = [
-          #     sops-nix.homeManagerModules.sops
-          #   ];
-          # }
+          home-manager.nixosModules.home-manager
+          {
+            nixpkgs.config.permittedInsecurePackages = [
+              "dotnet-core-combined"
+              "dotnet-sdk-6.0.428"
+              "dotnet-sdk-7.0.410"
+              "dotnet-sdk-wrapped-6.0.428"
+            ];
+            nixpkgs.overlays = [
+              (import ./overlays/citrix.nix)
+              fenix.overlays.default
+            ];
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.harryp.imports = [./hosts/desktop/home.nix];
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              settings = settings;
+              linuxSettings = linuxSettings;
+            };
+            home-manager.sharedModules = [
+              sops-nix.homeManagerModules.sops
+            ];
+          }
         ];
       };
     };
