@@ -46,6 +46,7 @@ in {
     ./rofi.nix
     ./notifications.nix
   ];
+  
 
   programs.waybar = {
     enable = isLinux;
@@ -184,7 +185,7 @@ in {
     '';
   };
   wayland.windowManager.hyprland = {
-    enable = isLinux;
+    enable = false;
     extraConfig = ''
       # Required for mouse to render
       env = WLR_NO_HARDWARE_CURSORS,1

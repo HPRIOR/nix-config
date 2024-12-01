@@ -34,6 +34,8 @@
     };
 
     mac-app-util.url = "github:hraban/mac-app-util";
+
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = {
@@ -87,53 +89,30 @@
         };
         modules = [
           ./hosts/desktop/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            nixpkgs.overlays = [
-              (import ./overlays/citrix.nix)
-              fenix.overlays.default
-            ];
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.harryp.imports = [./hosts/desktop/home.nix];
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              settings = settings;
-              linuxSettings = linuxSettings;
-            };
-            home-manager.sharedModules = [
-              sops-nix.homeManagerModules.sops
-            ];
-          }
-        ];
-      };
-
-      work = lib.nixosSystem {
-        inherit system;
-        specialArgs = {
-          inherit inputs;
-          settings = settings;
-        };
-        modules = [
-          ./hosts/work/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            nixpkgs.overlays = [
-              (import ./overlays/citrix.nix)
-              fenix.overlays.default
-            ];
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.harryp.imports = [./hosts/work/home.nix];
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              settings = settings;
-              linuxSettings = linuxSettings;
-            };
-            home-manager.sharedModules = [
-              sops-nix.homeManagerModules.sops
-            ];
-          }
+          # home-manager.nixosModules.home-manager
+          # {
+          #   nixpkgs.config.permittedInsecurePackages = [
+          #     "dotnet-core-combined"
+          #     "dotnet-sdk-6.0.428"
+          #     "dotnet-sdk-7.0.410"
+          #     "dotnet-sdk-wrapped-6.0.428"
+          #   ];
+          #   nixpkgs.overlays = [
+          #     (import ./overlays/citrix.nix)
+          #     fenix.overlays.default
+          #   ];
+          #   home-manager.useGlobalPkgs = true;
+          #   home-manager.useUserPackages = true;
+          #   home-manager.users.harryp.imports = [./hosts/desktop/home.nix];
+          #   home-manager.extraSpecialArgs = {
+          #     inherit inputs;
+          #     settings = settings;
+          #     linuxSettings = linuxSettings;
+          #   };
+          #   home-manager.sharedModules = [
+          #     sops-nix.homeManagerModules.sops
+          #   ];
+          # }
         ];
       };
     };
@@ -199,6 +178,12 @@
           {
             nixpkgs.overlays = [
               fenix.overlays.default
+            ];
+            nixpkgs.config.permittedInsecurePackages = [
+              "dotnet-core-combined"
+              "dotnet-sdk-6.0.428"
+              "dotnet-sdk-7.0.410"
+              "dotnet-sdk-wrapped-6.0.428"
             ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
