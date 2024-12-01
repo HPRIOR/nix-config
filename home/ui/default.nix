@@ -185,15 +185,20 @@ in {
     '';
   };
   wayland.windowManager.hyprland = {
-    enable = false;
+    enable = isLinux;
     extraConfig = ''
       # Required for mouse to render
-      env = WLR_NO_HARDWARE_CURSORS,1
-
+      env = LIBVA_DRIVER_NAME,nvidia
+      env = __GLX_VENDOR_LIBRARY_NAME,nvidia
       env = HYPRCURSOR_THEME,macOS-BigSur-White
       env = HYPRCURSOR_SIZE,24
       env = XCURSOR_THEME,macOS-BigSur-White
       env = XCURSOR_SIZE,24
+      cursor {
+          no_hardware_cursors = true
+      }
+
+
       # Startup applications
       exec-once = waybar
       exec-once = blueman-applet
@@ -211,8 +216,8 @@ in {
       windowrule=float,^(Mullvad.*)$
       windowrule=animation slide,^(Mullvad.*)$
 
-      windowrulev2 = stayfocused,class:(Rofi)
-      windowrulev2 = forceinput,class:(Rofi)
+      # windowrulev2 = stayfocused,class:(Rofi)
+      # windowrulev2 = forceinput,class:(Rofi)
 
       # Monitor left
       monitor=${monitorLeft.screen},${monitorLeft.res}@${monitorLeft.hertz},${monitorLeft.pos},${monitorLeft.scale},transform,${monitorLeft.transform},bitdepth,10
@@ -366,7 +371,6 @@ in {
           }
           inactive_opacity = 0.95
       }
-
     '';
   };
 }
