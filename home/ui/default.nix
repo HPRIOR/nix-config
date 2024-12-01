@@ -18,6 +18,7 @@
 
   # Todo create a function that will generate the position of each screan automatically 
   monitorLeft = {
+    desc = "LG Electronics LG ULTRAFINE 201NTHM23033";
     screen = "DP-1";
     res = "3840x2160";
     hertz = "59.997002";
@@ -26,6 +27,7 @@
     transform = "1";
   };
   monitorCentre = {
+    desc = "Samsung Electric Company S34J55x H4LNB01202";
     screen = "HDMI-A-1";
     res = "3440x1440";
     hertz = "74.983002";
@@ -34,6 +36,7 @@
     transform = throw "No transform set for monitor centre";
   };
   monitorRight = {
+    desc = "LG Electronics LG SDQHD 307NTDVEQ250";
     screen = "DP-2";
     res = "2560x2880";
     hertz = "59.966999";
@@ -220,13 +223,7 @@ in {
       # windowrulev2 = forceinput,class:(Rofi)
 
       # Monitor left
-      monitor=${monitorLeft.screen},${monitorLeft.res}@${monitorLeft.hertz},${monitorLeft.pos},${monitorLeft.scale},transform,${monitorLeft.transform},bitdepth,10
 
-      # Monitor centre
-      monitor=${monitorCentre.screen},${monitorCentre.res}@${monitorCentre.hertz},${monitorCentre.pos},${monitorCentre.scale},bitdepth,10
-
-      # Monitor right
-      monitor=${monitorRight.screen},${monitorRight.res}@${monitorRight.hertz},${monitorRight.pos},${monitorRight.scale},bitdepth,10
       monitor=,preferred,auto,1
 
       monitor=Unknown-1,disable
