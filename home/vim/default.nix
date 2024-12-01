@@ -24,7 +24,6 @@ in {
       defaultEditor = true;
       viAlias = true;
       vimAlias = true;
-      type = "lua";
       colorschemes.kanagawa.enable = true;
       extraConfigLua = ''
                 -- configure dressing-nvim

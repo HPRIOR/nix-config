@@ -2,11 +2,7 @@
   description = "System config";
   inputs = {
     nixpkgs = {
-      url = "nixpkgs/nixos-24.05";
-    };
-
-    ghostscript-fix = {
-      url = "github:carlocab/nixpkgs/fix-ghostscript";
+      url = "nixpkgs/nixos-24.11";
     };
 
     nix-darwin = {
@@ -15,12 +11,12 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-24.05";
+      url = "github:nix-community/nixvim/nixos-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -46,7 +42,6 @@
     nixpkgs,
     fenix,
     sops-nix,
-    ghostscript-fix,
     mac-app-util,
     ...
   } @ inputs: let
@@ -166,11 +161,14 @@
           mac-app-util.darwinModules.default
           home-manager.darwinModules.home-manager
           {
+            nixpkgs.config.permittedInsecurePackages = [
+              "dotnet-core-combined"
+              "dotnet-sdk-6.0.428"
+              "dotnet-sdk-7.0.410"
+              "dotnet-sdk-wrapped-6.0.428"
+            ];
             nixpkgs.overlays = [
               fenix.overlays.default
-              (final: prev: {
-                ghostscript = ghostscript-fix.legacyPackages.${prev.system}.ghostscript;
-              })
             ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -201,9 +199,6 @@
           {
             nixpkgs.overlays = [
               fenix.overlays.default
-              (final: prev: {
-                ghostscript = ghostscript-fix.legacyPackages.${prev.system}.ghostscript;
-              })
             ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;

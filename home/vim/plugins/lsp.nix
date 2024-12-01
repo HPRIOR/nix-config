@@ -21,7 +21,7 @@
       lua-ls.enable = true;
       marksman.enable = true;
       nixd.enable = true;
-      ocamllsp.enable = true;
+      # ocamllsp.enable = true;
       omnisharp.enable = true;
       pyright.enable = true;
       metals.enable = true;
