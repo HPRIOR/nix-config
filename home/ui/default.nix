@@ -223,6 +223,13 @@ in {
       # windowrulev2 = forceinput,class:(Rofi)
 
       # Monitor left
+      monitor=desc:${monitorLeft.desc},${monitorLeft.res}@${monitorLeft.hertz},${monitorLeft.pos},${monitorLeft.scale},transform,${monitorLeft.transform}
+
+      # Monitor centre
+      monitor=desc:${monitorCentre.desc},${monitorCentre.res}@${monitorCentre.hertz},${monitorCentre.pos},${monitorCentre.scale}
+
+      # Monitor right
+      # monitor=desc:${monitorRight.desc},${monitorRight.res}@${monitorRight.hertz},${monitorRight.pos},${monitorRight.scale}
 
       monitor=,preferred,auto,1
 
