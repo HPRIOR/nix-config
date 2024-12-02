@@ -132,7 +132,7 @@ in {
         rust-packages.analyzer
       ]
       ++ (lib.optionals isLinux [
-        _1password
+        _1password-cli
         _1password-gui
         # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
         # Some declarative prerequisites for this package

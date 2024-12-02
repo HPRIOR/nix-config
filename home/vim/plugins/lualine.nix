@@ -39,8 +39,8 @@
     settings.sections = {
       lualine_a = [
         {
-          name = "mode";
-          icon = "";
+          __unkeyed = "mode";
+          icon.__unkeyed = "";
           separator = {
             left = "";
             right = "";
@@ -49,8 +49,8 @@
       ];
       lualine_b = [
         {
-          name = "branch";
-          icon = "";
+          __unkeyed = "branch";
+          icon.__unkeyed = "";
           separator = {
             left = "";
             right = "";
@@ -63,38 +63,32 @@
       ];
       lualine_c = [
         {
-          name = "diagnostic";
-          extraConfig = {
-            symbols = {
-              error = " ";
-              warn = " ";
-              info = " ";
-              hint = "󰝶 ";
-            };
+          __unkeyed = "diagnostic";
+          symbols = {
+            error = " ";
+            warn = " ";
+            info = " ";
+            hint = "󰝶 ";
           };
         }
         {
-          name = "filetype";
+          __unkeyed = "filetype";
           separator = {
             left = "";
             right = "";
           };
-          extraConfig = {
-            icon_only = true;
-            padding = {
-              left = 1;
-              right = 0;
-            };
+          icon_only = true;
+          padding = {
+            left = 1;
+            right = 0;
           };
         }
         {
-          name = "filename";
-          extraConfig = {
-            symbols = {
-              modified = "  ";
-              readonly = "";
-              unnamed = "";
-            };
+          __unkeyed = "filename";
+          symbols = {
+            modified = "  ";
+            readonly = "";
+            unnamed = "";
           };
         }
       ];
@@ -103,8 +97,8 @@
       ];
       lualine_y = [
         {
-          name = "progress";
-          icon = "";
+          __unkeyed = "progress";
+          icon.__unkeyed = "";
           color = {
             fg = "#1c1d21";
             bg = "#f2cdcd";
@@ -113,7 +107,7 @@
       ];
       lualine_z = [
         {
-          name = "location";
+          __unkeyed = "location";
           color = {
             fg = "#1c1d21";
             bg = "#f2cdcd";
