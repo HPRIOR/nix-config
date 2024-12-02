@@ -19,7 +19,7 @@
   # Todo create a function that will generate the position of each screan automatically 
   monitorLeft = {
     desc = "LG Electronics LG ULTRAFINE 201NTHM23033";
-    screen = "DP-1";
+    screen = "DP-3";
     res = "3840x2160";
     hertz = "59.997002";
     pos = "-1440x-400";
@@ -235,9 +235,9 @@ in {
 
       monitor=Unknown-1,disable
 
-      workspace=1,monitor:${monitorLeft.screen},default:true
-      workspace=2,monitor:${monitorCentre.screen},defualt:true
-      workspace=3,monitor:${monitorRight.screen},default:true
+      workspace=1,monitor:desc:${monitorLeft.desc},default:true
+      workspace=2,monitor:desc:${monitorCentre.desc},defualt:true
+      workspace=3,monitor:desc:${monitorRight.desc},default:true
 
       # Key bindings
       $mainMod = SUPER
