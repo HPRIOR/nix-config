@@ -45,15 +45,6 @@
   }
   {
     mode = ["n"];
-    key = "<leader>vr";
-    action = "<cmd>lua require('rust-tools.runnables').runnables()<CR>";
-    options = {
-      silent = true;
-      desc = "Open rust runnables";
-    };
-  }
-  {
-    mode = ["n"];
     key = "<leader>h";
     action = "<c-w>h";
     options = {
