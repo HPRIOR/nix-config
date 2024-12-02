@@ -18,9 +18,12 @@ in {
     powerManagement.finegrained = false;
     open = false;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
-
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
 
@@ -52,16 +55,8 @@ in {
     LC_TIME = defaultLocale;
   };
 
-  # Configure keymap in X11
-  # services.xserver = {
-  #   # enable = true;
-  #   videoDrivers = ["nvidia"];
-  #   xkb = {
-  #     variant = "";
-  #     options = "caps:swapescape";
-  #     layout = "gb";
-  #   };
-  # };
+  services.xserver.videoDrivers = ["nvidia"];
+
 
   services.blueman.enable = true;
 
