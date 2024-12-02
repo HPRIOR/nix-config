@@ -18,16 +18,9 @@ in {
     powerManagement.finegrained = false;
     open = false;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-      version = "555.58";
-
-      sha256_64bit = "sha256-bXvcXkg2kQZuCNKRZM5QoTaTjF4l2TtrsKUvyicj5ew=";
-      sha256_aarch64 = lib.fakeSha256;
-      openSha256 = lib.fakeSha256;
-      settingsSha256 = "sha256-vWnrXlBCb3K5uVkDFmJDVq51wrCoqgPF03lSjZOuU8M=";
-      persistencedSha256 = lib.fakeSha256;
-    };
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
+
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
@@ -81,18 +74,20 @@ in {
 
   services.blueman.enable = true;
 
-  services.greetd = let
-    tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
-  in {
-    enable = true;
-    settings = rec {
-      initial_session = {
-        command = "${tuigreet} --greeting 'Welcome to NixOS!' --asterisks --remember --remember-user-session --time";
-        user = "harryp";
-      };
-      default_session = initial_session;
-    };
-  };
+  programs.regreet.enable = true;
+
+  # services.greetd = let
+  #   tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
+  # in {
+  #   enable = true;
+  #   settings = rec {
+  #     initial_session = {
+  #       command = "${tuigreet} --greeting 'Welcome to NixOS!' --asterisks --remember --remember-user-session --time";
+  #       user = "harryp";
+  #     };
+  #     default_session = initial_session;
+  #   };
+  # };
 
   console.useXkbConfig = true;
 
