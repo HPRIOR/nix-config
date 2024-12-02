@@ -10,14 +10,15 @@ in {
   plugins =
     {
       web-devicons.enable = true;
-
       # todo enable these when available in systems pkgs
-      # avante = {
-      #   enable = true;
-      # };
+      avante = {
+        enable = true;
+        settings = {
+        };
+      };
       # render-markdown = {
       #   enable = true;
-      #   settings.overrides.filetype = ["markdown" "Avante"];
+      #   settings.overrides.filetype = ''{"markdown" "Avante"}'';
       # };
       toggleterm = {
         enable = true;
@@ -100,7 +101,6 @@ in {
       illuminate.enable = true;
       vim-surround.enable = true;
       comment.enable = true;
-      rust-tools.enable = true;
       neo-tree.enable = true;
       dap.enable = true;
     }
