@@ -18,7 +18,15 @@ in {
     powerManagement.finegrained = false;
     open = false;
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.beta;
+    package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+      version = "555.58";
+
+      sha256_64bit = "sha256-bXvcXkg2kQZuCNKRZM5QoTaTjF4l2TtrsKUvyicj5ew=";
+      sha256_aarch64 = lib.fakeSha256;
+      openSha256 = lib.fakeSha256;
+      settingsSha256 = "sha256-vWnrXlBCb3K5uVkDFmJDVq51wrCoqgPF03lSjZOuU8M=";
+      persistencedSha256 = lib.fakeSha256;
+    };
   };
   hardware.graphics = {
     enable = true;
@@ -54,9 +62,22 @@ in {
     LC_TELEPHONE = defaultLocale;
     LC_TIME = defaultLocale;
   };
-
-  services.xserver.videoDrivers = ["nvidia"];
-
+  services.xserver = {
+    videoDrivers = ["nvidia"];
+    xkb = {
+      variant = "";
+      options = "caps:swapescape";
+      layout = "gb";
+    };
+  };
+  # services.xserver = {
+  #   enable = true;
+  #   videoDrivers = ["nvidia"];
+  # };
+  # services.xserver = {
+  #   enable = true;
+  #   videoDrivers = ["nvidia"];
+  # };
 
   services.blueman.enable = true;
 
@@ -97,7 +118,6 @@ in {
     (waybar.overrideAttrs (oldAttrs: {
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
-    #
     libnotify
     rofi-wayland
     wl-clipboard
@@ -124,6 +144,12 @@ in {
     xwayland.enable = true;
   };
 
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-wlr
+    xdg-desktop-portal-hyprland
+  ];
   programs.nix-ld.enable = true;
 
   # xdg.portal.enable = true;
