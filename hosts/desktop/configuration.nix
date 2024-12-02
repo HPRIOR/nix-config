@@ -55,6 +55,7 @@ in {
     LC_TELEPHONE = defaultLocale;
     LC_TIME = defaultLocale;
   };
+
   services.xserver = {
     videoDrivers = ["nvidia"];
     xkb = {
@@ -63,31 +64,13 @@ in {
       layout = "gb";
     };
   };
-  # services.xserver = {
-  #   enable = true;
-  #   videoDrivers = ["nvidia"];
-  # };
-  # services.xserver = {
-  #   enable = true;
-  #   videoDrivers = ["nvidia"];
-  # };
 
   services.blueman.enable = true;
 
-  programs.regreet.enable = true;
-
-  # services.greetd = let
-  #   tuigreet = "${pkgs.greetd.tuigreet}/bin/tuigreet";
-  # in {
-  #   enable = true;
-  #   settings = rec {
-  #     initial_session = {
-  #       command = "${tuigreet} --greeting 'Welcome to NixOS!' --asterisks --remember --remember-user-session --time";
-  #       user = "harryp";
-  #     };
-  #     default_session = initial_session;
-  #   };
-  # };
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+  };
 
   console.useXkbConfig = true;
 
