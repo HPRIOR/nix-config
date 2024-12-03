@@ -6,8 +6,6 @@
   ...
 }: let
   isLinux = pkgs.stdenv.isLinux;
-  gpt_telescope_cmd_file = "${settings.configDir}/telescope_gpt/cmds.json";
-  gpt_config = import ./gpt-plugin.nix;
   keymaps = import ./keymap.nix;
   plugins = import ./plugins {inherit pkgs rust-packages;};
   options = import ./options.nix;
@@ -61,21 +59,6 @@ in {
                     border = _border
                 }
 
-                require("chatgpt").setup({
-                  chat = {
-                    welcome_message = ""
-                  },
-                  openai_params = {
-                    model = "gpt-4-turbo",
-                    max_tokens = 4096,
-                  },
-                  openai_edit_params = {
-                    model = "gpt-4-turbo"
-                  },
-                  actions_paths = {
-                      "${gpt_telescope_cmd_file}"
-                  }
-                })
                 require("telescope").setup({
                     defaults = {
                         mappings = {
@@ -85,11 +68,7 @@ in {
                         },
                         },
                     },
-                      extensions = {
-                          ${gpt_config.telescope_ext_config}
-                      }
                   })
-                require('telescope').load_extension('gpt')
                 require('telescope').load_extension('notify')
 
                 function create_winbar()
@@ -138,5 +117,4 @@ in {
     // plugins
     // options;
 
-  home.file.${gpt_telescope_cmd_file}.text = gpt_config.telescope_gpt_cmds;
 }

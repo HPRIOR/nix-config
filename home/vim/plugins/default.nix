@@ -61,7 +61,6 @@ in {
         };
         extensions = {
           fzf-native.enable = true;
-          # ui-select.enable = true;
         };
       };
       nvim-autopairs.enable = true;
@@ -101,7 +100,7 @@ in {
       illuminate.enable = true;
       vim-surround.enable = true;
       comment.enable = true;
-      neo-tree.enable = true;
+      nvim-tree.enable = true;
       dap.enable = true;
     }
     // lsp
@@ -111,16 +110,6 @@ in {
 
   extraPlugins = with pkgs.vimPlugins; [
     dressing-nvim
-    ChatGPT-nvim
     nvim-window-picker
-    (pkgs.vimUtils.buildVimPlugin {
-      name = "telescope-gpt";
-      src = pkgs.fetchFromGitHub {
-        owner = "HPRIOR";
-        repo = "telescope-gpt";
-        rev = "main";
-        hash = "sha256-fGCgayTQKdyx6UElUx4+2jQr3HPUfmaaONjcuW2PDDU=";
-      };
-    })
   ];
 }

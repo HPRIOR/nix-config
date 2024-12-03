@@ -1,7 +1,7 @@
 [
   {
     key = "<leader>t";
-    action = "<cmd>lua require('neo-tree.command').execute({ toggle = true })<cr>";
+    action = ":NvimTreeToggle<CR>";
     options = {
       silent = true;
       desc = "Toggle neotree";
@@ -234,24 +234,6 @@
     options = {
       silent = true;
       desc = "Telescope lsp workspace symbols";
-    };
-  }
-  {
-    mode = ["n" "v"];
-    key = "<C-c>";
-    action = ":ChatGPT<CR>";
-    options = {
-      silent = true;
-      desc = "Open chat gpt plugin";
-    };
-  }
-  {
-    mode = ["n" "v"];
-    key = "<C-a>";
-    action = "<cmd>Telescope gpt<cr>";
-    options = {
-      silent = true;
-      desc = "Open chat gpt telescope extension";
     };
   }
   {

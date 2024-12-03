@@ -63,7 +63,7 @@
       "gt" = "type_definition";
       "gi" = "implementation";
       "K" = "hover";
-      "<leader>a" = "code_action";
+      "<C-a>" = "code_action";
       "<leader>r" = "rename";
     };
     keymaps.diagnostic = {
