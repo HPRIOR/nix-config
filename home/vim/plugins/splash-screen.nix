@@ -85,7 +85,7 @@ in {
           (
             mkButton
             "t"
-            "<cmd>lua require('neo-tree.command').execute({ toggle = true })<cr>"
+            "NvimTreeToggle<CR>"
             "  Open tree"
             "Operator"
           )
