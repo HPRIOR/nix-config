@@ -38,166 +38,36 @@
     hyprland.url = "github:hyprwm/Hyprland";
   };
 
-  outputs = {
-    home-manager,
-    nix-darwin,
-    nixpkgs,
-    fenix,
-    sops-nix,
-    mac-app-util,
-    ...
-  } @ inputs: let
-    lib = nixpkgs.lib;
-    sharedSettings = {
-      homeDir,
-      userName,
-      hostName,
-    }: {
-      uid = 1000;
-      userName = userName;
-      homeDir = homeDir;
-      hostName = hostName;
-      dotFiles = "${homeDir}/.dotfiles";
-      configDir = "${homeDir}/.config";
-      fullName = "Harry Prior";
-      email = "harjp@pm.me";
-      theme = "kanagawa";
-      font = "FiraCode Nerd Font Mono";
-      fontSize = 12;
-      extraGroups = ["networkmanager" "wheel" "docker"];
+  outputs = {nixpkgs, ...} @ inputs: let
+    mkSystem = import ./utils/mkSystem.nix {
+      inputs = inputs;
+      nixpkgs = nixpkgs;
     };
   in {
-    nixosConfigurations = let
-      system = "x86_64-linux";
-      userName = "harryp";
-      homeDir = "/home/${userName}";
-      hostName = "nixos";
-      settings = sharedSettings {
-        userName = userName;
-        homeDir = homeDir;
-        hostName = hostName;
-      };
-      linuxSettings = {
-        primaryMonitor = "HDMI-A-1";
-      };
-    in {
-      nixos = lib.nixosSystem {
-        inherit system;
-        specialArgs = {
-          inherit inputs;
-          settings = settings;
-        };
-        modules = [
-          ./hosts/desktop/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            nixpkgs.config.permittedInsecurePackages = [
-              "dotnet-core-combined"
-              "dotnet-sdk-6.0.428"
-              "dotnet-sdk-7.0.410"
-              "dotnet-sdk-wrapped-6.0.428"
-            ];
-            nixpkgs.overlays = [
-              (import ./overlays/citrix.nix)
-              fenix.overlays.default
-            ];
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.harryp.imports = [./hosts/desktop/home.nix];
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              settings = settings;
-              linuxSettings = linuxSettings;
-            };
-            home-manager.sharedModules = [
-              sops-nix.homeManagerModules.sops
-            ];
-          }
-        ];
+    nixosConfigurations = {
+      nixos = mkSystem.nixos {
+        system = "x86_64-linux";
+        sysConfig = ./hosts/desktop/configuration.nix;
+        homeConfig = ./hosts/desktop/home.nix;
       };
     };
 
     darwinConfigurations = let
       system = "aarch64-darwin";
-      userName = "harryp";
-      homeDir = "/Users/${userName}";
-      hostName = "Harrys-MacBook-Air";
-      settings = sharedSettings {
-        userName = userName;
-        homeDir = homeDir;
-        hostName = hostName;
-      };
+      macConfig = ./hosts/mac/configuration.nix;
+      macHomeConfig = ./hosts/mac/home.nix;
     in {
-      "Harrys-MacBook-Pro" = nix-darwin.lib.darwinSystem {
-        inherit system;
-        specialArgs = {
-          inherit inputs;
-          settings = settings;
-        };
-
-        modules = [
-          ./hosts/mac/configuration.nix
-          mac-app-util.darwinModules.default
-          home-manager.darwinModules.home-manager
-          {
-            nixpkgs.config.permittedInsecurePackages = [
-              "dotnet-core-combined"
-              "dotnet-sdk-6.0.428"
-              "dotnet-sdk-7.0.410"
-              "dotnet-sdk-wrapped-6.0.428"
-            ];
-            nixpkgs.overlays = [
-              fenix.overlays.default
-            ];
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.harryp.imports = [./hosts/mac/home.nix];
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              settings = settings;
-            };
-            home-manager.sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
-              mac-app-util.homeManagerModules.default
-            ];
-          }
-        ];
+      "Harrys-MacBook-Pro" = mkSystem.darwin {
+        system = system;
+        hostNameArg = "Harrys-MacBook-Pro";
+        sysConf = macConfig;
+        homeConf = macHomeConfig;
       };
-
-      "Harrys-MacBook-Air" = nix-darwin.lib.darwinSystem {
-        inherit system;
-        specialArgs = {
-          inherit inputs;
-          settings = settings;
-        };
-
-        modules = [
-          mac-app-util.darwinModules.default
-          ./hosts/mac/configuration.nix
-          home-manager.darwinModules.home-manager
-          {
-            nixpkgs.overlays = [
-              fenix.overlays.default
-            ];
-            nixpkgs.config.permittedInsecurePackages = [
-              "dotnet-core-combined"
-              "dotnet-sdk-6.0.428"
-              "dotnet-sdk-7.0.410"
-              "dotnet-sdk-wrapped-6.0.428"
-            ];
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.harryp.imports = [./hosts/mac/home.nix];
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-              settings = settings;
-            };
-            home-manager.sharedModules = [
-              inputs.sops-nix.homeManagerModules.sops
-              mac-app-util.homeManagerModules.default
-            ];
-          }
-        ];
+      "Harrys-MacBook-Air" = mkSystem.darwin {
+        system = system;
+        hostNameArg = "Harrys-MacBook-Air";
+        sysConf = macConfig;
+        homeConf = macHomeConfig;
       };
     };
   };
