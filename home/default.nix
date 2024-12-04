@@ -161,7 +161,6 @@ in {
       # tray.enable = isLinux; ## not working for some reason
     };
 
-
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
 
@@ -195,6 +194,7 @@ in {
       };
       secrets.gpt-api-key = {};
       secrets.server-ip = {};
+      secrets.claude_key = {};
     };
 
     home.file."${settings.configDir}/aichat/config.yaml".text = ''
@@ -211,6 +211,7 @@ in {
 
       AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
       OPENAI_API_KEY = "$(cat ${config.sops.secrets.gpt-api-key.path})";
+      ANTHROPIC_API_KEY = "$(cat ${config.sops.secrets.claude_key.path})";
       EDITOR = "nvim";
       PAGER = "bat --paging always";
       RUST_SRC_PATH = "${rust-packages.src}/lib/rustlib/src/rust/library";
