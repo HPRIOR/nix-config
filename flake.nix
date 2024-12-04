@@ -60,14 +60,14 @@
       "Harrys-MacBook-Pro" = mkSystem.darwin {
         system = system;
         hostNameArg = "Harrys-MacBook-Pro";
-        sysConf = macConfig;
-        homeConf = macHomeConfig;
+        sysConfig = macConfig;
+        homeConfig = macHomeConfig;
       };
       "Harrys-MacBook-Air" = mkSystem.darwin {
         system = system;
         hostNameArg = "Harrys-MacBook-Air";
-        sysConf = macConfig;
-        homeConf = macHomeConfig;
+        sysConfig = macConfig;
+        homeConfig = macHomeConfig;
       };
     };
   };
