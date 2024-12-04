@@ -14,12 +14,15 @@ in {
       avante = {
         enable = true;
         settings = {
+          provider = "openai";
         };
       };
-      # render-markdown = {
-      #   enable = true;
-      #   settings.overrides.filetype = ''{"markdown" "Avante"}'';
-      # };
+      render-markdown = {
+        enable = true;
+        settings = {
+          file_types = ["markdown" "Avante"];
+        };
+      };
       toggleterm = {
         enable = true;
         settings = {
@@ -67,6 +70,8 @@ in {
       treesitter = {
         settings = {
           indent.enable = true;
+          highlight.enable = true;
+          ensure_installed = "all";
         };
         enable = true;
       };
