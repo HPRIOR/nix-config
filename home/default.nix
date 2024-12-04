@@ -174,6 +174,7 @@ in {
         merge.conflictstyle = "diff3";
         diff.colorMoved = "default";
         init.defaultBranch = "main";
+        push.autoSetupRemote = true;
       };
       delta = {
         enable = true;
