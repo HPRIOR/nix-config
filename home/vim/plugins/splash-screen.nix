@@ -85,7 +85,7 @@ in {
           (
             mkButton
             "t"
-            "NvimTreeToggle<CR>"
+            ":NvimTreeToggle<CR>"
             "  Open tree"
             "Operator"
           )
