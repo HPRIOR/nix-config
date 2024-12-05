@@ -102,6 +102,7 @@
     text = smartCapture "slurp -o";
   };
 
+  # todo was this nor working?
   _ = pkgs.writeShellApplication {
     name = rofi-capture-cmd;
 
@@ -136,4 +137,5 @@ in {
     smart-selection
     smart-screen
   ];
+
 }

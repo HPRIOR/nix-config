@@ -2,8 +2,6 @@
   config,
   pkgs,
   settings,
-  lib,
-  inputs,
   ...
 }: let
   defaultLocale = "en_GB.UTF-8";
@@ -79,7 +77,7 @@ in {
     uid = settings.uid;
     description = settings.fullName;
     extraGroups = settings.extraGroups;
-    packages = with pkgs; [];
+    packages = [];
   };
 
   nixpkgs.config.allowUnfree = true;

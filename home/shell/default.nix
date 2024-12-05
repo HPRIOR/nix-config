@@ -3,11 +3,7 @@
   pkgs,
   ...
 }: let
-  isDarwin = pkgs.stdenv.isDarwin;
   isLinux = pkgs.stdenv.isLinux;
-  userName = settings.userName;
-  homeDir = settings.homeDir;
-  dotFiles = "${homeDir}/.dotfiles";
 
   capture-cmds =
     if isLinux
@@ -19,10 +15,6 @@
       .cmds
     else [];
 
-  # Very simple rust project for piping into nvim and saving into random scratch dir or named file.
-  # Defined here because zsh_funcs  has a dependency on it.
-  # TODO: not much logic involved so should probably be a bash script instead - although good simple example of the
-  # power of nix. This should now be reproducible.
   vdoc = pkgs.rustPlatform.buildRustPackage {
     pname = "vdoc";
     version = "0.1.0";
@@ -35,87 +27,21 @@
     cargoHash = "sha256-+5bF0/c4yoKAFWRE+/CSYpmD2IMGTuuHsb5nMKgS6SA=";
   };
 
-  aliases_linux = {
-    buildwork = "sudo nixos-rebuild switch --flake ${dotFiles}#work";
-
-    cap = "grim -g \"$(slurp)\" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')";
-    scap = "grim -g \"$(slurp -o)\" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')";
+  mkAlias = (import ./alias.nix) {
+    pkgs = pkgs;
+    settings = settings;
   };
+  alias_shared = mkAlias.shared;
+  alias_combined = mkAlias.shared // mkAlias.linux;
 
-  aliases_all = rec {
-    v = "nvim";
-
-    ai = "aichat --model openai:gpt-4o";
-
-    buildnix = let
-      buildcmd =
-        if isDarwin
-        then "darwin-rebuild switch --flake ${dotFiles}"
-        else "sudo nixos-rebuild switch --flake ${dotFiles}";
-    in "echo 'Building nix config' && ${buildcmd} && echo 'Cleaning old generations' && sudo nix-env --delete-generations +20 --profile /nix/var/nix/profiles/system";
-
-    buildnix-dev = let
-      buildcmd =
-        if isDarwin
-        then "darwin-rebuild switch --flake ${dotFiles}"
-        else "sudo nixos-rebuild switch --flake ${dotFiles}";
-    in "echo 'Building nix config' && ${buildcmd}";
-
-    updatenix = "nix flake update ${dotFiles} && ${buildnix}";
-
-    editnix = "cd ${dotFiles} && nvim && cd -";
-
-    editdocs = "cd ${homeDir}/Documents/vdoc && nvim && cd -";
-
-    editnotes = "cd ${homeDir}/Documents/Notes && nvim && cd -";
-
-
-
-    nixdev = "nix develop -c zsh";
-
-    nix-clean-generations = "sudo nix-env --delete-generations +20 --profile /nix/var/nix/profiles/system";
-
-    cdstore = ''cd "/nix/store/$(ls -D /nix/store | fzf)"'';
-
-    ncg = "nix-collect-garbage -d";
-    # lazy
-    lzg = "lazygit";
-    lzd = "lazydocker";
-
-    # zsh
-    sourcezsh = "source ${homeDir}/.zshrc";
-
-    # modern replacements
-    diff = "difft";
-    cat = "bat";
-    ls = "exa";
-    ll = "exa -l --git";
-    lla = "exa -la --git";
-    la = "exa -a --git";
-    changes = "git diff */**";
-
-    copy =
-      if isDarwin
-      then "pbcopy"
-      else "wl-copy";
-
-    paste =
-      if isDarwin
-      then "pbpaste"
-      else "wl-paste";
-  };
   aliases =
     if isLinux
-    then aliases_linux // aliases_all // flake-cmds
-    else aliases_all // flake-cmds;
+    then alias_combined
+    else alias_shared;
 in {
   imports = [];
 
-  home.packages = with pkgs;
-    [
-      vdoc
-    ]
-    ++ capture-cmds;
+  home.packages = [vdoc] ++ capture-cmds;
 
   programs.bash = {
     enable = false;

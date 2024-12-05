@@ -1,7 +1,4 @@
-{
-  pkgs,
-  rust-packages,
-}: {
+{rust-packages, ...}: {
   lsp = {
     enable = true;
     onAttach = ''
@@ -35,7 +32,6 @@
         installRustc = false;
         settings = {
           files.excludeDirs = [".direnv" ".cargo"];
-          # checkOnSave = true;
           check.command = "clippy";
           cargo.features = "all";
           check.features = "all";

@@ -2,7 +2,6 @@
   pkgs,
   config,
   settings,
-  lib,
   ...
 }: let
   isLinux = pkgs.stdenv.isLinux;
