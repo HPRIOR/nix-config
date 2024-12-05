@@ -8,7 +8,6 @@
   userName = settings.userName;
   homeDir = settings.homeDir;
   dotFiles = "${homeDir}/.dotfiles";
-  flake-cmds = import ./scripts/flake-init.nix;
 
   capture-cmds =
     if isLinux
