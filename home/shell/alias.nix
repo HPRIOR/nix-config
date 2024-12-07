@@ -67,7 +67,7 @@ in {
       else "wl-paste";
   };
 
-  aliases_linux = {
+  linux = {
     buildwork = "sudo nixos-rebuild switch --flake ${dotFiles}#work";
 
     cap = "grim -g \"$(slurp)\" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')";
