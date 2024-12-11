@@ -29,6 +29,9 @@
     "dotnet-sdk-6.0.428"
     "dotnet-sdk-7.0.410"
     "dotnet-sdk-wrapped-6.0.428"
+    "dotnet-wrapped-combined"
+    "dotnet-combined"
+    "dotnet-sdk-wrapped-7.0.410"
   ];
 
   sharedOverlays = [
