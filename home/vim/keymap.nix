@@ -230,7 +230,16 @@
     #  todo change severity, currently showing warnings too
     mode = ["n"];
     key = "<leader>vl";
-    action = "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>";
+    action = "<cmd>Telescope lsp_document_symbols<cr>";
+    options = {
+      silent = true;
+      desc = "Telescope lsp workspace symbols";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>vL";
+    action = "<cmd>Telescope lsp_workspace_symbols<cr>";
     options = {
       silent = true;
       desc = "Telescope lsp workspace symbols";

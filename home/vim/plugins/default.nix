@@ -9,6 +9,7 @@
 in {
   plugins =
     {
+      neoscroll.enable = true;
       web-devicons.enable = true;
       # todo enable these when available in systems pkgs
       avante = {
