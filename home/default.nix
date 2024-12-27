@@ -122,7 +122,13 @@ in {
         unzip
         watchexec
         zathura
-        zoom-us
+        (zoom-us.overrideAttrs (oldAttrs: rec {
+          version = "6.0.12.5501";
+          src = pkgs.fetchurl {
+            url = "https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz";
+            sha256 = "sha256-h9gjVd7xqChaoC2BZWEhR5WdyfQrPiBjM2WHXMgp8uQ=";
+          };
+        }))
         zoxide
         rust-packages.toolchain
         rust-packages.analyzer

@@ -68,7 +68,6 @@ in {
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
-    wayland.compositor = "kwin";
   };
 
   console.useXkbConfig = true;
@@ -116,19 +115,11 @@ in {
     # set the flake package
     # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     # make sure to also set the portal package, so that they are in sync
-    # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    portalPackage = pkgs.xdg-desktop-portal-hyprland;
     withUWSM = true; # recommended for most users
     xwayland.enable = true;
   };
 
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-gtk
-    xdg-desktop-portal-wlr
-    xdg-desktop-portal-hyprland
-    xdg-desktop-portal
-    xdg-desktop-portal-kde
-  ];
   programs.nix-ld.enable = true;
   # https://nixos.wiki/wiki/Jetbrains_Tools
   programs.nix-ld.libraries = with pkgs; [
@@ -247,12 +238,12 @@ in {
     zlib
   ];
 
-  # xdg.portal.enable = true;
-  # xdg.portal.extraPortals = with pkgs; [
-  #   # xdg-desktop-portal-gtk
-  #   # xdg-desktop-portal-wlr
-  #   # xdg-desktop-portal-hyprland
-  # ];
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = with pkgs; [
+    xdg-desktop-portal-gtk
+    xdg-desktop-portal-wlr
+    xdg-desktop-portal-hyprland
+  ];
 
   security.rtkit.enable = true;
   # security.polkit.enable = true;
