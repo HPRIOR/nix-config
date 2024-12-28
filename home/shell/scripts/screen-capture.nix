@@ -32,7 +32,7 @@
     mkdir -p ${screenshot-path}
     image_path=${screenshot-path}/"$(date +'%H-%M-%S_%d-%m-%Y_screenshot.png')"
     grim -g "$(${slurpCmd})" "$image_path"
-    image_name=$(aichat --no-highlight --no-stream -f "$image_path" "Return a suitable filename for the attached picture assuming its a screenshot. Only return the filename, and be descriptive enough to differentiate between similar screenshots. Appoend the date: $(date +'%H-%M-%S_%d-%m-%Y')" )
+    image_name=$(aichat  --no-stream -f "$image_path" "Return a suitable filename for the attached picture assuming its a screenshot. Only return the filename, and be descriptive enough to differentiate between similar screenshots. Appoend the date: $(date +'%H-%M-%S_%d-%m-%Y')" )
     new_image_path=${screenshot-path}/"$image_name"
     mv "$image_path" "$new_image_path"
   '';
@@ -137,5 +137,4 @@ in {
     smart-selection
     smart-screen
   ];
-
 }
