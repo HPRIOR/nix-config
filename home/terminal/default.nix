@@ -2,15 +2,16 @@
   pkgs,
   config,
   settings,
+  inputs,
   ...
 }: {
+  home.sessionVariables = {
+    TERMCMD = "${inputs.ghostty.packages.${pkgs.system}.default}/bin/ghostty";
+  };
   home.file."${settings.configDir}/ghostty/config".text = ''
     font-family = ${settings.font}
     theme = kanagawabones
   '';
-  home.sessionVariables = {
-    TERMCMD = "${pkgs.kitty}/bin/kitty";
-  };
   programs.kitty = {
     enable = true;
     font = {
