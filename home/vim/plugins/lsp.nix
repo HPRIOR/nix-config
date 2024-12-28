@@ -1,4 +1,8 @@
-{rust-packages, ...}: {
+{
+  rust-packages,
+  pkgs,
+  ...
+}: {
   lsp = {
     enable = true;
     onAttach = ''
@@ -18,7 +22,11 @@
       lua_ls.enable = true;
       marksman.enable = true;
       nixd.enable = true;
-      # ocamllsp.enable = true;
+      ocamlls = {
+        enable = true;
+        package = pkgs.ocamlPackages.ocaml-lsp;
+        cmd = ["${pkgs.ocamlPackages.ocaml-lsp}/bin/ocamllsp" "--stdio"];
+      };
       omnisharp.enable = true;
       pyright.enable = true;
       metals.enable = true;

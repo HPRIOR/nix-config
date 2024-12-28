@@ -99,6 +99,7 @@ in {
           yaml = ["yamlfmt"];
           rust = ["rustfmt"];
           sh = ["shfmt"];
+          ocaml = ["ocamlformat"];
         };
       };
 
