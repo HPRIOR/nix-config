@@ -9,6 +9,7 @@
   userName = settings.userName;
   homeDir = settings.homeDir;
   isLinux = pkgs.stdenv.isLinux;
+  isDarwin = pkgs.stdenv.isDarwin;
   system =
     if isLinux
     then "x86_64-linux"
@@ -126,19 +127,19 @@ in {
         unzip
         watchexec
         zathura
-        (zoom-us.overrideAttrs (oldAttrs: rec {
+        zoxide
+        rust-packages.toolchain
+        rust-packages.analyzer
+      ]
+      ++ (lib.optionals isLinux [
+        (zoom-us.overrideAttrs (oldAttrs: let
+        in rec {
           version = "6.0.12.5501";
           src = pkgs.fetchurl {
             url = "https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz";
             sha256 = "sha256-h9gjVd7xqChaoC2BZWEhR5WdyfQrPiBjM2WHXMgp8uQ=";
           };
         }))
-        zoxide
-        rust-packages.toolchain
-        rust-packages.analyzer
-        inputs.ghostty.packages.${system}.default
-      ]
-      ++ (lib.optionals isLinux [
         _1password-cli
         _1password-gui
         # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
@@ -161,7 +162,9 @@ in {
         strace
         v4l-utils
         vlc
-      ]);
+        inputs.ghostty.packages.${system}.default
+      ])
+      ++ (lib.optionals isDarwin [zoom-us]);
 
     services.syncthing = {
       enable = true;

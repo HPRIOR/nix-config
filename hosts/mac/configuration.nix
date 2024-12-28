@@ -68,6 +68,7 @@ in {
       "citrix-workspace"
       "jetbrains-toolbox"
       "docker"
+      "ghostty"
     ];
   };
 }

@@ -6,7 +6,10 @@
   ...
 }: {
   home.sessionVariables = {
-    TERMCMD = "${inputs.ghostty.packages.${pkgs.system}.default}/bin/ghostty";
+    TERMCMD =
+      if pkgs.stdenv.isLinux
+      then "${inputs.ghostty.packages.${pkgs.system}.default}/bin/ghostty"
+      else "ghostty";
   };
   home.file."${settings.configDir}/ghostty/config".text = ''
     font-family = ${settings.font}
