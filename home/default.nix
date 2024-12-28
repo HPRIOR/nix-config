@@ -9,6 +9,10 @@
   userName = settings.userName;
   homeDir = settings.homeDir;
   isLinux = pkgs.stdenv.isLinux;
+  system =
+    if isLinux
+    then "x86_64-linux"
+    else "aarch64-darwin";
 
   rust-packages = rec {
     toolchain-version = "stable";
@@ -132,6 +136,7 @@ in {
         zoxide
         rust-packages.toolchain
         rust-packages.analyzer
+        inputs.ghostty.packages.${system}.default
       ]
       ++ (lib.optionals isLinux [
         _1password-cli

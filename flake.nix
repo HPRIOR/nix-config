@@ -33,6 +33,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    ghostty = {
+      url = "github:ghostty-org/ghostty";
+    };
+
     mac-app-util.url = "github:hraban/mac-app-util";
 
     hyprland.url = "github:hyprwm/Hyprland";
