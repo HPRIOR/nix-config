@@ -14,6 +14,7 @@
   home.file."${settings.configDir}/ghostty/config".text = ''
     font-family = ${settings.font}
     theme = kanagawabones
+    gtk-titlebar = false
   '';
   programs.kitty = {
     enable = true;
