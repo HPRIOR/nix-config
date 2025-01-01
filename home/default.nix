@@ -102,6 +102,7 @@ in {
         fd # find alternative
         fzf
         glances
+        glow
         gping # ping with graph
         hexyl
         hurl
@@ -117,6 +118,8 @@ in {
         procs # ps alternative
         ranger
         ripgrep
+        rust-packages.analyzer
+        rust-packages.toolchain
         sd # sed alternative
         sops
         spotify
@@ -128,8 +131,6 @@ in {
         watchexec
         zathura
         zoxide
-        rust-packages.toolchain
-        rust-packages.analyzer
       ]
       ++ (lib.optionals isLinux [
         (zoom-us.overrideAttrs (oldAttrs: let

@@ -38,8 +38,6 @@
     };
 
     mac-app-util.url = "github:hraban/mac-app-util";
-
-    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = {nixpkgs, ...} @ inputs: let
