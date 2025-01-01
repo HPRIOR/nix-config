@@ -163,7 +163,17 @@ in {
         strace
         v4l-utils
         vlc
-        inputs.ghostty.packages.${system}.default
+        # see https://github.com/ghostty-org/ghostty/discussions/3224#discussioncomment-11711871 - high iowait usage otherwise, waiting for fix
+        (inputs.ghostty.packages.${pkgs.system}.default.overrideAttrs (old: {
+          preBuild =
+            (old.preBuild or [])
+            + ''
+              # use Epoll due to io_uring spamming iowait
+              shopt -s globstar
+              sed -i 's/^const xev = @import("xev");$/const xev = @import("xev").Epoll;/' **/*.zig
+              shopt -u globstar
+            '';
+        }))
       ])
       ++ (lib.optionals isDarwin [zoom-us]);
 

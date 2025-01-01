@@ -63,6 +63,7 @@ in {
           nixpkgs.overlays =
             [
               (import ../overlays/citrix.nix)
+              (inputs.ghostty.overlays.default)
             ]
             ++ sharedOverlays;
           home-manager.useGlobalPkgs = true;
