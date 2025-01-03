@@ -77,6 +77,7 @@ in {
         vim.opt.winbar = create_winbar()
 
         require'window-picker'.setup()
+        vim.g.no_ocaml_maps = 1
       '';
       keymaps = keymaps;
       extraPackages = [

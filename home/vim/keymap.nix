@@ -3,6 +3,8 @@
     key = "<leader>t";
     action = ":NvimTreeToggle<CR>";
     options = {
+      noremap = true;
+      unique = true;
       silent = true;
       desc = "Toggle neotree";
     };
