@@ -143,6 +143,7 @@ in {
         }))
         _1password-cli
         _1password-gui
+        calibre
         # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
         # Some declarative prerequisites for this package
         citrix_workspace

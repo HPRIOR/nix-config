@@ -54,21 +54,22 @@ in {
     onActivation.upgrade = true;
     onActivation.cleanup = "uninstall";
     casks = [
-      "firefox"
-      "mullvadvpn"
-      "whatsapp"
-      "rectangle"
-      "dropbox"
-      "obsidian"
-      "vlc"
-      "libreoffice"
       "1password"
-      "protonmail-bridge"
-      "rustdesk"
+      "calibre"
       "citrix-workspace"
-      "jetbrains-toolbox"
       "docker"
+      "dropbox"
+      "firefox"
       "ghostty"
+      "jetbrains-toolbox"
+      "libreoffice"
+      "mullvadvpn"
+      "obsidian"
+      "protonmail-bridge"
+      "rectangle"
+      "rustdesk"
+      "vlc"
+      "whatsapp"
     ];
   };
 }
