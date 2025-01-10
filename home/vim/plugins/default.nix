@@ -15,7 +15,10 @@ in {
       avante = {
         enable = true;
         settings = {
-          provider = "openai";
+          provider = "claude";
+          claude = {
+            model = "claude-3-5-sonnet-20241022";
+          };
         };
       };
       render-markdown = {
