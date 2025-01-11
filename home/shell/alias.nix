@@ -65,6 +65,8 @@ in {
       if isDarwin
       then "pbpaste"
       else "wl-paste";
+
+    pdate = "date -u +%Y-%m-%dT%H_%M_%S";
   };
 
   linux = {

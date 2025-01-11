@@ -125,6 +125,8 @@ in {
         spotify
         syncthing
         thefuck
+        texstudio
+        tetex
         tldr
         tree
         unzip
