@@ -9,6 +9,7 @@
 in {
   plugins =
     {
+      guess-indent.enable = true;
       nvim-colorizer.enable = true;
       neoscroll.enable = true;
       web-devicons.enable = true;
@@ -83,10 +84,6 @@ in {
       # Code formatting
       conform-nvim = {
         enable = true;
-        # formatOnSave = {
-        #   lspFallback = true;
-        #   timeoutMs = 500;
-        # };
         settings.notifyOnError = true;
         settings.formatters_by_ft = {
           html = [["prettierd" "prettier"]];
