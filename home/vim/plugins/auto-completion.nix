@@ -12,15 +12,47 @@ pkgs: {
       snippet = {expand = "function(args) require('luasnip').lsp_expand(args.body) end";};
       formatting = {fields = ["kind" "abbr" "menu"];};
       sources = [
-        {name = "nvim_lsp";}
         {
-          name = "path"; # file system paths
-          keywordLength = 3;
+          name = "nvim_lsp";
+          priority = 1000;
         }
         {
           name = "luasnip"; # snippets
           keywordLength = 3;
+          priority = 900;
         }
+        {
+          name = "path"; # file system paths
+          keywordLength = 3;
+          priority = 400;
+        }
+      ];
+      sorting.comparators = [
+        "require('cmp.config.compare').offset"
+        "require('cmp.config.compare').exact"
+        "require('cmp.config.compare').score"
+        ''
+          function(entry1, entry2)
+            local types = require('cmp.types')
+            local kind1 = entry1:get_kind()
+            local kind2 = entry2:get_kind()
+            kind1 = kind1 == types.lsp.CompletionItemKind.Text and 100 or kind1
+            kind2 = kind2 == types.lsp.CompletionItemKind.Text and 100 or kind2
+            if kind1 ~= kind2 then
+              local diff = kind1 - kind2
+              if diff < 0 then
+                return true
+              elseif diff > 0 then
+                return false
+              end
+            end
+            return nil
+          end
+        ''
+        "require('cmp.config.compare').recently_used"
+        "require('cmp.config.compare').locality"
+        "require('cmp.config.compare').length"
+        "require('cmp.config.compare').order"
       ];
 
       window = {
