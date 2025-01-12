@@ -35,15 +35,34 @@ csvcat(){
 
 fif(){
     local RG_PREFIX='rg --column --line-number --no-heading --color=always --smart-case  -g "!{node_modules/*,.git/*}"'
+    local search_path="."
+    
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -a)
+                RG_PREFIX='rg --column --line-number --no-heading --color=always --smart-case --no-ignore --hidden -g "!{node_modules/*,.git/*}"'
+                shift
+                ;;
+            *)
+                if [[ -d "$1" ]]; then
+                    search_path="$1"
+                    shift
+                else
+                    break
+                fi
+                ;;
+        esac
+    done
+    
     local INITIAL_QUERY="${*:-}"
-    local fzf_result=$(FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
-      fzf --ansi \
+    local fzf_result=$(FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY") $search_path" \
+    fzf --ansi \
           --disabled \
           --query "$INITIAL_QUERY" \
-          --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+          --bind "change:reload:sleep 0.1; $RG_PREFIX {q} $search_path || true" \
           --delimiter : \
           --preview 'bat --color=always {1} --highlight-line {2}' \
-          --preview-window 'up,60%,border-bottom,+{2}+3/3,~3')
+          --preview-window 'up,60%,border-bottom,+{2}+3/3,~3') 
     local result=${fzf_result%%:*}
     local line_no=$(echo $fzf_result | cut -d: -f2)
 
@@ -51,24 +70,7 @@ fif(){
         nvim +$line_no $result
     fi
 }
-fifa(){
-    local RG_PREFIX='rg --column --line-number --no-heading --color=always --smart-case --no-ignore -g "!{node_modules/*,.git/*}"'
-    local INITIAL_QUERY="${*:-}"
-    local fzf_result=$(FZF_DEFAULT_COMMAND="$RG_PREFIX $(printf %q "$INITIAL_QUERY")" \
-      fzf --ansi \
-          --disabled \
-          --query "$INITIAL_QUERY" \
-          --bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
-          --delimiter : \
-          --preview 'bat --color=always {1} --highlight-line {2}' \
-          --preview-window 'up,60%,border-bottom,+{2}+3/3,~3')
-    local result=${fzf_result%%:*}
-    local line_no=$(echo $fzf_result | cut -d: -f2)
 
-    if [ "x$result" != "x" ]; then
-        nvim +$line_no $result
-    fi
-}
 
 fdir_helper() {
     local patharg="$1"
