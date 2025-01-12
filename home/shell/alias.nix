@@ -71,6 +71,7 @@ in {
 
   linux = {
     buildwork = "sudo nixos-rebuild switch --flake ${dotFiles}#work";
+    shell = "nix-shell -p";
 
     cap = "grim -g \"$(slurp)\" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')";
     scap = "grim -g \"$(slurp -o)\" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')";

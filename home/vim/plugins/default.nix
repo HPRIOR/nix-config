@@ -9,6 +9,7 @@
 in {
   plugins =
     {
+      nvim-colorizer.enable = true;
       neoscroll.enable = true;
       web-devicons.enable = true;
       # todo enable these when available in systems pkgs

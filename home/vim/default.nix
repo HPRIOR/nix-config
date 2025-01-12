@@ -17,6 +17,16 @@ in {
   programs.nixvim =
     {
       enable = true;
+      performance = {
+        combinePlugins.enable = true;
+        byteCompileLua = {
+          enable = true;
+          configs = true;
+          initLua = true;
+          nvimRuntime = true;
+          plugins = true;
+        };
+      };
       defaultEditor = true;
       viAlias = true;
       vimAlias = true;
