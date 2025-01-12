@@ -60,7 +60,10 @@
       yamlls.enable = true;
       elixirls.enable = true;
       ts_ls.enable = true;
-      tailwindcss.enable = true;
+      tailwindcss = {
+        enable = true;
+        autostart = false;
+      };
     };
     keymaps.lspBuf = {
       "gD" = "references";

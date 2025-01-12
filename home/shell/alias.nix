@@ -70,6 +70,7 @@ in {
   };
 
   linux = {
+    nap = "systemctl suspend";
     buildwork = "sudo nixos-rebuild switch --flake ${dotFiles}#work";
     shell = "nix-shell -p";
 
