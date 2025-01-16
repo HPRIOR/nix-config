@@ -119,7 +119,7 @@ fdir() {
 
   # Run fd -> fzf with preview, capturing keypress + selection
   local output
-  output=$(eval "$fd_cmd" | fzf --expect ctrl-o,ctrl-r,ctrl-s,ctrl-f,enter --preview "$preview")
+  output=$(eval "$fd_cmd" | fzf --expect ctrl-o,ctrl-r,ctrl-s,ctrl-f,enter --preview "$preview" --preview-window 'up,60%,border-bottom,+{2}+3/3,~3')
 
   # If user presses <esc> or there's no selection, exit
   if [[ -z "$output" ]]; then
@@ -196,7 +196,7 @@ ff() {
 
   # Run fd -> fzf
   local output
-  output=$(eval "$fd_cmd" | fzf --expect ctrl-o,ctrl-s,ctrl-f,enter --preview "$preview")
+  output=$(eval "$fd_cmd" | fzf --expect ctrl-o,ctrl-s,ctrl-f,enter --preview "$preview" --preview-window 'up,60%,border-bottom,+{2}+3/3,~3')
 
   # If user presses <esc> or there's no selection, exit
   if [[ -z "$output" ]]; then
