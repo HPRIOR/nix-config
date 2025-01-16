@@ -72,118 +72,159 @@ fif(){
 }
 
 
-fdir_helper() {
-    local patharg="$1"
-    local hidden="$2"
-    local preview="$3"
-    local enteropt="$4"
-    local oopt="$5"
-    local output
-
-    if [[ -n "$patharg" ]]; then
-        if [ $hidden = true ]; then
-            output=$(fd -u --type directory . "$patharg" | fzf --expect ctrl-o,ctrl-r,ctrl-f,enter --preview "$preview")
-        else
-            output=$(fd --type directory . "$patharg" | fzf --expect ctrl-o,ctrl-r,ctrl-f,enter --preview "$preview")
-        fi
-    else
-        if [ $hidden = true ]; then
-            output=$(fd -u --type directory | fzf --expect ctrl-o,ctrl-r,ctrl-f,enter --preview "$preview")
-        else
-            output=$(fd --type directory | fzf --expect ctrl-o,ctrl-r,ctrl-f,enter --preview "$preview")
-        fi
-    fi
-
-    if [[ -z "$output" ]]; then
-        return
-    fi
-
-    local key=$(echo "$output" | head -1)
-    local val=$(echo "$output" | tail -1)
-
-    case "$key" in
-        enter)
-            if [[ -n "$val" ]]; then
-                $enteropt "$val"
-            fi
-            ;;
-        ctrl-o)
-            if [[ -n "$val" ]]; then
-                $oopt "$val"
-            fi
-            ;;
-        ctrl-r)
-            fdir_helper "$val" "$hidden" "$preview" "$enteropt" "$oopt"
-            ;;
-        ctrl-f)
-            cd $val && fif && cd -
-            ;;
-    esac
-}
-
+##
+# fdir: fuzzy-find directories
+# Usage: 
+#   fdir [-a] [path]
+#     -a      Show hidden directories as well
+#     path    Optional path argument to limit search
+##
 fdir() {
-    local preview='exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
-    fdir_helper "$1" false "$preview" "cd" "nvim"
-}
+  emulate -L zsh
 
-fdira() {
-    local preview='exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
-    fdir_helper "$1" true "$preview" "cd" "nvim"
-}
+  # Default options
+  local hidden=false
+  local preview='exa {} -T -L 1 --long --git --colour=always --icons --no-permissions \
+                 --no-time --no-user --no-filesize --group-directories-first --sort=extension'
 
-ff_helper() {
-    local patharg="$1"
-    local hidden="$2"
-    local preview="$3"
-    local enteropt="$4"
-    local oopt="$5"
-    local output
-
-    if [[ -n "$patharg" ]]; then
-        if [ $hidden = true ]; then
-            output=$(fd -u --type file . "$patharg" | fzf --expect ctrl-o,enter --preview "$preview")
-        else
-            output=$(fd --type file . "$patharg" | fzf --expect ctrl-o,enter --preview "$preview")
-        fi
-    else
-        if [ $hidden = true ]; then
-            output=$(fd -u --type file | fzf --expect ctrl-o,enter --preview "$preview")
-        else
-            output=$(fd --type file | fzf --expect ctrl-o,enter --preview "$preview")
-        fi
-    fi
-
-    if [[ -z "$output" ]]; then
-        return
-    fi
-
-    local key=$(echo "$output" | head -1)
-    local val=$(echo "$output" | tail -1)
-
-    case "$key" in
-        enter)
-            if [[ -n "$val" ]]; then
-                $enteropt "$val"
-            fi
-            ;;
-        ctrl-o)
-            if [[ -n "$val" ]]; then
-                $oopt $(dirname "$val")
-            fi
-            ;;
+  # Parse flags
+  local opt
+  while getopts ":a" opt; do
+    case $opt in
+      a)
+        hidden=true
+        ;;
+      \?)
+        echo "Invalid option: -$OPTARG" >&2
+        return 1
+        ;;
     esac
+  done
+  shift $((OPTIND - 1))
+
+  # If there's a positional argument left, treat it as the path argument
+  local patharg=$1
+
+  # Construct the fd command
+  local fd_cmd="fd --type directory"
+  if [[ $hidden = true ]]; then
+    fd_cmd="fd -u --type directory"
+  fi
+
+  # If a path argument was given, append it
+  if [[ -n "$patharg" ]]; then
+    # Note: quoting carefully so expansions happen correctly
+    fd_cmd+=" . \"$patharg\""
+  fi
+
+  # Run fd -> fzf with preview, capturing keypress + selection
+  local output
+  output=$(eval "$fd_cmd" | fzf --expect ctrl-o,ctrl-r,ctrl-s,ctrl-f,enter --preview "$preview")
+
+  # If user presses <esc> or there's no selection, exit
+  if [[ -z "$output" ]]; then
+    return
+  fi
+
+  # Parse out the key and the selected directory
+  local key val
+  key=$(echo "$output" | head -1)
+  val=$(echo "$output" | tail -1)
+
+  # Act on the key pressed
+  case "$key" in
+    enter)
+      [[ -n "$val" ]] && cd "$val"
+      ;;
+    ctrl-o)
+      [[ -n "$val" ]] && nvim "$val"
+      ;;
+    ctrl-r)
+      [[ -n "$val" ]] && fdir "$val"
+      ;;
+    ctrl-s)
+      [[ -n "$val" ]] && ff $val       
+      ;;
+    ctrl-f)
+      [[ -n "$val" ]] && fif $val       
+      ;;
+  esac
 }
 
-
+##
+# ff: fuzzy-find files
+# Usage:
+#   ff [-a] [path]
+#     -a      Show hidden files as well
+#     path    Optional path argument to limit search
+##
 ff() {
-    local preview="bat --color=always --style=numbers --line-range :500 {}"
-    ff_helper "$1" false "$preview" "nvim" "cd"
-}
+  emulate -L zsh
 
-ffa() {
+  # Default options
+  local hidden=false
+  local preview="bat --color=always --style=numbers --line-range :500 {}"
 
-    local preview="bat --color=always --style=numbers --line-range :500 {}"
-    ff_helper "$1" true "$preview" "nvim" "cd"
+  # Parse flags
+  local opt
+  while getopts ":a" opt; do
+    case $opt in
+      a)
+        hidden=true
+        ;;
+      \?)
+        echo "Invalid option: -$OPTARG" >&2
+        return 1
+        ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  # If there's a positional argument left, treat it as the path argument
+  local patharg=$1
+
+  # Construct the fd command
+  local fd_cmd="fd --type file"
+  if [[ $hidden = true ]]; then
+    fd_cmd="fd -u --type file"
+  fi
+
+  # If a path argument was given, append it
+  if [[ -n "$patharg" ]]; then
+    fd_cmd+=" . \"$patharg\""
+  fi
+
+  # Run fd -> fzf
+  local output
+  output=$(eval "$fd_cmd" | fzf --expect ctrl-o,ctrl-s,ctrl-f,enter --preview "$preview")
+
+  # If user presses <esc> or there's no selection, exit
+  if [[ -z "$output" ]]; then
+    return
+  fi
+
+  # Parse out the key and the selected file
+  local key val
+  key=$(echo "$output" | head -1)
+  val=$(echo "$output" | tail -1)
+
+  # Act on the key pressed
+  case "$key" in
+    enter)
+      [[ -n "$val" ]] && nvim "$val"
+      ;;
+    ctrl-o)
+      # Example: opens the parent directory in nvim? Or just cd?
+      # Adjust to your liking
+      [[ -n "$val" ]] && cd "$(dirname "$val")"
+      ;;
+    ctrl-s)
+      [[ -n "$val" ]] && fdir "$(dirname "$val")"
+      ;;
+    ctrl-f)
+      [[ -n "$val" ]] && fif "$(dirname "$val")"
+      ;;
+  esac
 }
 
 
@@ -247,7 +288,7 @@ lzcommit() {
 }
 
 nix-installed(){
-    nix-store -q --requisites /run/current-system
+    nix-store -q --requisites /run/current-system | fzf
 
 }
 
