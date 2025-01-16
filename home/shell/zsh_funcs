@@ -186,12 +186,9 @@ ffa() {
     ff_helper "$1" true "$preview" "nvim" "cd"
 }
 
-private search_and_cd(){
-    cd $(fd -u -d 1 --type directory . $1 | fzf --preview "exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
-}
 
 fic(){
-    search_and_cd $HOME/Code
+    cd $(fd -u -d 1 --type directory . $1 | fzf --preview "exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
 }
 
 
@@ -292,4 +289,6 @@ function gi() {
         echo "No selections made. No changes to .gitignore."
     fi
 }
+
+
 
