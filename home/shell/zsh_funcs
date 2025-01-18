@@ -74,14 +74,120 @@ fif(){
     fi
 }
 
+f() {
+  emulate -L zsh
 
-##
-# fdir: fuzzy-find directories
-# Usage: 
-#   fdir [-a] [path]
-#     -a      Show hidden directories as well
-#     path    Optional path argument to limit search
-##
+  # Default options
+  local hidden=false
+  local preview_dir='exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
+
+  local preview_file='bat --color=always --style=numbers --line-range :500 {}'
+
+  # Parse flags
+  local opt
+  while getopts ":a" opt; do
+    case $opt in
+      a)
+        hidden=true
+        ;;
+      \?)
+        echo "Invalid option: -$OPTARG" >&2
+        return 1
+        ;;
+    esac
+  done
+  shift $((OPTIND - 1))
+
+  # If there's a positional argument left, treat it as the path argument
+  local patharg=$1
+
+  # Construct the fd command
+  local fd_cmd="fd "
+  if [[ $hidden = true ]]; then
+    fd_cmd="fd -u"
+  fi
+
+  # If a path argument was given, append it
+  if [[ -n "$patharg" ]]; then
+    # Note: quoting carefully so expansions happen correctly
+    fd_cmd+=" . \"$patharg\""
+  fi
+
+  local preview_label='[ enter = cd/nvim, ctrl+o = cd, ctrl-n = nvim, ctrl-r = f, ctrl+f = fif ]'
+  local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
+  # Run fd -> fzf with preview, capturing keypress + selection
+  local output
+  output=$(eval "$fd_cmd" | \
+    fzf-default --preview '
+      if [[ -f {} ]]; then 
+        bat --color=always --style=numbers --line-range :500 '{}' 
+      elif [[ -d {} ]]; then 
+        exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension 
+      fi
+        ' \
+      --preview-window $preview_window \
+      --expect ctrl-o,ctrl-r,ctrl-n,ctrl-f,enter \
+      --preview-label $preview_label \
+      )
+
+  # If user presses <esc> or there's no selection, exit
+  if [[ -z "$output" ]]; then
+    return
+  fi
+
+  # Parse out the key and the selected directory
+  local key val
+  key=$(echo "$output" | head -1)
+  val=$(echo "$output" | tail -1)
+
+  if [[ ! -n "$val" ]]; then 
+    return
+  fi 
+
+  # Act on the key pressed
+  case "$key" in
+    enter)
+      if [[ -f "$val" ]]; then
+        nvim "$val"
+      elif [[ -d "$val" ]]; then
+        cd "$val"
+      else
+        return
+      fi
+      ;;
+    ctrl-o)
+      if [[ -f "$val" ]]; then
+        cd $(dirname "$val")
+      elif [[ -d "$val" ]]; then
+        cd "$val"
+      else
+        return
+      fi
+      ;;
+    ctrl-n)
+      nvim "$val"
+      ;;
+    ctrl-r)
+      if [[ -f "$val" ]]; then
+        f $(dirname "$val")
+      elif [[ -d "$val" ]]; then
+        f "$val"
+      else
+        return
+      fi
+      ;;
+    ctrl-f)
+      if [[ -f "$val" ]]; then
+        fif $(dirname "$val")
+      elif [[ -d "$val" ]]; then
+        fif "$val"
+      else
+        return
+      fi
+      ;;
+  esac
+}
+
 fdir() {
   emulate -L zsh
 
@@ -120,14 +226,14 @@ fdir() {
     fd_cmd+=" . \"$patharg\""
   fi
 
-  local preview_label='[ enter = cd, ctrl+o = nvim, ctrl+s = ff, ctrl+f = fif ]'
+  local preview_label='[ enter = cd, ctrl+n = nvim, ctrl+s = ff, ctrl-r = fdir, ctrl+f = fif, ctrl-a = f ]'
   local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
   # Run fd -> fzf with preview, capturing keypress + selection
   local output
   output=$(eval "$fd_cmd" | \
     fzf-default --preview "$preview" \
       --preview-window $preview_window \
-      --expect ctrl-o,ctrl-r,ctrl-s,ctrl-f,enter \
+      --expect ctrl-n,ctrl-r,ctrl-s,ctrl-f,ctrl-a,enter \
       --preview-label $preview_label \
       )
 
@@ -136,38 +242,40 @@ fdir() {
     return
   fi
 
+
   # Parse out the key and the selected directory
   local key val
   key=$(echo "$output" | head -1)
   val=$(echo "$output" | tail -1)
 
+
+  if [[ ! -n "$val" ]]; then 
+   return 
+  fi 
+
   # Act on the key pressed
   case "$key" in
     enter)
-      [[ -n "$val" ]] && cd "$val"
+      cd "$val"
       ;;
-    ctrl-o)
-      [[ -n "$val" ]] && nvim "$val"
+    ctrl-n)
+      nvim "$val"
       ;;
     ctrl-r)
-      [[ -n "$val" ]] && fdir "$val"
+      fdir "$val"
       ;;
     ctrl-s)
-      [[ -n "$val" ]] && ff "$val"
+      ff "$val"
       ;;
     ctrl-f)
-      [[ -n "$val" ]] && fif "$val"
+      fif "$val"
+      ;;
+    ctrl-a)
+      f "$val"
       ;;
   esac
 }
 
-##
-# ff: fuzzy-find files
-# Usage:
-#   ff [-a] [path]
-#     -a      Show hidden files as well
-#     path    Optional path argument to limit search
-##
 ff() {
   emulate -L zsh
 
@@ -204,7 +312,7 @@ ff() {
     fd_cmd+=" . \"$patharg\""
   fi
 
-  local preview_label='[ enter = nvim, ctrl+o = cd, ctrl+s = fdir, ctrl+f = fif ]'
+  local preview_label='[ enter = nvim, ctrl+o = cd, ctrl+s = fdir, ctrl-r = ff, ctrl+f = fif, ctrl-a = f ]'
   # Run fd -> fzf
   local output
   output=$(eval "$fd_cmd" | \
@@ -224,30 +332,36 @@ ff() {
   key=$(echo "$output" | head -1)
   val=$(echo "$output" | tail -1)
 
+  if [[ ! -n "$val" ]]; then
+    return
+  fi
+
   # Act on the key pressed
   case "$key" in
     enter)
-      [[ -n "$val" ]] && nvim "$val"
+      nvim "$val"
       ;;
     ctrl-o)
-      # Example: opens the parent directory in nvim? Or just cd?
-      # Adjust to your liking
-      [[ -n "$val" ]] && cd "$(dirname "$val")"
+      cd "$(dirname "$val")"
+      ;;
+    ctrl-r)
+      ff "$(dirname "$val")"
       ;;
     ctrl-s)
-      [[ -n "$val" ]] && fdir "$(dirname "$val")"
+      fdir "$(dirname "$val")"
       ;;
     ctrl-f)
-      [[ -n "$val" ]] && fif "$(dirname "$val")"
+      fif "$(dirname "$val")"
+      ;;
+    ctrl-a)
+      f "$(dirname "$val")"
       ;;
   esac
 }
 
 
 fic(){
-  local preview="exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension"
-  local result=$(fd -u -d 1 --type directory . $HOME/Code | fzf-default --preview $preview)
-  [[ -n "$result" ]] && cd "$result"
+  fdir "$HOME/Code"
 }
 
 

@@ -55,6 +55,7 @@ in {
     lla = "exa -la --git";
     la = "exa -a --git";
     changes = "git diff";
+    status = "git status";
 
     copy =
       if isDarwin
