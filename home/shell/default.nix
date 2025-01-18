@@ -55,7 +55,7 @@ in {
     syntaxHighlighting.enable = true;
     oh-my-zsh = {
       enable = true;
-      plugins = ["git" "sudo" "copypath" "copyfile" "history" "direnv" "copybuffer"];
+      plugins = ["git" "sudo" "copypath" "copyfile" "history" "direnv" "copybuffer" "colored-man-pages"];
       theme = "robbyrussell";
     };
     shellAliases = aliases;
