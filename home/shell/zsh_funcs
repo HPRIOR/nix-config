@@ -1,6 +1,8 @@
 # make fzf use rg and include hidden files
 export FZF_DEFAULT_COMMAND='rg --files --no-ignore-vcs --hidden -g "!{node_modules/*,.git/*}"'
 
+alias fzf-default='fzf --bind "ctrl-j:preview-down,ctrl-k:preview-up,ctrl-d:preview-page-down,ctrl-u:preview-page-up"' 
+
 mkcd(){
     mkdir $1 && cd $1
 }
@@ -63,6 +65,7 @@ fif(){
           --delimiter : \
           --preview 'bat --color=always {1} --highlight-line {2}' \
           --preview-window 'up,60%,border-bottom,+{2}+3/3,~3') 
+
     local result=${fzf_result%%:*}
     local line_no=$(echo $fzf_result | cut -d: -f2)
 
@@ -117,9 +120,16 @@ fdir() {
     fd_cmd+=" . \"$patharg\""
   fi
 
+  local preview_label='[ enter = cd, ctrl+o = nvim, ctrl+s = ff, ctrl+f = fif ]'
+  local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
   # Run fd -> fzf with preview, capturing keypress + selection
   local output
-  output=$(eval "$fd_cmd" | fzf --expect ctrl-o,ctrl-r,ctrl-s,ctrl-f,enter --preview "$preview" --preview-window 'up,60%,border-bottom,+{2}+3/3,~3')
+  output=$(eval "$fd_cmd" | \
+    fzf-default --preview "$preview" \
+      --preview-window $preview_window \
+      --expect ctrl-o,ctrl-r,ctrl-s,ctrl-f,enter \
+      --preview-label $preview_label \
+      )
 
   # If user presses <esc> or there's no selection, exit
   if [[ -z "$output" ]]; then
@@ -143,10 +153,10 @@ fdir() {
       [[ -n "$val" ]] && fdir "$val"
       ;;
     ctrl-s)
-      [[ -n "$val" ]] && ff $val       
+      [[ -n "$val" ]] && ff "$val"
       ;;
     ctrl-f)
-      [[ -n "$val" ]] && fif $val       
+      [[ -n "$val" ]] && fif "$val"
       ;;
   esac
 }
@@ -194,9 +204,15 @@ ff() {
     fd_cmd+=" . \"$patharg\""
   fi
 
+  local preview_label='[ enter = nvim, ctrl+o = cd, ctrl+s = fdir, ctrl+f = fif ]'
   # Run fd -> fzf
   local output
-  output=$(eval "$fd_cmd" | fzf --expect ctrl-o,ctrl-s,ctrl-f,enter --preview "$preview" --preview-window 'up,60%,border-bottom,+{2}+3/3,~3')
+  output=$(eval "$fd_cmd" | \
+    fzf-default \
+      --expect ctrl-o,ctrl-s,ctrl-f,enter \
+      --preview "$preview" \
+      --preview-window 'up,60%,border-bottom,+{2}+3/3,~3' \
+      --preview-label $preview_label )
 
   # If user presses <esc> or there's no selection, exit
   if [[ -z "$output" ]]; then
@@ -229,20 +245,41 @@ ff() {
 
 
 fic(){
-    cd $(fd -u -d 1 --type directory . $1 | fzf --preview "exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension")
+  local preview="exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension"
+  local result=$(fd -u -d 1 --type directory . $HOME/Code | fzf-default --preview $preview)
+  [[ -n "$result" ]] && cd "$result"
 }
-
 
 
 # search unique file history and copy output to terminal 
 fh(){
-     print -z $( history | cut -c 8- | sort | uniq | fzf --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g') 
+  local result=$(history | cut -c 8- | sort | uniq | fzf-default --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g') 
+  [[ -n "$result" ]] && print -z "$result"
 }
 
 # Find program: search through executable command in path - preview with tldr page
 fp(){
-    local p=$(compgen -c | sed '/^_/d'| fzf --preview "tldr {}" --bind "?:preview:man {}")
-    print -z $p
+    local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
+    local p=$(compgen -c | sed '/^_/d' | sort |  \
+      fzf-default --preview "tldr {}" \
+      --bind "?:preview:man {}" \
+      --preview-label '[ enter = print cmd, ? = preview man, ctrl-v = open man ]' \
+      --preview-window $preview_window \
+      --expect enter,ctrl-v)
+
+    local key val
+    key=$(echo "$p" | head -1)
+    val=$(echo "$p" | tail -1)
+
+    case "$key" in 
+      enter) 
+        [[ -n "$val" ]] && print -z "$val"
+        ;;
+      ctrl-v) 
+        [[ -n "$val" ]] && man "$val"
+        ;;
+    esac
+    
 }
 
 # search through processes and kill the selected one
@@ -287,22 +324,18 @@ lzcommit() {
     fi
 }
 
-nix-installed(){
-    nix-store -q --requisites /run/current-system | fzf
-
+nix-installed() {
+  local result=$(nix-store -q --requisites /run/current-system | fzf)
+  [[ -n "$result" ]] && cd "$result"
 }
 
-show-path(){
-    local dir=$(tr ':' '\n' <<< "$PATH" | fzf --preview 'exa -1 {}')
-    if [[ -n $dir ]]; then
-        cd "$dir"
-    else
-        return
-    fi
+fpath(){
+    local dir=$(tr ':' '\n' <<< "$PATH" | fzf-default --preview 'exa -1 {}')
+    [[ -n $dir ]] && cd "$dir"
 }
 
-show-env(){
-    env | cut -d '=' -f 1 | fzf --preview 'printenv {}'
+fenv(){
+    env | cut -d '=' -f 1 | fzf-default --preview 'printenv {}'
 }
 
 mkcode(){
@@ -317,7 +350,7 @@ mkcode(){
 
 function gi() {
     local templates=$(curl -sL "https://www.toptal.com/developers/gitignore/api/list" | tr "," "\n")
-    local selections=$(echo "$templates" | fzf -m --height=40% --preview="curl -sL https://www.toptal.com/developers/gitignore/api/{}")
+    local selections=$(echo "$templates" | fzf-default -m --height=40% --preview="curl -sL https://www.toptal.com/developers/gitignore/api/{}")
     
     if [[ -n "$selections" ]]; then
         if [[ -f ".gitignore" ]]; then
