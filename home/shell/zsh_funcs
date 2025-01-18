@@ -365,3 +365,77 @@ function gi() {
 }
 
 
+
+private function get_system_arch() {
+  local arch=$(uname -m)  # Get machine architecture (e.g., aarch64, x86_64)
+  local os=$(uname -s)    # Get operating system (e.g., Darwin, Linux)
+
+  if [[ $arch == "aarch64" && $os == "Darwin" ]]; then
+    echo "aarch64-darwin"
+  elif [[ $arch == "x86_64" && $os == "Linux" ]]; then
+    echo "x86_64-linux"
+  else
+    echo "unknown system"
+  fi
+}
+
+
+## Warning! use carefully
+private function cleanup_old_dirs() {
+  local target_dir=$(realpath "$1")
+
+  # Safety check: ensure target_dir starts with $HOME/
+  if [[ ! "$target_dir" =~ ^"$HOME"/.* ]]; then
+    echo "Can only cleanup sub-directories in $HOME!"
+    return 1
+  fi
+
+  # Exit if target_dir is not a hidden directory (doesn't start with a dot)
+  if [[ ! "$(basename "$target_dir")" =~ ^\..* ]]; then
+    echo "Can only cleanup hidden directories!"
+    return 1
+  fi
+
+  # Get today's date in YYYY-MM-DD format
+  local today=$(date +"%Y-%m-%d")
+  
+  # Find and remove old date-formatted files
+  for file in "$target_dir"/*; do
+    if [[ -f "$file" ]]; then
+      local filename=$(basename "$file")
+      # Check if filename matches YYYY-MM-DD format and is not today
+      if [[ "$filename" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ && "$filename" != "$today" ]]; then
+        echo "Cleaning up old file: $(basename $file)"
+        rm -f "$file"
+      fi
+    fi
+  done
+}
+
+
+function fshell(){
+  local nix_env_cache="$HOME/Documents/.nix-env-cache" 
+  if [[ ! -d "$nix_env_cache" ]]; then
+    mkdir -p "$nix_env_cache"
+  else
+    cleanup_old_dirs $nix_env_cache .
+  fi
+  local today_file=$(date +"%Y-%m-%d")
+  local file_path="$nix_env_cache/$today_file"
+
+  if [[ ! -f $file_path ]]; then
+    nix-env -qaP --json > "$file_path"
+  fi
+
+  local result=$(cat "$file_path" \
+    | jq -r "to_entries | map(select(.value.system == \"$(get_system_arch)\")) | .[].value.pname" \
+    | fzf -m \
+      --preview 'tldr {}' \
+      --preview-window 'up,65%,border-bottom,+{2}+3/3,~3' \
+    | tr '\n' ' ') 
+
+
+  [[ -n "$result" ]] && eval "nix-shell -p $result"
+}
+
+
