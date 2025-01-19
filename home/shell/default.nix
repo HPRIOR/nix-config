@@ -81,13 +81,7 @@ in {
       ${builtins.readFile ./zsh_funcs}
       ${linuxFuncs}
       ${control-x-binds}
-      ## not working correctly with direnv, because no change in shell occurs, so no refresh
-      ## set_nix_shell_prompt() {
-      ##   if [[ -n "$IN_NIX_SHELL" || -n "$DIRENV_FILE" ]]; then
-      ##       echo "%F{cyan}%F{cyan} "
-      ##   fi
-      ##  }
-      ## PROMPT="$PROMPT$(set_nix_shell_prompt)"
+
     '';
   };
 

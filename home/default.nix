@@ -10,10 +10,6 @@
   homeDir = settings.homeDir;
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
-  system =
-    if isLinux
-    then "x86_64-linux"
-    else "aarch64-darwin";
 
   rust-packages = rec {
     toolchain-version = "stable";
@@ -212,6 +208,20 @@ in {
       };
     };
 
+    programs.atuin = {
+      enable = true;
+      enableBashIntegration = false;
+      enableFishIntegration = false;
+      enableZshIntegration = false;
+      enableNushellIntegration = false;
+      settings = {
+        key_path = config.sops.secrets.atuin-key.path;
+        auto_sync = true;
+        # sync_frequency = "5m";
+        sync_address = "http://192.168.100.60:8888";
+      };
+    };
+
     sops = {
       defaultSopsFile = ../secrets/secrets.yaml;
       defaultSopsFormat = "yaml";
@@ -222,6 +232,8 @@ in {
       secrets.gpt-api-key = {};
       secrets.server-ip = {};
       secrets.claude_key = {};
+      secrets.sops-age-path = {};
+      secrets.atuin-key = {};
     };
 
     home.file."${settings.configDir}/aichat/config.yaml".text = ''
@@ -242,6 +254,7 @@ in {
       EDITOR = "nvim";
       PAGER = "bat --paging always";
       RUST_SRC_PATH = "${rust-packages.src}/lib/rustlib/src/rust/library";
+      SOPS_AGE_KEY_FILE = "$(cat ${config.sops.secrets.sops-age-path.path})";
     };
 
     services.dropbox = {
