@@ -130,6 +130,7 @@ in {
         thefuck
         tldr
         tree
+        qsv
         unzip
         watchexec
         zathura
