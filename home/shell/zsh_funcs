@@ -117,7 +117,7 @@ f() {
     fd_cmd+=" . \"$patharg\""
   fi
 
-  local preview_label='[ enter = cd/nvim, ctrl+o = cd, ctrl-n = nvim, ctrl-r = f, ctrl-s = switch-type, ctrl-a = all, ctrl+f = fif ]'
+  local preview_label='[ enter = cd/nvim, ctrl+o = cd, ctrl-n = nvim, ctrl-r = f, ctrl+f = fif ]'
   local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
   # Run fd -> fzf with preview, capturing keypress + selection
 
@@ -132,13 +132,6 @@ f() {
         ' \
       --preview-window $preview_window \
       --prompt="> " \
-      --bind "ctrl-a:change-prompt(> )+reload($fd_cmd)" \
-      --bind 'ctrl-s:transform:
-                if [[ ! $FZF_PROMPT =~ "Files" ]]; then
-                  echo "change-prompt(Files> )+reload(fd --type file)"
-                elif [[ ! "$FZF_PROMPT" =~ "Dirs" ]]; then
-                  echo "change-prompt(Dirs> )+reload(fd --type directory)"
-                fi' \
       --expect ctrl-o,ctrl-r,ctrl-n,ctrl-f,enter \
       --preview-label $preview_label \
       )
