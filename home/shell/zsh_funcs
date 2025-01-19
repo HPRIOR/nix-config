@@ -483,7 +483,7 @@ private function get_system_arch() {
   local arch=$(uname -m)  # Get machine architecture (e.g., aarch64, x86_64)
   local os=$(uname -s)    # Get operating system (e.g., Darwin, Linux)
 
-  if [[ $arch == "aarch64" && $os == "Darwin" ]]; then
+  if [[ $arch == "arm64" && $os == "Darwin" ]]; then
     echo "aarch64-darwin"
   elif [[ $arch == "x86_64" && $os == "Linux" ]]; then
     echo "x86_64-linux"

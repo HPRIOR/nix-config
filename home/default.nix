@@ -109,6 +109,7 @@ in {
         hyperfine # benchmarking tool
         iftop
         inetutils
+        jless
         jq # json processor
         kitty # terminal emulator
         lazydocker
@@ -124,9 +125,9 @@ in {
         sops
         spotify
         syncthing
-        thefuck
-        texstudio
         tetex
+        texstudio
+        thefuck
         tldr
         tree
         unzip
