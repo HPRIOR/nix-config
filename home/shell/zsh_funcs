@@ -437,7 +437,7 @@ lzcommit() {
     fi
 }
 
-nix-installed() {
+fnix() {
   local result=$(nix-store -q --requisites /run/current-system | fzf)
   [[ -n "$result" ]] && cd "$result"
 }
