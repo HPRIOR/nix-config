@@ -56,6 +56,7 @@ in {
     la = "exa -a --git";
     changes = "git diff";
     status = "git status";
+    tree = "exa -T --icons=always --group-directories-last --git-ignore";
 
     copy =
       if isDarwin
