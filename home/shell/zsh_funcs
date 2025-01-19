@@ -73,15 +73,19 @@ fif(){
         nvim +$line_no $result
     fi
 }
+# fd --type file |
+#   fzf --prompt 'Files> ' \
+#       --header 'CTRL-T: Switch between Files/Directories' \
+#       --bind 'ctrl-t:transform:[[ ! $FZF_PROMPT =~ Files ]] &&
+#               echo "change-prompt(Files> )+reload(fd --type file)" ||
+#               echo "change-prompt(Directories> )+reload(fd --type directory)"' \
+#       --preview '[[ $FZF_PROMPT =~ Files ]] && bat --color=always {} || tree -C {}'
 
 f() {
   emulate -L zsh
 
   # Default options
   local hidden=false
-  local preview_dir='exa {} -T -L 1 --long --git --colour=always --icons --no-permissions --no-time --no-user --no-filesize --group-directories-first --sort=extension'
-
-  local preview_file='bat --color=always --style=numbers --line-range :500 {}'
 
   # Parse flags
   local opt
@@ -113,9 +117,10 @@ f() {
     fd_cmd+=" . \"$patharg\""
   fi
 
-  local preview_label='[ enter = cd/nvim, ctrl+o = cd, ctrl-n = nvim, ctrl-r = f, ctrl+f = fif ]'
+  local preview_label='[ enter = cd/nvim, ctrl+o = cd, ctrl-n = nvim, ctrl-r = f, ctrl-s = switch-type, ctrl-a = all, ctrl+f = fif ]'
   local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
   # Run fd -> fzf with preview, capturing keypress + selection
+
   local output
   output=$(eval "$fd_cmd" | \
     fzf-default --preview '
@@ -126,6 +131,14 @@ f() {
       fi
         ' \
       --preview-window $preview_window \
+      --prompt="> " \
+      --bind "ctrl-a:change-prompt(> )+reload($fd_cmd)" \
+      --bind 'ctrl-s:transform:
+                if [[ ! $FZF_PROMPT =~ "Files" ]]; then
+                  echo "change-prompt(Files> )+reload(fd --type file)"
+                elif [[ ! "$FZF_PROMPT" =~ "Dirs" ]]; then
+                  echo "change-prompt(Dirs> )+reload(fd --type directory)"
+                fi' \
       --expect ctrl-o,ctrl-r,ctrl-n,ctrl-f,enter \
       --preview-label $preview_label \
       )
