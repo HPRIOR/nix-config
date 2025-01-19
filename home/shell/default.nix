@@ -75,6 +75,7 @@ in {
         ''
         else "";
     in ''
+      eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
       eval "$(zoxide init zsh)"
       eval $(thefuck --alias)
       source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
