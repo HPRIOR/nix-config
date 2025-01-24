@@ -366,7 +366,7 @@ fic(){
 
 # search unique file history and copy output to terminal 
 fh(){
-  local result=$(history | cut -c 8- | sort | uniq | fzf-default --tac | sed -E 's/ *[0-9]*\*? *//' | sed -E 's/\\/\\\\/g') 
+  local result=$(atuin history list --cmd-only | sort | uniq | fzf-default --tac) 
   [[ -n "$result" ]] && print -z "$result"
 }
 
