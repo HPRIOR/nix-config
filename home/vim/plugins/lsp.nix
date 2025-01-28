@@ -64,6 +64,7 @@
         enable = true;
         autostart = false;
       };
+      jdtls.enable = true;
     };
     keymaps.lspBuf = {
       "gD" = "references";
