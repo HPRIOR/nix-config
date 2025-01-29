@@ -360,7 +360,55 @@ ff() {
 
 
 fic(){
-  fdir "$HOME/Code"
+  local preview='exa $HOME/Code/{} -T -L 1 --long --git --colour=always --icons --no-permissions \
+                 --no-time --no-user --no-filesize --group-directories-first --sort=extension'
+  local preview_label='[ enter = cd, ctrl+n = nvim, ctrl+s = ff, ctrl-r = fdir, ctrl+f = fif, ctrl-a = f ]'
+  local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
+  output=$(ls  "$HOME/Code" | \
+    fzf-default --preview "$preview" \
+      --preview-window $preview_window \
+      --expect ctrl-n,ctrl-r,ctrl-s,ctrl-f,ctrl-a,enter \
+      --preview-label $preview_label \
+      )
+
+  # If user presses <esc> or there's no selection, exit
+  if [[ -z "$output" ]]; then
+    return
+  fi
+
+
+  # Parse out the key and the selected directory
+  local key val
+  key=$(echo "$output" | head -1)
+  val=$(echo "$output" | tail -1)
+
+
+  if [[ ! -n "$val" ]]; then 
+   return 
+  fi 
+
+  # Act on the key pressed
+  case "$key" in
+    enter)
+      cd "$HOME/Code/$val"
+      ;;
+    ctrl-n)
+      nvim "$HOME/Code/$val"
+      ;;
+    ctrl-r)
+      fdir "$HOME/Code/$val"
+      ;;
+    ctrl-s)
+      ff "$HOME/Code/$val"
+      ;;
+    ctrl-f)
+      fif "$HOME/Code/$val"
+      ;;
+    ctrl-a)
+      f "$HOME/Code/$val"
+      ;;
+  esac
+
 }
 
 
