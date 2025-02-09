@@ -444,21 +444,25 @@ fp(){
 }
 
 # search through processes and kill the selected one
-# TODO: make output prettier (shorter)
 fkill() {
-    local pid 
+    local pid header ps_cmd
+
     if [ "$UID" != "0" ]; then
-        pid=$(ps -f -u $UID | sed 1d | fzf -m | awk '{print $2}')
+        ps_cmd=(ps -o pid=PID,user=USER,pcpu=%CPU,pmem=%MEM,time=TIME,comm=COMMAND -u "$UID")
     else
-        pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-    fi  
+        ps_cmd=(ps -eo pid=PID,user=USER,pcpu=%CPU,pmem=%MEM,time=TIME,comm=COMMAND)
+    fi
 
-    if [ "x$pid" != "x" ]
-    then
-        echo $pid | xargs kill -${1:-9}
-    fi  
+    # Use a file descriptor to capture the header and body
+    exec 3< <("${ps_cmd[@]}")
+    IFS= read -r header <&3
+    pid=$(cat <&3 | fzf --header="$header" -m | awk '{print $1}')
+    exec 3<&-
+
+    if [ -n "$pid" ]; then
+        echo "$pid" | xargs kill -${1:-9}
+    fi
 }
-
 
 lzcommit() {
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
