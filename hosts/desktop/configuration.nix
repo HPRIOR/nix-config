@@ -263,11 +263,11 @@ in {
 
   virtualisation.docker.enable = true;
 
-  # fileSystems."${settings.homeDir}/Mnt/server-nfs" = {
-  #   device = "home.server.com:/export/Root";
-  #   fsType = "nfs";
-  #   options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=1200" "nfsvers=4.2"];
-  # };
+  fileSystems."${settings.homeDir}/Mnt/server-nfs" = {
+    device = "192.168.100.60:/Storage";
+    fsType = "nfs";
+    options = ["x-systemd.automount" "noauto" "nfsvers=4.2" "x-systemd.idle-timeout=600"];
+  };
 
   networking.firewall.enable = true;
   # syncthing for others

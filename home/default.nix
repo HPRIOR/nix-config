@@ -97,6 +97,7 @@ in {
         eza # ls replacement
         fd # find alternative
         fzf
+        get_iplayer
         glances
         glow
         gping # ping with graph
