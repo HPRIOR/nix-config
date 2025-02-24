@@ -113,7 +113,9 @@ in {
         lazygit
         lsof
         mosh
+        perl538Packages.vidir
         procs # ps alternative
+        progress
         ranger
         ripgrep
         rust-packages.analyzer
@@ -166,16 +168,7 @@ in {
         v4l-utils
         vlc
         # see https://github.com/ghostty-org/ghostty/discussions/3224#discussioncomment-11711871 - high iowait usage otherwise, waiting for fix
-        (inputs.ghostty.packages.${pkgs.system}.default.overrideAttrs (old: {
-          preBuild =
-            (old.preBuild or "")
-            + ''
-              # use Epoll due to io_uring spamming iowait
-              shopt -s globstar
-              sed -i 's/^const xev = @import("xev");$/const xev = @import("xev").Epoll;/' **/*.zig
-              shopt -u globstar
-            '';
-        }))
+        inputs.ghostty.packages.${pkgs.system}.default
       ])
       ++ (lib.optionals isDarwin [zoom-us]);
 
