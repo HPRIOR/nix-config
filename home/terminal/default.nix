@@ -15,6 +15,7 @@
     font-family = ${settings.font}
     theme = kanagawabones
     gtk-titlebar = false
+    async-backend = epoll
   '';
   programs.kitty = {
     enable = true;
