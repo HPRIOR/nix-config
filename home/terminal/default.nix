@@ -3,6 +3,7 @@
   config,
   settings,
   inputs,
+  lib,
   ...
 }: {
   home.sessionVariables = {
@@ -11,12 +12,18 @@
       then "${inputs.ghostty.packages.${pkgs.system}.default}/bin/ghostty"
       else "ghostty";
   };
-  home.file."${settings.configDir}/ghostty/config".text = ''
-    font-family = ${settings.font}
-    theme = kanagawabones
-    gtk-titlebar = false
-    async-backend = epoll
-  '';
+  home.file."${settings.configDir}/ghostty/config".text = let
+    base = ''
+      font-family = ${settings.font}
+      theme = kanagawabones
+      gtk-titlebar = false
+    '';
+    linuxConfig = ''async-backend = epoll'';
+  in
+    if pkgs.stdenv.isLinux
+    then base ++ linuxConfig
+    else base;
+
   programs.kitty = {
     enable = true;
     font = {
