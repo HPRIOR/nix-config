@@ -603,4 +603,40 @@ function fshell(){
   [[ -n "$result" ]] && eval "nix-shell -p $result"
 }
 
+function get_flake() {
+  # Make sure we got an argument.
+  if [[ -z "$1" ]]; then
+    echo "Usage: get_flake <directory>"
+    return 1
+  fi
+
+  local flake_name="$1"
+  local flakes_dir="$HOME/Code/flakes"
+  local local_flake_dir="$flakes_dir/$flake_name"
+  local local_flake_file="$local_flake_dir/flake.nix"
+  local remote_flake_url="https://raw.githubusercontent.com/HPRIOR/flakes/refs/heads/main/$flake_name/flake.nix"
+
+  # If $HOME/Code/flakes exists and contains the requested flake, use it.
+  if [[ -d "$flakes_dir" && -f "$local_flake_file" ]]; then
+    cp "$local_flake_file" .
+    echo "Flake '$flake_name' copied from $local_flake_dir to current directory."
+
+  else
+    # Otherwise, fetch from GitHub.
+    echo "Local flake not found for '$flake_name'. Attempting to fetch from GitHub..."
+
+    # Use curl in a way that fails on HTTP errors. If this fails, we fall back to an error message.
+    if curl -fsSL "$remote_flake_url" -o flake.nix; then
+      echo "Flake '$flake_name' retrieved from GitHub and saved to 'flake.nix'."
+    else
+      echo "Error: could not find flake '$flake_name' locally or on GitHub."
+      return 1
+    fi
+  fi
+
+  # Log a message reminding user to commit if they're in a git repo.
+  echo "Remember to commit 'flake.nix'."
+}
+
+
 
