@@ -21,7 +21,7 @@
     linuxConfig = ''async-backend = epoll'';
   in
     if pkgs.stdenv.isLinux
-    then base ++ linuxConfig
+    then base + linuxConfig
     else base;
 
   programs.kitty = {
