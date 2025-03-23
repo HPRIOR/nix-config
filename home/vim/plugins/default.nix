@@ -73,9 +73,12 @@ in {
         };
       };
       nvim-autopairs.enable = true;
+      treesitter-context.enable = true;
+      treesitter-textobjects.enable = true;
       treesitter = {
         settings = {
           indent.enable = true;
+          indent.disable = ["ocaml" "ocaml_interface" "ocamllex"];
           highlight.enable = true;
           ensure_installed = "all";
         };
