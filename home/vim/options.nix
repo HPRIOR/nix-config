@@ -1,4 +1,13 @@
 {
+  autoCmd = [
+    {
+      desc = "Remove indentexpr for ocaml files";
+      event = ["FileType"];
+      pattern = ["ocaml"];
+      command = "setlocal indentexpr=";
+    }
+  ];
+
   opts = {
     autowrite = true; # Enable auto write
     background = "dark";
