@@ -18,7 +18,10 @@
       theme = kanagawabones
       gtk-titlebar = false
     '';
-    linuxConfig = ''async-backend = epoll'';
+    linuxConfig = ''
+      async-backend = epoll
+      gtk-single-instance = true
+    '';
   in
     if pkgs.stdenv.isLinux
     then base + linuxConfig
