@@ -9,6 +9,7 @@
 in {
   plugins =
     {
+      auto-session.enable = true;
       guess-indent.enable = true;
       nvim-colorizer.enable = true;
       neoscroll.enable = true;
@@ -78,7 +79,6 @@ in {
       treesitter = {
         settings = {
           indent.enable = true;
-          indent.disable = ["ocaml" "ocaml_interface" "ocamllex"];
           highlight.enable = true;
           ensure_installed = "all";
         };
