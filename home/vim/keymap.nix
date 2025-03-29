@@ -256,4 +256,14 @@
       desc = "Search through notify messages extension";
     };
   }
+
+  {
+    mode = ["n" "v"];
+    key = "<leader>ad";
+    action = "<cmd>lua avante_ask_diag()<CR>";
+    options = {
+      silent = true;
+      desc = "Ask Avante to fix errors only if diagnostics exist";
+    };
+  }
 ]
