@@ -211,7 +211,7 @@ in {
       settings = {
         key_path = config.sops.secrets.atuin-key.path;
         auto_sync = true;
-        # sync_frequency = "5m";
+        sync_frequency = "5m";
         sync_address = "http://192.168.100.60:8888";
       };
     };
@@ -234,6 +234,42 @@ in {
       model: openai
       clients:
       - type: openai
+    '';
+
+    home.file."${settings.homeDir}/Code/.stignore".text = ''
+      !**/.envrc
+      !**/.direnv
+      !**/.git
+      !**/.gitignore
+      // ignore all hidden files, except for the above
+      (?d)**/.*
+
+      // mac
+      (?d).DS_Store
+
+      // Dotnet
+      (?d)**/obj/
+      (?d)**/bin/
+      (?d)**/node_modules/
+
+      // Ocaml
+      (?d)**/_build/
+      (?d)**/_opam/
+
+      // Rust
+      (?d)**/target/
+      // (?d)Cargo.lock
+      (?d)**/*.rs.bk
+
+      (?d)**/venv/
+      (?d).idea/
+
+      // Scala
+      (?d)**/.metals
+      (?d)**/.bloop
+
+      // Android
+      (?d)**/.android
     '';
 
     home.sessionVariables = {
