@@ -79,7 +79,10 @@ in {
       treesitter-textobjects.enable = true;
       treesitter = {
         settings = {
-          indent.enable = true;
+          indent = {
+            enable = true;
+            disable = ["ocaml"];
+          };
           highlight.enable = true;
           ensure_installed = "all";
         };
