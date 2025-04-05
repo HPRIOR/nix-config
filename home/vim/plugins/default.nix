@@ -10,7 +10,12 @@ in {
   plugins =
     {
       auto-session.enable = true;
-      guess-indent.enable = true;
+      guess-indent = {
+        enable = true;
+        settings = {
+          filetype_exclude = ["ocaml"];
+        };
+      };
       nvim-colorizer.enable = true;
       neoscroll.enable = true;
       web-devicons.enable = true;
@@ -81,7 +86,7 @@ in {
         settings = {
           indent = {
             enable = true;
-            disable = ["ocaml"];
+            # disable = ["ocaml"];
           };
           highlight.enable = true;
           ensure_installed = "all";
