@@ -241,6 +241,7 @@ in {
       !**/.direnv
       !**/.git
       !**/.gitignore
+      !**/.ocamlformat
       // ignore all hidden files, except for the above
       (?d)**/.*
 
