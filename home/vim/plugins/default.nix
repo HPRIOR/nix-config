@@ -9,6 +9,9 @@
 in {
   plugins =
     {
+      neogit.enable = true;
+      gitsigns.enable = true;
+      diffview.enable = true;
       auto-session.enable = true;
       guess-indent = {
         enable = true;
