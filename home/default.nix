@@ -263,7 +263,7 @@ in {
       (?d)**/*.rs.bk
 
       (?d)**/venv/
-      (?d).idea/
+      (?d)**/.idea/
 
       // Scala
       (?d)**/.metals
