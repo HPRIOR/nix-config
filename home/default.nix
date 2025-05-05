@@ -129,7 +129,8 @@ in {
         thefuck
         tldr
         tree
-        qsv
+        # build failing - investigate
+        # qsv
         unzip
         watchexec
         zathura

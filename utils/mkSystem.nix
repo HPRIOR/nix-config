@@ -36,6 +36,11 @@
 
   sharedOverlays = [
     inputs.fenix.overlays.default
+    (self: super: {
+      # https://github.com/NixOS/nixpkgs/issues/402079 remove when fixed
+      nodejs = super.nodejs_22;
+      nodejs-slim = super.nodejs-slim_22;
+    })
   ];
 in {
   nixos = {
