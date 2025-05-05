@@ -16,6 +16,7 @@
 
   opts = {
     autowrite = true; # Enable auto write
+    autoread = true;
     background = "dark";
     clipboard = "unnamedplus";
     completeopt = "menu,menuone,noselect";

@@ -266,4 +266,13 @@
       desc = "Ask Avante to fix errors only if diagnostics exist";
     };
   }
+  {
+    mode = ["n"];
+    key = "<leader>vg";
+    action = "<cmd>Neogit kind=split<cr>";
+    options = {
+      silent = true;
+      desc = "Telescope show all buffers";
+    };
+  }
 ]
