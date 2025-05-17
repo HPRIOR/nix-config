@@ -83,6 +83,7 @@ in {
       ${linuxFuncs}
       ${control-x-binds}
 
+      RPROMPT='%{$fg[yellow]%}[%D{%Y-%m-%d %H:%M:%S}]%{$reset_color%}'
     '';
   };
 
