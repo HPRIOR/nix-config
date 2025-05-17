@@ -9,6 +9,7 @@
 in {
   plugins =
     {
+      zen-mode.enable = true;
       neogit.enable = true;
       gitsigns.enable = true;
       diffview.enable = true;
