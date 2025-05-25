@@ -112,6 +112,8 @@ in {
         lazydocker
         lazygit
         lsof
+        nerd-fonts.fira-code
+        nerd-fonts.jetbrains-mono
         mosh
         perl538Packages.vidir
         procs # ps alternative
@@ -148,9 +150,9 @@ in {
         _1password-cli
         _1password-gui
         calibre
-        # # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
-        # # Some declarative prerequisites for this package
-        # # citrix_workspace
+        # Some prerequisites for this package
+        # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
+        citrix_workspace_24_11_0
         feh
         firefox # applications
         glibc

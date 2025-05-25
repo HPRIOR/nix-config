@@ -53,5 +53,6 @@ sudo nixos-rebuild switch --flake ~/.nix-config#[host_name]
 # Todo
 - Allow more configuration instead of if/else darwin/linux
 - Home server setup
+- Syncthing via home-manager
 - Fix hacky sops-nix work-around
 
