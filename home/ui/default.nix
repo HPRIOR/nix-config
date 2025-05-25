@@ -8,11 +8,11 @@
   createToggleApp = app: "pgrep ${app} > /dev/null && pkill ${app} || ${app}  & > /dev/null";
 
   createBarWindowRule = app: verticalSizePercent: horizontalSize: ''
-    windowrule=workspace 2,^(${app})$
-    windowrule=size ${toString horizontalSize} ${toString verticalSizePercent}%,^(${app})$
-    windowrule=move 100%-${toString (horizontalSize + 30)} 50,^(${app})$
-    windowrule=float,^(${app})$
-    windowrule=animation slide,^(${app})$
+    windowrule=workspace 2,class:${app}
+    windowrule=size ${toString horizontalSize} ${toString verticalSizePercent}%,class:${app}
+    windowrule=move 100%-${toString (horizontalSize + 30)} 50,class:${app}
+    windowrule=float,class:${app}
+    windowrule=animation slide,class:${app}
   '';
 
   # Todo create a function that will generate the position of each screan automatically
@@ -191,9 +191,9 @@ in {
       # Required for mouse to render
       env = LIBVA_DRIVER_NAME,nvidia
       env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-      env = HYPRCURSOR_THEME,macOS-BigSur-White
+      env = HYPRCURSOR_THEME,rose-pine-hyprcursor
       env = HYPRCURSOR_SIZE,24
-      env = XCURSOR_THEME,macOS-BigSur-White
+      env = XCURSOR_THEME,BreezeX-RosePine-Linux      
       env = XCURSOR_SIZE,24
       env = XDG_SESSION_TYPE,wayland
       env = GBM_BACKEND,nvidia-drm
@@ -215,10 +215,10 @@ in {
       ${createBarWindowRule ".blueman-manager-wrapped" 50 700}
       ${createBarWindowRule "1Password" 50 700}
 
-      windowrule=workspace 2,^(Mullvad.*)$
-      windowrule=move 100%-350 50,^(Mullvad.*)$
-      windowrule=float,^(Mullvad.*)$
-      windowrule=animation slide,^(Mullvad.*)$
+      windowrule=workspace 2,class:^(Mullvad.*)$
+      windowrule=move 100%-350 50,class:^(Mullvad.*)$
+      windowrule=float,class:^(Mullvad.*)$
+      windowrule=animation slide,class:^(Mullvad.*)$
 
       # windowrulev2 = stayfocused,class:(Rofi)
       # windowrulev2 = forceinput,class:(Rofi)
@@ -358,7 +358,6 @@ in {
 
       input {
           kb_layout = gb
-          kb_options = caps:swapescape
       }
 
       misc {

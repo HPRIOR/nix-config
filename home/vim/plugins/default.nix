@@ -20,7 +20,7 @@ in {
           filetype_exclude = ["ocaml"];
         };
       };
-      nvim-colorizer.enable = true;
+      colorizer.enable = true;
       neoscroll.enable = true;
       web-devicons.enable = true;
       # todo enable these when available in systems pkgs
@@ -52,11 +52,13 @@ in {
       };
       notify = {
         enable = true;
-        backgroundColour = "#000000";
-        fps = 60;
-        render = "default";
-        timeout = 1000;
-        topDown = true;
+        settings = {
+          backgroundColour = "#000000";
+          fps = 60;
+          render = "default";
+          timeout = 1000;
+          topDown = true;
+        };
       };
       telescope = {
         enable = true;
@@ -93,7 +95,6 @@ in {
             # disable = ["ocaml"];
           };
           highlight.enable = true;
-          ensure_installed = "all";
         };
         enable = true;
       };

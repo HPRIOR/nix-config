@@ -56,11 +56,6 @@ in {
 
   services.xserver = {
     videoDrivers = ["nvidia"];
-    xkb = {
-      variant = "";
-      options = "caps:swapescape";
-      layout = "gb";
-    };
   };
 
   services.blueman.enable = true;
@@ -102,6 +97,8 @@ in {
     cliphist
     wl-clip-persist
     kdePackages.qtwayland
+    rose-pine-hyprcursor
+    rose-pine-cursor
   ];
 
   environment.shells = with pkgs; [zsh];
