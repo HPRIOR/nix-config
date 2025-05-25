@@ -43,7 +43,7 @@ in {
   };
 
   config = {
-    systemd.user.services.mbsync.Unit.After = ["sops-nix.service"];
+    systemd.user.services.mbsync.unitConfig.After = ["sops-nix.service"];
     colorScheme = inputs.nix-colours.colorSchemes.${settings.theme};
 
     xdg = lib.mkIf isLinux {
@@ -273,6 +273,13 @@ in {
       (?d)**/.android
     '';
 
+    # tmp workaround, previous method of running a cat over config.sops.secrets.gpt-api-key.path stopped working
+    programs.zsh.initContent = ''
+      export OPENAI_API_KEY="$(cat ~/.config/sops-nix/secrets/gpt-api-key)"
+      export ANTHROPIC_API_KEY="$(cat ~/.config/sops-nix/secrets/claude_key)"
+      export SOPS_AGE_KEY_FILE="$(cat ~/.config/sops-nix/secrets/sops-age-path)"
+    '';
+
     home.sessionVariables = {
       DEFAULT_BROWSER =
         if isLinux
@@ -280,12 +287,9 @@ in {
         else "default";
 
       AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
-      OPENAI_API_KEY = "$(cat ${config.sops.secrets.gpt-api-key.path})";
-      ANTHROPIC_API_KEY = "$(cat ${config.sops.secrets.claude_key.path})";
       EDITOR = "nvim";
       PAGER = "bat --paging always";
       RUST_SRC_PATH = "${rust-packages.src}/lib/rustlib/src/rust/library";
-      SOPS_AGE_KEY_FILE = "$(cat ${config.sops.secrets.sops-age-path.path})";
     };
 
     services.dropbox = {
