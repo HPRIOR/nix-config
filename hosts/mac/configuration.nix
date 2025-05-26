@@ -10,8 +10,7 @@ in {
     pkgs.vim
   ];
 
-  services.nix-daemon.enable = true;
-
+  nix.enable = true;
   users.users.harryp.home = lib.mkForce homeDir;
   nix.settings.experimental-features = "nix-command flakes";
   nix.extraOptions = ''
@@ -21,6 +20,7 @@ in {
   programs.zsh.enable = true; # default shell on catalina
 
   system = {
+    primaryUser = "harryp";
     keyboard = {
       enableKeyMapping = true;
       remapCapsLockToEscape = true;
@@ -46,7 +46,7 @@ in {
 
   nixpkgs.hostPlatform = "aarch64-darwin";
   nixpkgs.config.allowUnfree = true;
-  security.pam.enableSudoTouchIdAuth = true;
+  security.pam.services.sudo_local.touchIdAuth = true;
 
   homebrew = {
     enable = true;
