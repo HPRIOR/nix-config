@@ -1,5 +1,6 @@
 {
   pkgs,
+  config,
   rust-packages,
 }: let
   lsp = import ./lsp.nix {inherit pkgs rust-packages;};
@@ -9,6 +10,22 @@
 in {
   plugins =
     {
+      lz-n.enable = true;
+      aerial.enable = true;
+      dropbar.enable = true;
+      bullets = {
+        enable = true;
+        settings = {
+          enable_in_empty_buffers = 0;
+          enabled_file_types = [
+            "markdown"
+            "text"
+            "gitcommit"
+            "scratch"
+          ];
+          nested_checkboxes = 0;
+        };
+      };
       zen-mode.enable = true;
       neogit.enable = true;
       gitsigns.enable = true;
@@ -21,7 +38,6 @@ in {
         };
       };
       colorizer.enable = true;
-      neoscroll.enable = true;
       web-devicons.enable = true;
       # todo enable these when available in systems pkgs
       avante = {
@@ -46,10 +62,6 @@ in {
           open_mapping = "[[<c-/>]]";
         };
       };
-      navic = {
-        enable = true;
-        settings.lsp.autoAttach = true;
-      };
       notify = {
         enable = true;
         settings = {
@@ -60,8 +72,34 @@ in {
           topDown = true;
         };
       };
+      snacks = {
+        enable = true;
+        settings = {
+          animate = {
+            enabled = true;
+          };
+          bigfile = {
+            enabled = true;
+          };
+          lazygit = {
+            enabled = true;
+          };
+          quickfile = {
+            enabled = true;
+          };
+          scroll = {
+            enabled = true;
+          };
+        };
+      };
       telescope = {
         enable = true;
+        lazyLoad = {
+          enable = true;
+          settings = {
+            cmd = "Telescope";
+          };
+        };
         settings = {
           pickers = {
             command_history = {
@@ -134,7 +172,6 @@ in {
     // splash-screen;
 
   extraPlugins = with pkgs.vimPlugins; [
-    dressing-nvim
     nvim-window-picker
   ];
 }

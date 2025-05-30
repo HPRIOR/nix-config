@@ -275,4 +275,13 @@
       desc = "Telescope show all buffers";
     };
   }
+  {
+    mode = ["n"];
+    key = "<leader>A";
+    action = "<cmd>AerialNavToggle<cr>";
+    options = {
+      silent = true;
+      desc = "Aerial Nav";
+    };
+  }
 ]
