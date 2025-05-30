@@ -1,11 +1,12 @@
 {
   inputs,
   pkgs,
+  config,
   rust-packages,
   ...
 }: let
   keymaps = import ./keymap.nix;
-  plugins = import ./plugins {inherit pkgs rust-packages;};
+  plugins = import ./plugins {inherit pkgs rust-packages config;};
   options = import ./options.nix;
 in {
   imports = [inputs.nixvim.homeManagerModules.nixvim ./ideavim.nix];
@@ -18,7 +19,7 @@ in {
     {
       enable = true;
       performance = {
-        combinePlugins.enable = true;
+        # combinePlugins.enable = true;
         byteCompileLua = {
           enable = true;
           configs = true;
@@ -30,26 +31,19 @@ in {
       defaultEditor = true;
       viAlias = true;
       vimAlias = true;
-      colorschemes.kanagawa.enable = true;
+      colorschemes.kanagawa = {
+        enable = true;
+        lazyLoad.enable = true;
+      };
       extraConfigLua = ''
-        -- configure dressing-nvim
-        ---@diagnostic disable-next-line: duplicate-set-field
-        vim.ui.select = function(...)
-            require("lazy").load({ plugins = { "dressing.nvim" } })
-            return vim.ui.select(...)
-        end
-        ---@diagnostic disable-next-line: duplicate-set-field
-        vim.ui.input = function(...)
-            require("lazy").load({ plugins = { "dressing.nvim" } })
-            return vim.ui.input(...)
-        end
+        vim.g.no_ocaml_maps = 1
 
         -- configure lsp
         local _border = "rounded"
 
         vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
             vim.lsp.handlers.hover, {
-                border = _border
+                border = _bordervim
             }
         )
 
@@ -67,27 +61,24 @@ in {
             border = _border
         }
 
+        -- Telescope settings
+        -- Settings.defaults.mappings seems ot be broken in the nix config
+        -- Some extensions aren't provided as well
+
         require("telescope").setup({
             defaults = {
                 mappings = {
                 i = {
-                    ["<S-Tab>"] = "move_selection_next",      -- Move down
-                    ["<Tab>"] = "move_selection_previous", -- Move up
+                    ["<C-j>"] = "move_selection_next",      -- Move down
+                    ["<C-k>"] = "move_selection_previous", -- Move up
                 },
                 },
             },
           })
         require('telescope').load_extension('notify')
-
-        function create_winbar()
-              local navic = "%{%v:lua.require'nvim-navic'.get_location()%}"
-              return "%{v:lua.string.gsub(expand('%'), '/', ' > ')} " .. navic
-        end
-
-        vim.opt.winbar = create_winbar()
-
         require'window-picker'.setup()
-        vim.g.no_ocaml_maps = 1
+
+        -- avante helpers
 
         -- Returns a table of diagnostics under cursor, or nil if none found.
         function get_diagnostics_under_cursor_or_selection()
@@ -175,7 +166,6 @@ in {
             question = "Explain these diagnostics and offer a solution:\n" .. formatted
           }
         end
-        -- Example usage: iterate over the diagnostics under the cursor and print each message
 
       '';
       keymaps = keymaps;

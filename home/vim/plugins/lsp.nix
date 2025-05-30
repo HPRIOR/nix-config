@@ -5,11 +5,6 @@
 }: {
   lsp = {
     enable = true;
-    onAttach = ''
-      if client.server_capabilities.documentSymbolProvider then
-        require("nvim-navic").attach(client, bufnr)
-      end
-    '';
     servers = {
       bashls.enable = true;
       clangd.enable = true;

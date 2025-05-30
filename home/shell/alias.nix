@@ -14,18 +14,18 @@ in {
     buildnix = let
       buildcmd =
         if isDarwin
-        then "darwin-rebuild switch --flake ${dotFiles}"
+        then "sudo darwin-rebuild switch --flake ${dotFiles}"
         else "sudo nixos-rebuild switch --flake ${dotFiles}";
     in "echo 'Building nix config' && ${buildcmd} && echo 'Cleaning old generations' && sudo nix-env --delete-generations +20 --profile /nix/var/nix/profiles/system";
 
     buildnix-dev = let
       buildcmd =
         if isDarwin
-        then "darwin-rebuild switch --flake ${dotFiles}"
+        then "sudo darwin-rebuild switch --flake ${dotFiles}"
         else "sudo nixos-rebuild switch --flake ${dotFiles}";
     in "echo 'Building nix config' && ${buildcmd}";
 
-    updatenix = "nix flake update ${dotFiles} && ${buildnix}";
+    updatenix = "sudo nix flake update ${dotFiles} && ${buildnix}";
 
     editnix = "cd ${dotFiles} && nvim && cd -";
 

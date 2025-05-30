@@ -30,7 +30,7 @@ in {
     inputs.nix-colours.homeManagerModules.default
     ./shell
     (import ./vim {
-      inherit pkgs inputs settings;
+      inherit pkgs inputs settings config;
       rust-packages = rust-packages;
     })
     ./terminal
