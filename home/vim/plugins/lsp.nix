@@ -47,8 +47,8 @@
             "-Wclippy::pedantic"
           ];
           completion = {
-            fullFunctionSignatures.enable = false;
-            callable.snippets = "none";
+            fullFunctionSignatures.enable = true;
+            callable.snippets = "fill_arguments";
           };
         };
       };

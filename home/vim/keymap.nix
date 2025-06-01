@@ -354,7 +354,7 @@
   {
     mode = ["n"];
     key = "<leader>an";
-    action = "<cmd>:AvantChatNew<CR>";
+    action = "<cmd>:AvanteChatNew<CR>";
     options = {
       silent = true;
       desc = "Suggest fixes for diagnostics";
