@@ -135,20 +135,19 @@
       desc = "Close buffer";
     };
   }
-  # Telescope  bindings
   {
     mode = ["n"];
     key = "<leader>:";
-    action = "<cmd>Telescope command_history<cr>";
+    action = "<cmd>lua Snacks.picker.command_history()<cr>";
     options = {
       silent = true;
-      desc = "Telescope command history";
+      desc = "Search command history";
     };
   }
   {
     mode = ["n"];
     key = "<leader>;";
-    action = "<cmd>Telescope buffers show_all_buffers=true<cr>";
+    action = "<cmd>lua Snacks.picker.buffers() <cr>";
     options = {
       silent = true;
       desc = "Telescope show all buffers";
@@ -157,16 +156,16 @@
   {
     mode = ["n"];
     key = "<leader>/";
-    action = "<cmd>Telescope current_buffer_fuzzy_find<cr>";
+    action = "<cmd>lua Snacks.picker.lines()<cr>";
     options = {
       silent = true;
-      desc = "Telescope fuzzy find through current buffer";
+      desc = "Search lines in the current buffer";
     };
   }
   {
     mode = ["n"];
     key = "<leader>'";
-    action = "<cmd>Telescope marks<cr>";
+    action = "<cmd>lua Snacks.picker.marks()<cr>";
     options = {
       silent = true;
       desc = "Telescope marks";
@@ -175,7 +174,7 @@
   {
     mode = ["n"];
     key = "<leader>f";
-    action = "<cmd>Telescope find_files<cr>";
+    action = "<cmd>lua Snacks.picker.files()<cr>";
     options = {
       silent = true;
       desc = "Telescope find files";
@@ -184,7 +183,16 @@
   {
     mode = ["n"];
     key = "<leader>g";
-    action = "<cmd>Telescope live_grep<cr>";
+    action = "<cmd>lua Snacks.picker.grep()<cr>";
+    options = {
+      silent = true;
+      desc = "Telescope live  grep";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>G";
+    action = "<cmd>lua Snacks.picker.grep_word()<cr>";
     options = {
       silent = true;
       desc = "Telescope live  grep";
@@ -193,7 +201,7 @@
   {
     mode = ["n"];
     key = "gd";
-    action = "<cmd>lua require'telescope.builtin'.lsp_definitions()<cr>";
+    action = "<cmd>lua Snacks.picker.lsp_definitions()<cr>";
     options = {
       silent = true;
       desc = "Telescope go to definition";
@@ -201,62 +209,139 @@
   }
   {
     mode = ["n"];
+    key = "gD";
+    action = "<cmd>lua Snacks.picker.lsp_declarations()<cr>";
+    options = {
+      silent = true;
+      desc = "Telescope go to declaration";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "gi";
+    action = "<cmd>lua Snacks.picker.lsp_implementations()<cr>";
+    options = {
+      silent = true;
+      desc = "Telescope go to implementation";
+    };
+  }
+  {
+    mode = ["n"];
     key = "gu";
-    action = "<cmd>lua require'telescope.builtin'.lsp_references()<cr>";
+    action = "<cmd>lua Snacks.picker.lsp_references()<cr>";
     options = {
       silent = true;
       desc = "Telescope find references";
     };
   }
   {
-    #  todo change severity, currently showing warnings too
+    mode = ["n"];
+    key = "gt";
+    action = "<cmd>lua Snacks.picker.lsp_type_definitions()<cr>";
+    options = {
+      silent = true;
+      desc = "Telescope find type definitions";
+    };
+  }
+  {
     mode = ["n"];
     key = "<leader>xx";
-    action = "<cmd>lua require'telescope.builtin'.diagnostics({ bufnr = 0 })<cr>";
+    action = "<cmd>lua Snacks.picker.diagnostics_buffer()<cr>";
     options = {
       silent = true;
-      desc = "Telescope diagnostics in current buffer";
+      desc = "Search diagnostics in current buffer";
     };
   }
   {
-    #  todo change severity, currently showing warnings too
     mode = ["n"];
     key = "<leader>xa";
-    action = "<cmd>lua require'telescope.builtin'.diagnostics()<cr>";
+    action = "<cmd>lua Snacks.picker.diagnostics()<cr>";
     options = {
       silent = true;
-      desc = "Telescope diagnostics in all buffers";
+      desc = "Search diagnostics in all buffers";
     };
   }
   {
-    #  todo change severity, currently showing warnings too
     mode = ["n"];
     key = "<leader>vl";
-    action = "<cmd>Telescope lsp_document_symbols<cr>";
+    action = "<cmd>lua Snacks.picker.lsp_symbols()<cr>";
     options = {
       silent = true;
-      desc = "Telescope lsp workspace symbols";
+      desc = "Search lsp symbols in buffer";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>vk";
+    action = "<cmd>lua Snacks.picker.keymaps()<cr>";
+    options = {
+      silent = true;
+      desc = "Search lsp symbols in buffer";
     };
   }
   {
     mode = ["n"];
     key = "<leader>vL";
-    action = "<cmd>Telescope lsp_workspace_symbols<cr>";
+    action = "<cmd>lua Snacks.picker.lsp_workspace_symbols()<cr>";
     options = {
       silent = true;
-      desc = "Telescope lsp workspace symbols";
+      desc = "Search lsp symbols in workspace";
     };
   }
   {
     mode = ["n"];
     key = "<leader>vn";
-    action = "<cmd>Telescope notify<cr>";
+    action = "<cmd>lua Snacks.picker.notifications()<cr>";
     options = {
       silent = true;
-      desc = "Search through notify messages extension";
+      desc = "Search through notifications messages extension";
     };
   }
-
+  {
+    mode = ["n"];
+    key = "<leader>vc";
+    action = "<cmd>lua Snacks.picker.commands()<cr>";
+    options = {
+      silent = true;
+      desc = "Search through command history";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>vr";
+    action = "<cmd>lua Snacks.picker.recent()<cr>";
+    options = {
+      silent = true;
+      desc = "Search through recent files ";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>vu";
+    action = "<cmd>lua Snacks.picker.undo()<cr>";
+    options = {
+      silent = true;
+      desc = "Search through recent undo";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>vd";
+    action = "<cmd>lua Snacks.picker.git_diff()<cr>";
+    options = {
+      silent = true;
+      desc = "Search through git diffs";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>vj";
+    action = "<cmd>lua Snacks.picker.jumps()<cr>";
+    options = {
+      silent = true;
+      desc = "Search through git diffs";
+    };
+  }
   {
     mode = ["n" "v"];
     key = "<leader>ad";
@@ -268,8 +353,8 @@
   }
   {
     mode = ["n"];
-    key = "<leader>vg";
-    action = "<cmd>Neogit kind=split<cr>";
+    key = "<leader>lg";
+    action = "<cmd>lua Snacks.lazygit()<cr>";
     options = {
       silent = true;
       desc = "Telescope show all buffers";
@@ -279,6 +364,15 @@
     mode = ["n"];
     key = "<leader>A";
     action = "<cmd>AerialNavToggle<cr>";
+    options = {
+      silent = true;
+      desc = "Aerial Nav";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>z";
+    action = "<cmd>lua Snacks.zen()<cr>";
     options = {
       silent = true;
       desc = "Aerial Nav";

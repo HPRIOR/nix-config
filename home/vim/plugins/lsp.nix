@@ -62,9 +62,6 @@
       jdtls.enable = true;
     };
     keymaps.lspBuf = {
-      "gD" = "references";
-      "gt" = "type_definition";
-      "gi" = "implementation";
       "K" = "hover";
       "<C-a>" = "code_action";
       "<leader>r" = "rename";
