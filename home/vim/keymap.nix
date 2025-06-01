@@ -362,7 +362,7 @@
   }
   {
     mode = ["n"];
-    key = "<leader>lg";
+    key = "<leader>vg";
     action = "<cmd>lua Snacks.lazygit()<cr>";
     options = {
       silent = true;
