@@ -6,7 +6,7 @@
       noremap = true;
       unique = true;
       silent = true;
-      desc = "Toggle neotree";
+      desc = "Toggle file explorer";
     };
   }
   {
@@ -24,7 +24,7 @@
     action = "y'>p";
     options = {
       silent = true;
-      desc = "Copy visual selection below";
+      desc = "Paste selection below";
     };
   }
   {
@@ -33,7 +33,7 @@
     action = ":setlocal spell! spelllang=en_gb<CR>";
     options = {
       silent = true;
-      desc = "Toggle spell checker";
+      desc = "Toggle spell checking";
     };
   }
   {
@@ -42,7 +42,7 @@
     action = "<cmd>lua require'telescope.builtin'.spell_suggest(require('telescope.themes').get_dropdown({ width = 0.8, previewer = false, prompt_title = false }))<cr>";
     options = {
       silent = true;
-      desc = "Toggle spell checker";
+      desc = "Show spelling suggestions";
     };
   }
   {
@@ -51,7 +51,7 @@
     action = "<c-w>h";
     options = {
       silent = true;
-      desc = "Move to left window";
+      desc = "Focus window left";
     };
   }
   {
@@ -60,7 +60,7 @@
     action = "<c-w>j";
     options = {
       silent = true;
-      desc = "Move to lower window";
+      desc = "Focus window below";
     };
   }
   {
@@ -69,7 +69,7 @@
     action = "<c-w>k";
     options = {
       silent = true;
-      desc = "Move to upper window";
+      desc = "Focus window above";
     };
   }
   {
@@ -78,7 +78,7 @@
     action = "<c-w>l";
     options = {
       silent = true;
-      desc = "Move to right window";
+      desc = "Focus window right";
     };
   }
   {
@@ -87,7 +87,7 @@
     action = ":vertical resize +5<CR>";
     options = {
       silent = true;
-      desc = "Expand vertical window size";
+      desc = "Increase window width";
     };
   }
   {
@@ -96,7 +96,7 @@
     action = ":vertical resize -5<CR>";
     options = {
       silent = true;
-      desc = "Reduce vertical window size";
+      desc = "Decrease window width";
     };
   }
   {
@@ -105,7 +105,7 @@
     action = ":resize +5<CR>";
     options = {
       silent = true;
-      desc = "Resize right";
+      desc = "Increase window height";
     };
   }
   {
@@ -114,7 +114,7 @@
     action = ":resize -5<CR>";
     options = {
       silent = true;
-      desc = "Resize left";
+      desc = "Decrease window height";
     };
   }
   {
@@ -123,7 +123,7 @@
     action = "<c-w>=";
     options = {
       silent = true;
-      desc = "Make all splits equal size";
+      desc = "Equalize split sizes";
     };
   }
   {
@@ -132,7 +132,7 @@
     action = ":close <cr>";
     options = {
       silent = true;
-      desc = "Close buffer";
+      desc = "Close current window";
     };
   }
   {
@@ -150,7 +150,7 @@
     action = "<cmd>lua Snacks.picker.buffers() <cr>";
     options = {
       silent = true;
-      desc = "Telescope show all buffers";
+      desc = "Show open buffers";
     };
   }
   {
@@ -159,7 +159,7 @@
     action = "<cmd>lua Snacks.picker.lines()<cr>";
     options = {
       silent = true;
-      desc = "Search lines in the current buffer";
+      desc = "Search lines in buffer";
     };
   }
   {
@@ -168,7 +168,7 @@
     action = "<cmd>lua Snacks.picker.marks()<cr>";
     options = {
       silent = true;
-      desc = "Telescope marks";
+      desc = "List marks";
     };
   }
   {
@@ -177,7 +177,7 @@
     action = "<cmd>lua Snacks.picker.files()<cr>";
     options = {
       silent = true;
-      desc = "Telescope find files";
+      desc = "Find files";
     };
   }
   {
@@ -186,7 +186,7 @@
     action = "<cmd>lua Snacks.picker.grep()<cr>";
     options = {
       silent = true;
-      desc = "Telescope live  grep";
+      desc = "Live grep search";
     };
   }
   {
@@ -195,7 +195,7 @@
     action = "<cmd>lua Snacks.picker.grep_word()<cr>";
     options = {
       silent = true;
-      desc = "Telescope live  grep";
+      desc = "Search word under cursor";
     };
   }
   {
@@ -204,7 +204,7 @@
     action = "<cmd>lua Snacks.picker.lsp_definitions()<cr>";
     options = {
       silent = true;
-      desc = "Telescope go to definition";
+      desc = "Go to definition";
     };
   }
   {
@@ -213,7 +213,7 @@
     action = "<cmd>lua Snacks.picker.lsp_declarations()<cr>";
     options = {
       silent = true;
-      desc = "Telescope go to declaration";
+      desc = "Go to declaration";
     };
   }
   {
@@ -222,7 +222,7 @@
     action = "<cmd>lua Snacks.picker.lsp_implementations()<cr>";
     options = {
       silent = true;
-      desc = "Telescope go to implementation";
+      desc = "Go to implementation";
     };
   }
   {
@@ -231,7 +231,7 @@
     action = "<cmd>lua Snacks.picker.lsp_references()<cr>";
     options = {
       silent = true;
-      desc = "Telescope find references";
+      desc = "Find references";
     };
   }
   {
@@ -240,7 +240,7 @@
     action = "<cmd>lua Snacks.picker.lsp_type_definitions()<cr>";
     options = {
       silent = true;
-      desc = "Telescope find type definitions";
+      desc = "Go to type definition";
     };
   }
   {
@@ -249,7 +249,7 @@
     action = "<cmd>lua Snacks.picker.diagnostics_buffer()<cr>";
     options = {
       silent = true;
-      desc = "Search diagnostics in current buffer";
+      desc = "Show buffer diagnostics";
     };
   }
   {
@@ -258,7 +258,7 @@
     action = "<cmd>lua Snacks.picker.diagnostics()<cr>";
     options = {
       silent = true;
-      desc = "Search diagnostics in all buffers";
+      desc = "Show workspace diagnostics";
     };
   }
   {
@@ -267,7 +267,7 @@
     action = "<cmd>lua Snacks.picker.lsp_symbols()<cr>";
     options = {
       silent = true;
-      desc = "Search lsp symbols in buffer";
+      desc = "List symbols in buffer";
     };
   }
   {
@@ -276,7 +276,7 @@
     action = "<cmd>lua Snacks.picker.keymaps()<cr>";
     options = {
       silent = true;
-      desc = "Search lsp symbols in buffer";
+      desc = "Search keymaps";
     };
   }
   {
@@ -285,7 +285,7 @@
     action = "<cmd>lua Snacks.picker.lsp_workspace_symbols()<cr>";
     options = {
       silent = true;
-      desc = "Search lsp symbols in workspace";
+      desc = "Search workspace symbols";
     };
   }
   {
@@ -294,7 +294,7 @@
     action = "<cmd>lua Snacks.picker.notifications()<cr>";
     options = {
       silent = true;
-      desc = "Search through notifications messages extension";
+      desc = "Search notifications";
     };
   }
   {
@@ -303,7 +303,7 @@
     action = "<cmd>lua Snacks.picker.commands()<cr>";
     options = {
       silent = true;
-      desc = "Search through command history";
+      desc = "Search commands";
     };
   }
   {
@@ -312,7 +312,7 @@
     action = "<cmd>lua Snacks.picker.recent()<cr>";
     options = {
       silent = true;
-      desc = "Search through recent files ";
+      desc = "Search recent files";
     };
   }
   {
@@ -321,7 +321,7 @@
     action = "<cmd>lua Snacks.picker.undo()<cr>";
     options = {
       silent = true;
-      desc = "Search through recent undo";
+      desc = "Search undo history";
     };
   }
   {
@@ -330,7 +330,7 @@
     action = "<cmd>lua Snacks.picker.git_diff()<cr>";
     options = {
       silent = true;
-      desc = "Search through git diffs";
+      desc = "Search git diffs";
     };
   }
   {
@@ -339,7 +339,7 @@
     action = "<cmd>lua Snacks.picker.jumps()<cr>";
     options = {
       silent = true;
-      desc = "Search through git diffs";
+      desc = "Search jump list";
     };
   }
   {
@@ -348,7 +348,7 @@
     action = "<cmd>lua avante_ask_diag()<CR>";
     options = {
       silent = true;
-      desc = "Ask Avante to fix errors only if diagnostics exist";
+      desc = "Suggest fixes for diagnostics";
     };
   }
   {
@@ -357,7 +357,7 @@
     action = "<cmd>lua Snacks.lazygit()<cr>";
     options = {
       silent = true;
-      desc = "Telescope show all buffers";
+      desc = "Open Git interface";
     };
   }
   {
@@ -366,7 +366,7 @@
     action = "<cmd>AerialNavToggle<cr>";
     options = {
       silent = true;
-      desc = "Aerial Nav";
+      desc = "Toggle code outline";
     };
   }
   {
@@ -375,7 +375,8 @@
     action = "<cmd>lua Snacks.zen()<cr>";
     options = {
       silent = true;
-      desc = "Aerial Nav";
+      desc = "Toggle distraction‑free mode";
     };
   }
 ]
+
