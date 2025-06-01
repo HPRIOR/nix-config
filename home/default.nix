@@ -202,6 +202,9 @@ in {
           navigate = "true";
         };
       };
+      aliases = {
+        lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+      };
     };
 
     programs.atuin = {
@@ -280,6 +283,7 @@ in {
       export OPENAI_API_KEY="$(cat ~/.config/sops-nix/secrets/gpt-api-key)"
       export ANTHROPIC_API_KEY="$(cat ~/.config/sops-nix/secrets/claude_key)"
       export SOPS_AGE_KEY_FILE="$(cat ~/.config/sops-nix/secrets/sops-age-path)"
+      export STARSHIP_CONFIG="${settings.configDir}/starship/starship.toml"
     '';
 
     home.sessionVariables = {
