@@ -71,21 +71,21 @@ in {
           (
             mkButton
             "f"
-            "<CMD>lua require('telescope.builtin').find_files()<CR>"
+            "<CMD>lua Snacks.picker.files()<CR>"
             "🔍 Find File"
             "Operator"
           )
           (
             mkButton
             "g"
-            "<cmd>Telescope live_grep<cr>"
+            "<cmd>lua Snacks.picker.grep()<cr>"
             "🔍 Live grep"
             "Operator"
           )
           (
             mkButton
             "t"
-            ":NvimTreeToggle<CR>"
+            ":Neotree toggle<CR>"
             "  Open tree"
             "Operator"
           )
