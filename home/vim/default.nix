@@ -64,7 +64,6 @@ in {
         -- Telescope settings
         -- Settings.defaults.mappings seems ot be broken in the nix config
         -- Some extensions aren't provided as well
-
         require("telescope").setup({
             defaults = {
                 mappings = {
@@ -75,7 +74,6 @@ in {
                 },
             },
           })
-        require('telescope').load_extension('notify')
         require'window-picker'.setup()
 
         -- avante helpers

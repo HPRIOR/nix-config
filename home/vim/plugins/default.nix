@@ -26,10 +26,7 @@ in {
           nested_checkboxes = 0;
         };
       };
-      zen-mode.enable = true;
-      neogit.enable = true;
       gitsigns.enable = true;
-      diffview.enable = true;
       auto-session.enable = true;
       guess-indent = {
         enable = true;
@@ -62,33 +59,24 @@ in {
           open_mapping = "[[<c-/>]]";
         };
       };
-      notify = {
-        enable = true;
-        settings = {
-          backgroundColour = "#000000";
-          fps = 60;
-          render = "default";
-          timeout = 1000;
-          topDown = true;
-        };
-      };
       snacks = {
         enable = true;
         settings = {
-          animate = {
+          animate = {enabled = true;};
+          bigfile = {enabled = true;};
+          indent = {enabled = true;};
+          lazygit = {enabled = true;};
+          notifier = {
             enabled = true;
+            timeout = 3000;
           };
-          bigfile = {
+          quickfile = {enabled = true;};
+          scroll = {enabled = true;};
+          zen = {
             enabled = true;
-          };
-          lazygit = {
-            enabled = true;
-          };
-          quickfile = {
-            enabled = true;
-          };
-          scroll = {
-            enabled = true;
+            toggles = {
+              dim = false;
+            };
           };
         };
       };
