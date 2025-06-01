@@ -42,6 +42,7 @@ in {
         settings = {
           provider = "claude";
           claude = {
+            max_tokens = 8192;
             model = "claude-3-5-sonnet-20241022";
           };
         };
@@ -151,7 +152,7 @@ in {
       illuminate.enable = true;
       vim-surround.enable = true;
       comment.enable = true;
-      nvim-tree.enable = true;
+      neo-tree.enable = true;
       dap.enable = true;
     }
     // lsp
