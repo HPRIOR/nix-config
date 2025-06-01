@@ -1,7 +1,7 @@
 [
   {
     key = "<leader>t";
-    action = ":NvimTreeToggle<CR>";
+    action = ":NeoTree toggle<CR>";
     options = {
       noremap = true;
       unique = true;
@@ -353,6 +353,15 @@
   }
   {
     mode = ["n"];
+    key = "<leader>an";
+    action = "<cmd>:AvantChatNew<CR>";
+    options = {
+      silent = true;
+      desc = "Suggest fixes for diagnostics";
+    };
+  }
+  {
+    mode = ["n"];
     key = "<leader>lg";
     action = "<cmd>lua Snacks.lazygit()<cr>";
     options = {
@@ -379,4 +388,3 @@
     };
   }
 ]
-
