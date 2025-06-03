@@ -44,6 +44,7 @@ in {
           claude = {
             max_tokens = 8192;
             model = "claude-3-5-sonnet-20241022";
+            disable_tools = ["web_search"];
           };
         };
       };
@@ -65,7 +66,10 @@ in {
         settings = {
           animate = {enabled = true;};
           bigfile = {enabled = true;};
-          indent = {enabled = true;};
+          indent = {
+            enabled = true;
+            animate = {enabled = false;};
+          };
           lazygit = {enabled = true;};
           notifier = {
             enabled = true;

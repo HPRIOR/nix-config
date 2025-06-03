@@ -41,6 +41,11 @@ in {
         -- configure lsp
         local _border = "rounded"
 
+        local kanagawa_background = "#1f1f28"
+
+        -- Set up floating window appearance
+        vim.api.nvim_set_hl(0, "FloatBorder", { bg = kanagawa_background})  -- Match the border background with kanagawa
+
         vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
             vim.lsp.handlers.hover, {
                 border = _border
@@ -53,13 +58,27 @@ in {
             }
         )
 
-        vim.diagnostic.config = {
-            float={border=_border}
-        }
+        vim.diagnostic.config({
+            float = {
+                border = _border,
+                style = "minimal",
+            },
+            signs = true,
+            underline = true,
+            severity_sort = true,
+        })
 
         require('lspconfig.ui.windows').default_options = {
-            border = _border
+            border = _border,
         }
+
+        -- Set rounded borders for all floating windows
+        local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
+        function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
+            opts = opts or {}
+            opts.border = opts.border or _border
+            return orig_util_open_floating_preview(contents, syntax, opts, ...)
+        end
 
         -- Telescope settings
         -- Settings.defaults.mappings seems ot be broken in the nix config
