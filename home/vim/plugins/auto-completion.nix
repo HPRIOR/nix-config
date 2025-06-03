@@ -1,4 +1,5 @@
 pkgs: {
+  blink-cmp-spell.enable = true;
   blink-cmp = let
     border_type = "rounded";
   in {
@@ -54,6 +55,7 @@ pkgs: {
           "path"
           "snippets"
           "buffer"
+          "spell"
         ];
         cmdline = [];
         providers = {
@@ -67,6 +69,13 @@ pkgs: {
           };
           path = {
             enabled = true;
+          };
+          spell = {
+            module = "blink-cmp-spell";
+            name = "Spell";
+            score_offset = 100;
+            opts = {
+            };
           };
         };
       };
