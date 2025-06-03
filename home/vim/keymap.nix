@@ -396,4 +396,13 @@
       desc = "Toggle terminal";
     };
   }
+  {
+    mode = ["n" "i"];
+    key = "<c-a>";
+    action = "<cmd>lua require('actions-preview').code_actions()<cr>";
+    options = {
+      silent = true;
+      desc = "Toggle terminal";
+    };
+  }
 ]

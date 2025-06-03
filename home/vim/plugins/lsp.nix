@@ -63,7 +63,6 @@
     };
     keymaps.lspBuf = {
       "K" = "hover";
-      "<C-a>" = "code_action";
       "<leader>r" = "rename";
     };
     keymaps.diagnostic = {

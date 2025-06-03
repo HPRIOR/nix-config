@@ -10,6 +10,15 @@
 in {
   plugins =
     {
+      actions-preview = {
+        enable = true;
+        settings = {
+          backend = ["snacks" "telescope" "minipick"];
+          snacks = {
+            layout = {preset = "dropdown";};
+          };
+        };
+      };
       lz-n.enable = true;
       aerial.enable = true;
       dropbar.enable = true;
@@ -70,6 +79,7 @@ in {
             enabled = true;
             timeout = 3000;
           };
+          picker = {enabled = true;};
           quickfile = {enabled = true;};
           scroll = {enabled = true;};
           zen = {
