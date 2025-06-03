@@ -464,7 +464,7 @@ fkill() {
     fi
 }
 
-lzcommit() {
+lzc() {
     if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
         echo "You are not inside a Git repository."
         return

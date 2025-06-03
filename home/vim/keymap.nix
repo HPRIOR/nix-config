@@ -387,4 +387,13 @@
       desc = "Toggle distraction‑free mode";
     };
   }
+  {
+    mode = ["n" "i" "v" "c" "t"];
+    key = "<c-/>";
+    action = "<cmd>lua Snacks.terminal()<cr>";
+    options = {
+      silent = true;
+      desc = "Toggle terminal";
+    };
+  }
 ]

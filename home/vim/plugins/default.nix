@@ -36,6 +36,7 @@ in {
       };
       colorizer.enable = true;
       web-devicons.enable = true;
+      mini.enable = true;
       # todo enable these when available in systems pkgs
       avante = {
         enable = true;
@@ -53,12 +54,6 @@ in {
 
         settings = {
           file_types = ["markdown" "Avante"];
-        };
-      };
-      toggleterm = {
-        enable = true;
-        settings = {
-          open_mapping = "[[<c-/>]]";
         };
       };
       snacks = {
@@ -82,6 +77,9 @@ in {
             toggles = {
               dim = false;
             };
+          };
+          terminal = {
+            enabled = true;
           };
         };
       };
