@@ -9,7 +9,9 @@ pkgs: {
     settings = {
       appearance = {
         nerd_font_variant = "normal";
-        use_nvim_cmp_as_default = true;
+        # Use highlight groups provided by the current colorscheme
+        # instead of falling back to nvim-cmp defaults.
+        use_nvim_cmp_as_default = false;
       };
       completion = {
         accept = {
