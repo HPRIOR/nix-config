@@ -1,5 +1,6 @@
 pkgs: {
   blink-cmp-spell.enable = true;
+  blink-ripgrep-nvim.enable = true;
   blink-cmp = let
     border_type = "rounded";
   in {
@@ -49,14 +50,15 @@ pkgs: {
           border = border_type;
         };
       };
-      sources = {
-        default = [
-          "lsp"
-          "path"
-          "snippets"
-          "buffer"
-          "spell"
-        ];
+        sources = {
+          default = [
+            "lsp"
+            "path"
+            "snippets"
+            "buffer"
+            "spell"
+            "ripgrep"
+          ];
         cmdline = [];
         providers = {
           buffer = {
@@ -75,6 +77,25 @@ pkgs: {
             name = "Spell";
             score_offset = 100;
             opts = {
+            };
+          };
+          ripgrep = {
+            async = true;
+            module = "blink-ripgrep";
+            name = "Ripgrep";
+            score_offset = 100;
+            opts = {
+              prefix_min_len = 3;
+              context_size = 5;
+              max_filesize = "1M";
+              project_root_marker = ".git";
+              project_root_fallback = true;
+              search_casing = "--ignore-case";
+              additional_rg_options = {};
+              fallback_to_regex_highlighting = true;
+              ignore_paths = {};
+              additional_paths = {};
+              debug = false;
             };
           };
         };
