@@ -1,6 +1,7 @@
 pkgs: {
   blink-cmp-spell.enable = true;
   blink-ripgrep.enable = true;
+  colorful-menu.enable = true;
   blink-cmp = let
     border_type = "rounded";
   in {
@@ -22,6 +23,27 @@ pkgs: {
           auto_show = true;
           window = {
             border = border_type;
+          };
+        };
+        menu.draw = {
+          columns = [
+            [ "kind_icon" ]
+            {
+              __unkeyed-1 = "label";
+              gap = 1;
+            }
+          ];
+          components.label = {
+            text.__raw = ''
+              function(ctx)
+                return require("colorful-menu").blink_components_text(ctx)
+              end
+            '';
+            highlight.__raw = ''
+              function(ctx)
+                return require("colorful-menu").blink_components_highlight(ctx)
+              end
+            '';
           };
         };
       };
