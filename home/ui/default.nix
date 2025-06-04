@@ -237,7 +237,7 @@ in {
       monitor=Unknown-1,disable
 
       workspace=1,monitor:desc:${monitorLeft.desc},default:true
-      workspace=2,monitor:desc:${monitorCentre.desc},defualt:true
+      workspace=2,monitor:desc:${monitorCentre.desc},default:true
       workspace=3,monitor:desc:${monitorRight.desc},default:true
 
       # Key bindings
