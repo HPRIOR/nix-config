@@ -9,7 +9,7 @@ pkgs: {
     settings = {
       appearance = {
         nerd_font_variant = "normal";
-        use_nvim_cmp_as_default = true;
+        use_nvim_cmp_as_default = false;
       };
       completion = {
         accept = {
@@ -27,7 +27,7 @@ pkgs: {
         };
         menu.draw = {
           columns = [
-            [ "kind_icon" ]
+            ["kind_icon"]
             {
               __unkeyed-1 = "label";
               gap = 1;
@@ -72,15 +72,15 @@ pkgs: {
           border = border_type;
         };
       };
-        sources = {
-          default = [
-            "lsp"
-            "path"
-            "snippets"
-            "buffer"
-            "spell"
-            "ripgrep"
-          ];
+      sources = {
+        default = [
+          "lsp"
+          "path"
+          "snippets"
+          "buffer"
+          "spell"
+          "ripgrep"
+        ];
         cmdline = [];
         providers = {
           buffer = {

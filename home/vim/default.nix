@@ -42,6 +42,7 @@ in {
         local _border = "rounded"
 
         local kanagawa_background = "#1f1f28"
+        vim.api.nvim_set_hl(0, "BlinkCmpMenu", {background = "#223249" })
 
         -- Set up floating window appearance
         vim.api.nvim_set_hl(0, "FloatBorder", { bg = kanagawa_background})  -- Match the border background with kanagawa
