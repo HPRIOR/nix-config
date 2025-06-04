@@ -101,6 +101,7 @@ in {
         glances
         glow
         gping # ping with graph
+        gh
         hexyl
         hurl
         hyperfine # benchmarking tool
