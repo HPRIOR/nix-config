@@ -1,6 +1,6 @@
 pkgs: {
   blink-cmp-spell.enable = true;
-  blink-ripgrep-nvim.enable = true;
+  blink-ripgre.enable = true;
   blink-cmp = let
     border_type = "rounded";
   in {
