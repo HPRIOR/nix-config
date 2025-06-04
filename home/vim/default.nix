@@ -44,7 +44,11 @@ in {
         local kanagawa_background = "#1f1f28"
 
         -- Set up floating window appearance
-        vim.api.nvim_set_hl(0, "FloatBorder", { bg = kanagawa_background})  -- Match the border background with kanagawa
+        vim.api.nvim_set_hl(0, "FloatBorder", { bg = kanagawa_background })  -- Match the border background with kanagawa
+        -- Ensure blink.cmp windows match the colorscheme
+        vim.api.nvim_set_hl(0, "BlinkCmpMenuBorder", { bg = kanagawa_background, fg = kanagawa_background })
+        vim.api.nvim_set_hl(0, "BlinkCmpDocBorder", { link = "FloatBorder" })
+        vim.api.nvim_set_hl(0, "BlinkCmpSignatureHelpBorder", { link = "FloatBorder" })
 
         vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
             vim.lsp.handlers.hover, {
