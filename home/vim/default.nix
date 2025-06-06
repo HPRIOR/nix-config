@@ -40,14 +40,24 @@ in {
 
         -- configure lsp
         local _border = "rounded"
+        local border_colour = "#2D4F67"
 
         local kanagawa_background = "#1f1f28"
         vim.api.nvim_set_hl(0, "BlinkCmpMenu", {background = "#223249" })
 
 
+
         -- Set up floating window appearance
         -- This messes with snacks slightly. Because the background is dimmed you can see the box outline
-        vim.api.nvim_set_hl(0, "FloatBorder", { bg = kanagawa_background})  -- Match the border background with kanagawa
+        -- Set floating border color and background
+        vim.api.nvim_set_hl(0, "FloatBorder", {
+            bg = kanagawa_background,
+            fg = border_colour
+        })
+
+        -- hacky fix to match border with dimmed backdrop
+        vim.api.nvim_set_hl(0, "SnacksPickerBorder", { bg = "#16161D", fg = border_colour})
+
 
         vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
             vim.lsp.handlers.hover, {
