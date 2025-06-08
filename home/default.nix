@@ -36,7 +36,6 @@ in {
     ./terminal
     ./ui
     ./mac
-    ./ranger/default.nix
   ];
 
   options = {
@@ -119,7 +118,6 @@ in {
         perl538Packages.vidir
         procs # ps alternative
         progress
-        ranger
         ripgrep
         rust-packages.analyzer
         rust-packages.toolchain
@@ -136,6 +134,7 @@ in {
         # qsv
         unzip
         watchexec
+        yazi
         zathura
         zoxide
       ]
