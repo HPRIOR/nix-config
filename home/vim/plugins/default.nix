@@ -20,6 +20,7 @@ in {
         };
       };
       lz-n.enable = true;
+      scrollview.enable = true;
       aerial.enable = true;
       dropbar.enable = true;
       bullets = {
