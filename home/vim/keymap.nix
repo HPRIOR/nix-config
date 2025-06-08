@@ -246,7 +246,7 @@
   {
     mode = ["n"];
     key = "<leader>xx";
-    action = "<cmd>lua Snacks.picker.diagnostics_buffer()<cr>";
+    action = "<cmd>Trouble diagnostics toggle focus=true filter.buf=0<cr>";
     options = {
       silent = true;
       desc = "Show buffer diagnostics";
@@ -255,7 +255,7 @@
   {
     mode = ["n"];
     key = "<leader>xa";
-    action = "<cmd>lua Snacks.picker.diagnostics()<cr>";
+    action = "<cmd>Trouble diagnostics toggle focus=true<cr>";
     options = {
       silent = true;
       desc = "Show workspace diagnostics";
@@ -403,6 +403,15 @@
     options = {
       silent = true;
       desc = "Toggle terminal";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>u";
+    action = "<cmd>UndotreeToggle | UndotreeFocus <cr>";
+    options = {
+      silent = true;
+      desc = "Toggle Undotree";
     };
   }
 ]
