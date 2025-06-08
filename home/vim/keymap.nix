@@ -1,7 +1,7 @@
 [
   {
     key = "<leader>t";
-    action = ":NeoTree toggle<CR>";
+    action = ":Neotree toggle<CR>";
     options = {
       noremap = true;
       unique = true;
