@@ -111,7 +111,7 @@ f() {
   fi
 
   local preview_label='[ enter = cd/nvim, ctrl+o = cd, ctrl-n = nvim, ctrl-r = f, ctrl+f = fif ]'
-  local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
+  local preview_window='up,70%,border-bottom,+{2}+3/3,~3'
   # Run fd -> fzf with preview, capturing keypress + selection
 
   local output
@@ -226,7 +226,7 @@ fdir() {
   fi
 
   local preview_label='[ enter = cd, ctrl+n = nvim, ctrl+s = ff, ctrl-r = fdir, ctrl+f = fif, ctrl-a = f ]'
-  local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
+  local preview_window='up,70%,border-bottom,+{2}+3/3,~3'
   # Run fd -> fzf with preview, capturing keypress + selection
   local output
   output=$(eval "$fd_cmd" | \
@@ -363,7 +363,7 @@ fic(){
   local preview='exa $HOME/Code/{} -T -L 1 --long --git --colour=always --icons --no-permissions \
                  --no-time --no-user --no-filesize --group-directories-first --sort=extension'
   local preview_label='[ enter = cd, ctrl+n = nvim, ctrl+s = ff, ctrl-r = fdir, ctrl+f = fif, ctrl-a = f ]'
-  local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
+  local preview_window='up,70%,border-bottom,+{2}+3/3,~3'
   output=$(ls  "$HOME/Code" | \
     fzf-default --preview "$preview" \
       --preview-window $preview_window \
@@ -420,7 +420,7 @@ fh(){
 
 # Find program: search through executable command in path - preview with tldr page
 fp(){
-    local preview_window='up,85%,border-bottom,+{2}+3/3,~3'
+    local preview_window='up,70%,border-bottom,+{2}+3/3,~3'
     local p=$(compgen -c | sed '/^_/d' | sort |  \
       fzf-default --preview "tldr {}" \
       --bind "?:preview:man {}" \
