@@ -76,7 +76,14 @@ in {
                 border = _border,
                 style = "minimal",
             },
-            signs = true,
+            signs = {
+              text = {
+                [vim.diagnostic.severity.ERROR] = "",
+                [vim.diagnostic.severity.WARN] = "",
+                [vim.diagnostic.severity.INFO] = "󰋼",
+                [vim.diagnostic.severity.HINT] = "󰌵",
+              },
+            },
             underline = true,
             severity_sort = true,
         })
@@ -84,6 +91,7 @@ in {
         require('lspconfig.ui.windows').default_options = {
             border = _border,
         }
+
 
         -- Set rounded borders for all floating windows
         local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview

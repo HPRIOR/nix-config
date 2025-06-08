@@ -300,7 +300,7 @@
   {
     mode = ["n"];
     key = "<leader>vc";
-    action = "<cmd>lua Snacks.picker.commands()<cr>";
+    action = "<cmd>lua Snacks.picker.commands({layout = {preset = 'vscode'}})<cr>";
     options = {
       silent = true;
       desc = "Search commands";
@@ -308,7 +308,7 @@
   }
   {
     mode = ["n"];
-    key = "<leader>vr";
+    key = "<leader>vr";  
     action = "<cmd>lua Snacks.picker.recent()<cr>";
     options = {
       silent = true;
@@ -317,7 +317,7 @@
   }
   {
     mode = ["n"];
-    key = "<leader>vu";
+    key = "<leader>u";
     action = "<cmd>lua Snacks.picker.undo()<cr>";
     options = {
       silent = true;
@@ -403,15 +403,6 @@
     options = {
       silent = true;
       desc = "Toggle terminal";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>u";
-    action = "<cmd>UndotreeToggle | UndotreeFocus <cr>";
-    options = {
-      silent = true;
-      desc = "Toggle Undotree";
     };
   }
 ]

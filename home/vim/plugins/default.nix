@@ -38,7 +38,6 @@ in {
       };
       gitsigns.enable = true;
       wrapping.enable = true;
-      undotree.enable = true;
       trouble = {enable = true;};
       vim-matchup.enable = true;
       auto-session.enable = true;
