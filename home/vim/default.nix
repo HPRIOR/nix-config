@@ -72,6 +72,7 @@ in {
         )
 
         vim.diagnostic.config({
+            virtual_text = false,
             float = {
                 border = _border,
                 style = "minimal",

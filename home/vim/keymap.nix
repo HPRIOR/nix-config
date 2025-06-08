@@ -308,7 +308,7 @@
   }
   {
     mode = ["n"];
-    key = "<leader>vr";  
+    key = "<leader>vr";
     action = "<cmd>lua Snacks.picker.recent()<cr>";
     options = {
       silent = true;
@@ -403,6 +403,24 @@
     options = {
       silent = true;
       desc = "Toggle terminal";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "ge";
+    action = "<cmd>lua vim.diagnostic.goto_next({float = false})<cr>";
+    options = {
+      silent = true;
+      desc = "Go to next diagnostic";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "gE";
+    action = "<cmd>lua vim.diagnostic.goto_prev({float = false})<cr>";
+    options = {
+      silent = true;
+      desc = "Go to next diagnostic";
     };
   }
 ]

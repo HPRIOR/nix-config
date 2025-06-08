@@ -40,6 +40,7 @@ in {
       wrapping.enable = true;
       trouble = {enable = true;};
       vim-matchup.enable = true;
+      tiny-inline-diagnostic.enable = true;
       auto-session.enable = true;
       guess-indent = {
         enable = true;

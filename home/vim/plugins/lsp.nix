@@ -66,8 +66,6 @@
       "<leader>r" = "rename";
     };
     keymaps.diagnostic = {
-      "ge" = "goto_next";
-      "gE" = "goto_prev";
       "<leader>d" = "open_float";
     };
   };
