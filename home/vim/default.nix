@@ -19,7 +19,8 @@ in {
     {
       enable = true;
       performance = {
-        # combinePlugins.enable = true;
+        combinePlugins.enable = true;
+        combinePlugins.standalonePlugins = ["nvim-treesitter" "blink.cmp" "smart-splits" "leap.nvim" "mini.nvim"];
         byteCompileLua = {
           enable = true;
           configs = true;
