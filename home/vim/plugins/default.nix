@@ -23,6 +23,16 @@ in {
       scrollview.enable = true;
       aerial.enable = true;
       dropbar.enable = true;
+      spectre.enable = true;
+      smear-cursor = {
+        enable = true;
+        settings = {
+          stiffness = 0.8;
+          trailing_stiffness = 0.5;
+          distance_stop_animating = 0.5;
+        };
+      };
+      smart-splits.enable = true;
       bullets = {
         enable = true;
         settings = {
@@ -40,7 +50,7 @@ in {
       wrapping.enable = true;
       trouble = {enable = true;};
       vim-matchup.enable = true;
-      tiny-inline-diagnostic.enable = true;
+      tiny-inline-diagnostic.enable = false;
       auto-session.enable = true;
       guess-indent = {
         enable = true;

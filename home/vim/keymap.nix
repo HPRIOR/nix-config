@@ -83,38 +83,38 @@
   }
   {
     mode = ["n"];
-    key = "=";
-    action = ":vertical resize +5<CR>";
+    key = "<c-h>";
+    action = "<cmd>lua require('smart-splits').resize_left()<cr>";
     options = {
       silent = true;
-      desc = "Increase window width";
+      desc = "Resize left";
     };
   }
   {
     mode = ["n"];
-    key = "-";
-    action = ":vertical resize -5<CR>";
+    key = "<c-j>";
+    action = "<cmd>lua require('smart-splits').resize_down()<cr>";
     options = {
       silent = true;
-      desc = "Decrease window width";
+      desc = "Resize down";
     };
   }
   {
     mode = ["n"];
-    key = "+";
-    action = ":resize +5<CR>";
+    key = "<c-k>";
+    action = "<cmd>lua require('smart-splits').resize_up()<cr>";
     options = {
       silent = true;
-      desc = "Increase window height";
+      desc = "Resize up";
     };
   }
   {
     mode = ["n"];
-    key = "_";
-    action = ":resize -5<CR>";
+    key = "<c-l>";
+    action = "<cmd>lua require('smart-splits').resize_right()<cr>";
     options = {
       silent = true;
-      desc = "Decrease window height";
+      desc = "Resize right";
     };
   }
   {
@@ -408,7 +408,7 @@
   {
     mode = ["n"];
     key = "ge";
-    action = "<cmd>lua vim.diagnostic.goto_next({float = false})<cr>";
+    action = "<cmd>lua vim.diagnostic.goto_next()<cr>";
     options = {
       silent = true;
       desc = "Go to next diagnostic";
@@ -417,10 +417,19 @@
   {
     mode = ["n"];
     key = "gE";
-    action = "<cmd>lua vim.diagnostic.goto_prev({float = false})<cr>";
+    action = "<cmd>lua vim.diagnostic.goto_prev()<cr>";
     options = {
       silent = true;
       desc = "Go to next diagnostic";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>%";
+    action = "<cmd>Spectre<cr>";
+    options = {
+      silent = true;
+      desc = "Open search and replace window (spectre)";
     };
   }
 ]
