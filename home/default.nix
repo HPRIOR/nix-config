@@ -261,6 +261,7 @@ in {
       // Ocaml
       (?d)**/_build/
       (?d)**/_opam/
+      (?d)**/.opam/
 
       // Rust
       (?d)**/target/
