@@ -19,8 +19,8 @@
       nixd.enable = true;
       ocamlls = {
         enable = true;
-        package = pkgs.ocamlPackages.ocaml-lsp;
-        cmd = ["${pkgs.ocamlPackages.ocaml-lsp}/bin/ocamllsp" "--stdio"];
+        package = null; # Needs to be overriden in project flakes
+        cmd = ["ocamllsp" "--stdio"];
       };
       omnisharp.enable = true;
       pyright.enable = true;
@@ -29,7 +29,7 @@
       rust_analyzer = {
         enable = true;
         package = rust-packages.analyzer;
-        cargoPackage = rust-packages.cargo;
+        cargoPackage = rust-packages.cargo; # TODO: the cargo package should be determined by the dev shell
         rustcPackage = rust-packages.rustc;
         installCargo = false;
         installRustc = false;

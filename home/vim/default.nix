@@ -224,7 +224,7 @@ in {
         pkgs.rustfmt
         pkgs.shfmt
         pkgs.jq
-        pkgs.ocamlPackages.ocamlformat
+        # pkgs.ocamlPackages.ocamlformat
       ];
 
       globals.mapleader = " ";
