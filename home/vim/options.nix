@@ -6,12 +6,12 @@
       pattern = ["ocaml"];
       command = "setlocal indentexpr=";
     }
-    {
-      desc = "Use 4-space indentation for OCaml files";
-      event = ["FileType"];
-      pattern = ["ocaml"];
-      command = "setlocal tabstop=4 shiftwidth=4 expandtab";
-    }
+    # {
+    #   desc = "Use 4-space indentation for OCaml files";
+    #   event = ["FileType"];
+    #   pattern = ["ocaml"];
+    #   command = "setlocal tabstop=4 shiftwidth=4 expandtab";
+    # }
   ];
 
   opts = {

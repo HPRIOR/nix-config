@@ -54,14 +54,10 @@ in {
       auto-session.enable = true;
       guess-indent = {
         enable = true;
-        settings = {
-          filetype_exclude = ["ocaml"];
-        };
       };
       colorizer.enable = true;
       web-devicons.enable = true;
       mini.enable = true;
-      # todo enable these when available in systems pkgs
       avante = {
         enable = true;
         settings = {
