@@ -155,6 +155,7 @@ in {
         citrix_workspace_24_11_0
         feh
         firefox # applications
+        freecad
         glibc
         grim
         libreoffice

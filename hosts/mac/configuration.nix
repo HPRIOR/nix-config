@@ -60,6 +60,7 @@ in {
       "docker"
       "dropbox"
       "firefox"
+      "freecad"
       "ghostty"
       "jetbrains-toolbox"
       "libreoffice"
