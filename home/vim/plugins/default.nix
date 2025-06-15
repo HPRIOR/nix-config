@@ -47,7 +47,13 @@ in {
         };
       };
       gitsigns.enable = true;
-      wrapping.enable = true;
+      wrapping = {
+        enable = true;
+        settings = {
+          create_commands = false;
+          create_keymaps = false;
+        };
+      };
       trouble = {enable = true;};
       vim-matchup.enable = true;
       tiny-inline-diagnostic.enable = false;
