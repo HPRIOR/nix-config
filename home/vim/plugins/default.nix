@@ -159,17 +159,52 @@ in {
         enable = true;
         settings.notifyOnError = true;
         settings.formatters_by_ft = {
-          html = [["prettierd" "prettier"]];
-          css = [["prettierd" "prettier"]];
+          html = {
+            __unkeyed-1 = "prettierd";
+            __unkeyed-2 = "prettier";
+            timeout_ms = 2000;
+            stop_after_first = true;
+          };
+          css = {
+            __unkeyed-1 = "prettierd";
+            __unkeyed-2 = "prettier";
+            timeout_ms = 2000;
+            stop_after_first = true;
+          };
           json = [["jq"]];
-          javascript = [["prettierd" "prettier"]];
-          javascriptreact = [["prettierd" "prettier"]];
-          typescript = [["prettierd" "prettier"]];
-          typescriptreact = [["prettierd" "prettier"]];
+          javascript = {
+            __unkeyed-1 = "prettierd";
+            __unkeyed-2 = "prettier";
+            timeout_ms = 2000;
+            stop_after_first = true;
+          };
+          javascriptreact = {
+            __unkeyed-1 = "prettierd";
+            __unkeyed-2 = "prettier";
+            timeout_ms = 2000;
+            stop_after_first = true;
+          };
+          typescript = {
+            __unkeyed-1 = "prettierd";
+            __unkeyed-2 = "prettier";
+            timeout_ms = 2000;
+            stop_after_first = true;
+          };
+          typescriptreact = {
+            __unkeyed-1 = "prettierd";
+            __unkeyed-2 = "prettier";
+            timeout_ms = 2000;
+            stop_after_first = true;
+          };
           python = ["black"];
           lua = ["stylua"];
           nix = ["alejandra"];
-          markdown = [["prettierd" "prettier"]];
+          markdown = {
+            __unkeyed-1 = "prettierd";
+            __unkeyed-2 = "prettier";
+            timeout_ms = 2000;
+            stop_after_first = true;
+          };
           yaml = ["yamlfmt"];
           rust = ["rustfmt"];
           sh = ["shfmt"];
