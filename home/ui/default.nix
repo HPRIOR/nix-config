@@ -358,6 +358,8 @@ in {
 
       input {
           kb_layout = gb
+          repeat_delay = 300
+          repeat_rate = 50
       }
 
       misc {
