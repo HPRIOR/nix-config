@@ -36,7 +36,7 @@
 
   sharedOverlays = [
     inputs.fenix.overlays.default
-    (import ../overlays/nixvim-avante.nix { unstable = inputs.unstable; })
+    (import ../overlays/nixvim-avante.nix)
   ];
 in {
   nixos = {
