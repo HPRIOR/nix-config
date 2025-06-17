@@ -273,4 +273,5 @@ in {
 
   system.stateVersion = "23.11"; # Did you read the comment? (doesn't need to change?)
   nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings.download-buffer-size = 33554432; # 32MiB
 }
