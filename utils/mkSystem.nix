@@ -58,7 +58,6 @@ in {
       };
       modules = [
         sysConfig
-        home-manager.nixosModules.home-manager
         {
           nixpkgs.config.permittedInsecurePackages = permittedInsecurePkgs;
           nixpkgs.overlays =
@@ -67,6 +66,9 @@ in {
               (inputs.ghostty.overlays.default)
             ]
             ++ sharedOverlays;
+        }
+        home-manager.nixosModules.home-manager
+        {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.harryp.imports = [homeConfig];
@@ -106,10 +108,12 @@ in {
       modules = [
         sysConfig
         inputs.mac-app-util.darwinModules.default
-        inputs.home-manager.darwinModules.home-manager
         {
           nixpkgs.config.permittedInsecurePackages = permittedInsecurePkgs;
           nixpkgs.overlays = [] ++ sharedOverlays;
+        }
+        inputs.home-manager.darwinModules.home-manager
+        {
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
           home-manager.users.harryp.imports = [homeConfig];

@@ -13,6 +13,7 @@ in {
   nix.enable = true;
   users.users.harryp.home = lib.mkForce homeDir;
   nix.settings.experimental-features = "nix-command flakes";
+  nix.settings.download-buffer-size = 33554432; # 32MiB
   nix.extraOptions = ''
     extra-platforms = x86_64-darwin aarch64-darwin
   '';
