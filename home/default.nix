@@ -74,9 +74,6 @@ in {
     home.username = userName;
     home.homeDirectory = homeDir;
     home.stateVersion = "23.05";
-    nixpkgs.config = {
-      allowUnfree = true;
-    };
 
     home.packages = with pkgs;
       [

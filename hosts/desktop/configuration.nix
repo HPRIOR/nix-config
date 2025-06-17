@@ -76,7 +76,6 @@ in {
     packages = [];
   };
 
-  nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
     # standard stuff

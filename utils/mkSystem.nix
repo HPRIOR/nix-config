@@ -1,9 +1,32 @@
+# utils/mkSystem.nix
 {
   inputs,
   nixpkgs,
 }: let
-  home-manager = inputs.home-manager;
-  lib = nixpkgs.lib;
+  # overlays that should be on every system
+  sharedOverlays = [
+    inputs.fenix.overlays.default
+    (import ../overlays/nixvim-avante.nix {unstable = inputs.unstable;})
+  ];
+
+  permittedInsecurePkgs = [];
+
+  # helper: build a pkgs instance once and share it with both OS and HM
+  mkPkgs = {
+    system,
+    extraOverlays ? [],
+  }:
+    import nixpkgs {
+      inherit system;
+      overlays = extraOverlays ++ sharedOverlays;
+      config.permittedInsecurePackages = permittedInsecurePkgs;
+
+      config = {
+        allowUnfree = true;
+      };
+    };
+
+  # helper: common user metadata injected into modules via `settings`
   sharedUserName = "harryp";
   sharedSettings = {
     userName,
@@ -23,60 +46,49 @@
     fontSize = 12;
     extraGroups = ["networkmanager" "wheel" "docker"];
   };
-
-  permittedInsecurePkgs = [
-    "dotnet-core-combined"
-    "dotnet-sdk-6.0.428"
-    "dotnet-sdk-7.0.410"
-    "dotnet-sdk-wrapped-6.0.428"
-    "dotnet-wrapped-combined"
-    "dotnet-combined"
-    "dotnet-sdk-wrapped-7.0.410"
-  ];
-
-  sharedOverlays = [
-    inputs.fenix.overlays.default
-    (import ../overlays/nixvim-avante.nix { unstable = inputs.unstable; })
-  ];
 in {
   nixos = {
     system,
     sysConfig,
     homeConfig,
   }: let
+    pkgs = mkPkgs {
+      inherit system;
+      # overlays needed only on Linux
+      extraOverlays = [
+        (import ../overlays/citrix.nix)
+        inputs.ghostty.overlays.default
+      ];
+    };
+
+    lib = pkgs.lib;
+
     settings = sharedSettings rec {
       userName = sharedUserName;
       homeDir = "/home/${userName}";
       hostName = "nixos";
     };
   in
-    lib.nixosSystem {
-      inherit system;
+    inputs.nixpkgs.lib.nixosSystem {
+      inherit system pkgs; # <= share pkgs with Home-Manager
       specialArgs = {
-        inherit inputs;
-        settings = settings;
+        inherit inputs settings;
       };
+
       modules = [
         sysConfig
-        home-manager.nixosModules.home-manager
+        inputs.home-manager.nixosModules.home-manager
         {
-          nixpkgs.config.permittedInsecurePackages = permittedInsecurePkgs;
-          nixpkgs.overlays =
-            [
-              (import ../overlays/citrix.nix)
-              (inputs.ghostty.overlays.default)
-            ]
-            ++ sharedOverlays;
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.harryp.imports = [homeConfig];
+
+          home-manager.users.${sharedUserName}.imports = [homeConfig];
+
           home-manager.extraSpecialArgs = {
-            inherit inputs;
-            settings = settings;
-            linuxSettings = {
-              primaryMonitor = "HDMI-A-1";
-            };
+            inherit inputs settings;
+            linuxSettings = {primaryMonitor = "HDMI-A-1";};
           };
+
           home-manager.sharedModules = [
             inputs.sops-nix.homeManagerModules.sops
           ];
@@ -90,6 +102,8 @@ in {
     sysConfig,
     homeConfig,
   }: let
+    pkgs = mkPkgs {inherit system;}; # no extra overlays on macOS
+
     settings = sharedSettings rec {
       userName = sharedUserName;
       homeDir = "/Users/${userName}";
@@ -97,10 +111,9 @@ in {
     };
   in
     inputs.nix-darwin.lib.darwinSystem {
-      inherit system;
+      inherit system pkgs;
       specialArgs = {
-        inherit inputs;
-        settings = settings;
+        inherit inputs settings;
       };
 
       modules = [
@@ -108,15 +121,15 @@ in {
         inputs.mac-app-util.darwinModules.default
         inputs.home-manager.darwinModules.home-manager
         {
-          nixpkgs.config.permittedInsecurePackages = permittedInsecurePkgs;
-          nixpkgs.overlays = [] ++ sharedOverlays;
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
-          home-manager.users.harryp.imports = [homeConfig];
+
+          home-manager.users.${sharedUserName}.imports = [homeConfig];
+
           home-manager.extraSpecialArgs = {
-            inherit inputs;
-            settings = settings;
+            inherit inputs settings;
           };
+
           home-manager.sharedModules = [
             inputs.sops-nix.homeManagerModules.sops
             inputs.mac-app-util.homeManagerModules.default
