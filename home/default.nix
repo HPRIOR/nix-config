@@ -101,6 +101,7 @@ in {
         hexyl
         hurl
         hyperfine # benchmarking tool
+        immich-cli
         iftop
         inetutils
         jless
@@ -162,7 +163,7 @@ in {
         papirus-icon-theme
         pavucontrol
         protonmail-bridge
-        # rustdesk ## -- broken
+        rustdesk 
         slurp
         strace
         v4l-utils
