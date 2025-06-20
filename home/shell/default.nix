@@ -22,7 +22,7 @@
       owner = "HPRIOR";
       repo = "vdoc";
       rev = "master";
-      sha256 = "f//x7jizvnh5f0OdTF1vvX97FaO6Y73zQgXGbQr7ltw=";
+      sha256 = "sha256-bOHEhp9akx7V//LjGSKOvE8NUN9dnwXEh7i98RHzDKo=";
     };
     cargoHash = "sha256-97BdwCbSKYz7wdEQslHwoDyGK4GSbmJlSt8oK7XenlM=";
   };
