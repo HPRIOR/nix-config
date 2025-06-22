@@ -64,14 +64,24 @@ in {
       colorizer.enable = true;
       web-devicons.enable = true;
       mini.enable = true;
-      avante = {
+      codecompanion = {
         enable = true;
         settings = {
-          provider = "claude";
-          claude = {
-            max_tokens = 8192;
-            model = "claude-3-5-sonnet-20241022";
-            disable_tools = ["web_search"];
+          adapters.anthropic.__raw = ''
+            function()
+              return require('codecompanion.adapters').extend('anthropic', {
+                schema = {
+                  model = {
+                    default = 'claude-3-5-sonnet-20241022',
+                  },
+                },
+              })
+            end
+          '';
+          strategies = {
+            chat.adapter = "anthropic";
+            inline.adapter = "anthropic";
+            agent.adapter = "anthropic";
           };
         };
       };
@@ -79,7 +89,7 @@ in {
         enable = true;
 
         settings = {
-          file_types = ["markdown" "Avante"];
+          file_types = ["markdown" "codecompanion"];
         };
       };
       snacks = {

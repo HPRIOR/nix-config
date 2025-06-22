@@ -6,7 +6,6 @@
   # overlays that should be on every system
   sharedOverlays = [
     inputs.fenix.overlays.default
-    (import ../overlays/nixvim-avante.nix {unstable = inputs.unstable;})
   ];
 
   permittedInsecurePkgs = [];
