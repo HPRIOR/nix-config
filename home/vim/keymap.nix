@@ -345,7 +345,7 @@
   {
     mode = ["n" "v"];
     key = "<leader>ad";
-    action = "<cmd>lua avante_ask_diag()<CR>";
+    action = "<cmd>lua codecompanion_ask_diag()<CR>";
     options = {
       silent = true;
       desc = "Suggest fixes for diagnostics";
@@ -354,7 +354,7 @@
   {
     mode = ["n"];
     key = "<leader>an";
-    action = "<cmd>:AvanteChatNew<CR>";
+    action = "<cmd>CodeCompanionChat<CR>";
     options = {
       silent = true;
       desc = "Suggest fixes for diagnostics";

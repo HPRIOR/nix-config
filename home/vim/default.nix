@@ -118,7 +118,7 @@ in {
           })
         require'window-picker'.setup()
 
-        -- avante helpers
+        -- codecompanion helpers
 
         -- Returns a table of diagnostics under cursor, or nil if none found.
         function get_diagnostics_under_cursor_or_selection()
@@ -195,15 +195,15 @@ in {
           return table.concat(lines, "\n")
         end
 
-        function avante_ask_diag()
+        function codecompanion_ask_diag()
           local diags = get_diagnostics_under_cursor_or_selection()
           if not diags then
             print("No diagnostics under cursor")
             return
           end
           local formatted = format_diagnostics(diags)
-          require("avante.api").ask {
-            question = "Explain these diagnostics and offer a solution:\n" .. formatted
+          require("codecompanion").chat {
+            args = "Explain these diagnostics and offer a solution:\n" .. formatted,
           }
         end
 
