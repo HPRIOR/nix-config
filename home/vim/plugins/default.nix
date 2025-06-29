@@ -68,10 +68,15 @@ in {
         enable = true;
         settings = {
           provider = "claude";
+          package = pkgs.vimPlugins.avante-nvim;
+          behaviour = {
+            enable_cursor_planning_mode = true;
+          };
           claude = {
             max_tokens = 8192;
-            model = "claude-3-5-sonnet-20241022";
+            model = "claude-sonnet-4-20250514";
             disable_tools = ["web_search"];
+            # disable_tools = true;
           };
         };
       };
@@ -228,3 +233,4 @@ in {
     nvim-window-picker
   ];
 }
+
