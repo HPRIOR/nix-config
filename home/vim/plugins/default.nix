@@ -25,7 +25,7 @@ in {
       dropbar.enable = true;
       spectre.enable = true;
       smear-cursor = {
-        enable = true;
+        enable = false;
         settings = {
           stiffness = 0.8;
           trailing_stiffness = 0.5;
