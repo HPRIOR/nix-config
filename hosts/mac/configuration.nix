@@ -63,6 +63,7 @@ in {
       "ghostty"
       "jetbrains-toolbox"
       "libreoffice"
+      "mactex"
       "mullvadvpn"
       "obsidian"
       "protonmail-bridge"
