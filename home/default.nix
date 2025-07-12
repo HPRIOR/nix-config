@@ -82,6 +82,7 @@ in {
         bat # cat replacement
         bottom
         choose # user friendly cut (and awk)
+        claude-code
         croc
         ctop
         delta # git syntax highlighting pager
@@ -163,7 +164,7 @@ in {
         papirus-icon-theme
         pavucontrol
         protonmail-bridge
-        rustdesk 
+        rustdesk
         slurp
         strace
         v4l-utils

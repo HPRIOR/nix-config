@@ -56,7 +56,6 @@ in {
       "1password"
       "calibre"
       "citrix-workspace"
-      "docker"
       "dropbox"
       "firefox"
       "freecad"

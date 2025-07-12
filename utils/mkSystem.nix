@@ -3,19 +3,27 @@
   inputs,
   nixpkgs,
 }: let
-  # overlays that should be on every system
-  sharedOverlays = [
-    inputs.fenix.overlays.default
-    (import ../overlays/nixvim-avante.nix {unstable = inputs.unstable;})
-  ];
-
-  permittedInsecurePkgs = [];
-
   # helper: build a pkgs instance once and share it with both OS and HM
   mkPkgs = {
     system,
     extraOverlays ? [],
-  }:
+  }: let
+    unstable = import inputs.unstable {
+      inherit system;
+
+      config = {
+        allowUnfree = true;
+      };
+    };
+    # overlays that should be on every system
+    sharedOverlays = [
+      inputs.fenix.overlays.default
+      (import ../overlays/nixvim-avante.nix {unstable = unstable;})
+      (import ../overlays/claude.nix {unstable = unstable;})
+    ];
+
+    permittedInsecurePkgs = [];
+  in
     import nixpkgs {
       inherit system;
       overlays = extraOverlays ++ sharedOverlays;
@@ -60,8 +68,6 @@ in {
         inputs.ghostty.overlays.default
       ];
     };
-
-    lib = pkgs.lib;
 
     settings = sharedSettings rec {
       userName = sharedUserName;
