@@ -93,7 +93,7 @@ in {
           animate = {enabled = true;};
           bigfile = {enabled = true;};
           indent = {
-            enabled = true;
+            enabled = false;
             animate = {enabled = false;};
           };
           lazygit = {enabled = true;};
