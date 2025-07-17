@@ -1,8 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(sudo nixos-rebuild build --flake .)",
-      "Bash(sudo darwin-rebuild build --flake .)"
+      "Bash(nixos-rebuild build --flake .)",
+      "Bash(darwin-rebuild build --flake .)"
     ],
     "deny": [ ]
   }

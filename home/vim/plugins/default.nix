@@ -176,7 +176,7 @@ in {
             timeout_ms = 2000;
             stop_after_first = true;
           };
-          json = [["jq"]];
+          json = ["jq"];
           javascript = {
             __unkeyed-1 = "prettierd";
             __unkeyed-2 = "prettier";
