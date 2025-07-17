@@ -33,6 +33,8 @@ in {
 
     editnotes = "cd ${homeDir}/Documents/Notes && nvim && cd -";
 
+    editblog = "cd ${homeDir}/Documents/blog && nvim && cd -";
+
     nixdev = "nix develop -c zsh";
 
     nix-clean-generations = "sudo nix-env --delete-generations +20 --profile /nix/var/nix/profiles/system";
