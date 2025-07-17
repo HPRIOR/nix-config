@@ -247,6 +247,7 @@ in {
       !**/.git
       !**/.gitignore
       !**/.ocamlformat
+      !**/.claude
       // ignore all hidden files, except for the above
       (?d)**/.*
 
