@@ -4,7 +4,7 @@
 
 # Bash commands (MacOS):
 
-- build the project with `sudo nixos-rebuild build --flake .`
+- build the project with `sudo darwin-rebuild build --flake .`
 
 # Bash commands (Any platform):
 
