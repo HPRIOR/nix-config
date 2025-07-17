@@ -20,7 +20,7 @@
     background = "dark";
     clipboard = "unnamedplus";
     completeopt = "menu,menuone,noselect";
-    conceallevel = 3; # Hide * markup for bold and italic
+    conceallevel = 0; # Always show all characters including quotation marks
     confirm = true; # Confirm to save changes before exiting modified buffer
     cursorline = true; # Enable highlighting of the current line
     encoding = "UTF-8";

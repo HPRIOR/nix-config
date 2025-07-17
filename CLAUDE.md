@@ -12,4 +12,4 @@
 
 # Workflow
 
-- Build the code whenever you're finished making code changes
+- ALWAYS build the code to verify any code changes
