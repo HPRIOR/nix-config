@@ -1,5 +1,4 @@
 {
-  rust-packages,
   pkgs,
   ...
 }: {
@@ -28,9 +27,11 @@
       lemminx.enable = true;
       rust_analyzer = {
         enable = true;
-        package = rust-packages.analyzer;
-        cargoPackage = rust-packages.cargo; # TODO: the cargo package should be determined by the dev shell
-        rustcPackage = rust-packages.rustc;
+        # Don't specify package - use the one from PATH
+        package = null;
+        # Let it find rust-analyzer in PATH
+        cmd = ["rust-analyzer"];
+        # Don't install cargo/rustc - use from environment
         installCargo = false;
         installRustc = false;
         settings = {

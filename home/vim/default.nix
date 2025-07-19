@@ -2,11 +2,10 @@
   inputs,
   pkgs,
   config,
-  rust-packages,
   ...
 }: let
   keymaps = import ./keymap.nix;
-  plugins = import ./plugins {inherit pkgs rust-packages config;};
+  plugins = import ./plugins {inherit pkgs config;};
   options = import ./options.nix;
 in {
   imports = [inputs.nixvim.homeManagerModules.nixvim ./ideavim.nix];
@@ -210,7 +209,6 @@ in {
       '';
       keymaps = keymaps;
       extraPackages = [
-        rust-packages.toolchain
         # telescope deps
         pkgs.ripgrep
         pkgs.fzf

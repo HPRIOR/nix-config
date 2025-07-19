@@ -11,27 +11,12 @@
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
 
-  rust-packages = rec {
-    toolchain-version = "stable";
-    toolchain = pkgs.fenix.${toolchain-version}.withComponents [
-      "cargo"
-      "clippy"
-      "rust-src"
-      "rustc"
-      "rustfmt"
-    ];
-    analyzer = pkgs.fenix.${toolchain-version}.rust-analyzer;
-    src = pkgs.fenix.${toolchain-version}.rust-src;
-    cargo = pkgs.fenix.${toolchain-version}.cargo;
-    rustc = pkgs.fenix.${toolchain-version}.rustc;
-  };
 in {
   imports = [
     inputs.nix-colours.homeManagerModules.default
     ./shell
     (import ./vim {
       inherit pkgs inputs settings config;
-      rust-packages = rust-packages;
     })
     ./terminal
     ./ui
@@ -118,8 +103,6 @@ in {
         procs # ps alternative
         progress
         ripgrep
-        rust-packages.analyzer
-        rust-packages.toolchain
         sd # sed alternative
         sops
         spotify
@@ -297,7 +280,6 @@ in {
       AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
       EDITOR = "nvim";
       PAGER = "bat --paging always";
-      RUST_SRC_PATH = "${rust-packages.src}/lib/rustlib/src/rust/library";
     };
 
     services.dropbox = {

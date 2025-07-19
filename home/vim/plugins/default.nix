@@ -1,9 +1,8 @@
 {
   pkgs,
   config,
-  rust-packages,
 }: let
-  lsp = import ./lsp.nix {inherit pkgs rust-packages;};
+  lsp = import ./lsp.nix {inherit pkgs;};
   autocomplete = import ./auto-completion.nix pkgs;
   lualine = import ./lualine.nix;
   splash-screen = import ./splash-screen.nix;

@@ -32,10 +32,6 @@
 
     nix-colours.url = "github:Misterio77/nix-colors";
 
-    fenix = {
-      url = "github:nix-community/fenix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     ghostty = {
       url = "github:ghostty-org/ghostty";
