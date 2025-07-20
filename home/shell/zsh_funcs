@@ -640,3 +640,57 @@ function get_flake() {
 
 
 
+# ------------------------------------------------------------------
+# claude-worktree  <issue‑number>
+#   Create a git worktree for a GitHub issue and launch Claude
+# ------------------------------------------------------------------
+function claude-worktree() {
+  emulate -L zsh          # isolate options from the parent shell
+  set -u                  # error on unset vars
+  set -o pipefail         # fail a pipeline if any part fails
+
+  # -------- helper ------------------------------------------------
+  die() { print -u2 "❌ $*"; return 1 }
+
+  # -------- pre‑flight checks ------------------------------------
+  (( $# == 1 )) || die "Usage: gh_issue_worktree <issue‑number>"
+  local issue_number=$1
+
+  for cmd in gh git claude; do
+    command -v "$cmd" >/dev/null 2>&1 || die "Required command '$cmd' not found"
+  done
+
+  git rev-parse --is-inside-work-tree >/dev/null 2>&1 \
+    || die "Not inside a git repository"
+
+  # -------- fetch the issue title --------------------------------
+  local issue_title
+  if ! issue_title=$(gh issue view "$issue_number" --json title --jq .title 2>/dev/null); then
+    die "GitHub issue #$issue_number not found"
+  fi
+
+  # -------- slugify the title ------------------------------------
+  local slug
+  slug=$(print -r -- "$issue_title" \
+          | tr '[:upper:]' '[:lower:]' \
+          | sed -E 's/[^a-z0-9]+/_/g; s/^_+//; s/_+$//; s/__+/_/g')
+
+  local worktree_dir="../worktrees/${issue_number}-${slug}"
+  local branch_name="issue/${issue_number}-${slug}"
+
+  [[ -e $worktree_dir ]] && die "Worktree path $worktree_dir already exists"
+
+  # -------- create the worktree ----------------------------------
+  print "➕ Adding worktree $worktree_dir on branch $branch_name"
+  git worktree add "$worktree_dir" -b "$branch_name"
+
+  # -------- launch Claude ----------------------------------------
+  cd "$worktree_dir"
+  if [[ -f "flake.nix" ]]; then
+    print "🔧 flake.nix detected – launching Claude in nix develop environment"
+    nix develop --command claude "/fix-github-issue $issue_number"
+  else
+    print "🚀 Launching Claude in $worktree_dir"
+    claude "/fix-github-issue $issue_number"
+  fi
+}
