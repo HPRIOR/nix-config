@@ -49,7 +49,7 @@ in {
       wrapping = {
         enable = true;
         settings = {
-          create_commands = true;
+          create_commands = false;
           create_keymaps = false;
         };
       };
