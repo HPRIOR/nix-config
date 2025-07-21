@@ -696,43 +696,6 @@ function claude-worktree() {
 }
 
 # ------------------------------------------------------------------
-# claude-relaxed  <args>
-#   Build Claude command with predefined set of allowed tools
-# ------------------------------------------------------------------
-private function claude-relaxed() {
-  local allowed_tools=(
-    "Bash(cargo build:*)"
-    "Bash(cargo clippy:*)"
-    "Bash(cargo fmt:*)"
-    "Bash(cargo test:*)"
-    "Bash(cargo run:*)"
-    "Bash(gh issue view:*)"
-    "Bash(gh pr create:*)"
-    "Bash(git add:*)"
-    "Bash(git commit:*)"
-    "Bash(git push:*)"
-    "Bash(nix develop:*)"
-    "Bash(nix-hash:*)"
-    "Bash(nix flake check:*)"
-    "Bash(nix flake update:*)"
-    "Bash(nix-prefetch-url:*)"
-    "Edit"
-    "MultiEdit"
-    "WebFetch"
-    "WebSearch"
-    "Write"
-  )
-  
-  local claude_cmd="claude --allowedTools"
-  for tool in "${allowed_tools[@]}"; do
-    claude_cmd+=" \"$tool\""
-  done
-  claude_cmd+=" -- $*"
-  
-  echo "$claude_cmd"
-}
-
-# ------------------------------------------------------------------
 # github-issue  <issue‑number>
 #   Create a new directory for a GitHub issue and launch Claude
 # ------------------------------------------------------------------
@@ -802,7 +765,40 @@ function claude-issue() {
   git checkout -b "$branch_name"
 
   # -------- launch Claude ----------------------------------------
-  local claude_cmd=$(claude-relaxed "/fix-github-issue $issue_number")
+  # Define allowed tools list for better readability and maintenance
+  local allowed_tools=(
+    "Bash(cargo build:*)"
+    "Bash(cargo clippy:*)"
+    "Bash(cargo fmt:*)"
+    "Bash(cargo run:*)"
+    "Bash(cargo test:*)"
+    "Bash(cd:*)"
+    "Bash(gh issue view:*)"
+    "Bash(gh pr create:*)"
+    "Bash(git add:*)"
+    "Bash(git commit:*)"
+    "Bash(git push:*)"
+    "Bash(ls:*)"
+    "Bash(mkdir:*)"
+    "Bash(nix develop:*)"
+    "Bash(nix flake check:*)"
+    "Bash(nix flake update:*)"
+    "Bash(nix-hash:*)"
+    "Bash(nix-prefetch-url:*)"
+    "Bash(pwd)"
+    "Edit"
+    "MultiEdit"
+    "WebFetch"
+    "WebSearch"
+    "Write"
+  )
+  
+  # Build the claude command with allowedTools
+  local claude_cmd="claude --allowedTools"
+  for tool in "${allowed_tools[@]}"; do
+    claude_cmd+=" \"$tool\""
+  done
+  claude_cmd+=" -- \"/fix-github-issue $issue_number\""
   
   if [[ -f "flake.nix" ]]; then
     print "🔧 flake.nix detected – launching Claude in nix develop environment"
