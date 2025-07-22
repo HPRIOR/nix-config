@@ -768,13 +768,17 @@ function claude-issue() {
   # Define allowed tools list for better readability and maintenance
   local allowed_tools=(
     "Bash(cargo build:*)"
+    "Bash(cargo check:*)"
     "Bash(cargo clippy:*)"
     "Bash(cargo fmt:*)"
     "Bash(cargo run:*)"
+    "Bash(cargo search:*)"
     "Bash(cargo test:*)"
     "Bash(cd:*)"
+    "Bash(find:*)"
     "Bash(gh issue view:*)"
     "Bash(gh pr create:*)"
+    "Bash(gh repo view:*)"
     "Bash(git add:*)"
     "Bash(git commit:*)"
     "Bash(git push:*)"
