@@ -231,6 +231,7 @@ in {
       !**/.gitignore
       !**/.ocamlformat
       !**/.claude
+      !**/.github
       // ignore all hidden files, except for the above
       (?d)**/.*
 
