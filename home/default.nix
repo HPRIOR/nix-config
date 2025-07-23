@@ -10,7 +10,6 @@
   homeDir = settings.homeDir;
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
-
 in {
   imports = [
     inputs.nix-colours.homeManagerModules.default
@@ -262,6 +261,23 @@ in {
 
       // Android
       (?d)**/.android
+    '';
+
+    home.file."${settings.homeDir}/.claude/commands/fix-github-issue.md".text = ''
+      Please analyze and fix the GitHub issue: $ARGUMENTS.
+
+      Follow these steps:
+
+      1. Use `gh issue view` to get the issue details
+      2. Understand the problem described in the issue
+      3. Search the codebase for relevant files
+      4. Implement the necessary changes to fix the issue
+      5. Write and run tests to verify the fix
+      6. Ensure code passes linting and type checking
+      7. Create a descriptive commit message
+      8. Push and create a PR
+
+      Remember to use the GitHub CLI (`gh`) for all GitHub-related tasks.
     '';
 
     # tmp workaround, previous method of running a cat over config.sops.secrets.gpt-api-key.path stopped working
