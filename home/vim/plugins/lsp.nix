@@ -10,6 +10,7 @@
       cmake.enable = true;
       dockerls.enable = true;
       elmls.enable = true;
+      eslint.enable = true;
       fsautocomplete.enable = true;
       html.enable = true;
       jsonls.enable = true;
