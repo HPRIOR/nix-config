@@ -230,7 +230,6 @@ in {
       !**/.gitignore
       !**/.ocamlformat
       !**/.claude
-      !**/.github
       // ignore all hidden files, except for the above
       (?d)**/.*
 
@@ -246,6 +245,7 @@ in {
       (?d)**/_build/
       (?d)**/_opam/
       (?d)**/.opam/
+      (?d)**/.opam-switch/
 
       // Rust
       (?d)**/target/
