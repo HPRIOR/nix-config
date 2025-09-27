@@ -15,7 +15,7 @@
   home.file."${settings.configDir}/ghostty/config".text = let
     base = ''
       font-family = ${settings.font}
-      theme = kanagawabones
+      theme = Kanagawabones
       gtk-titlebar = false
     '';
     linuxConfig = ''
