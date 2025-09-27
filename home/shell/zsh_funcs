@@ -187,6 +187,8 @@ f() {
   esac
 }
 
+
+
 fdir() {
   emulate -L zsh
 
@@ -441,6 +443,14 @@ fp(){
         ;;
     esac
     
+}
+
+fdoc(){
+  cd "$HOME/Documents/vdoc/" && f && cd -
+}
+
+fidoc(){
+  cd "$HOME/Documents/vdoc/" && fif -a && cd -
 }
 
 # search through processes and kill the selected one
