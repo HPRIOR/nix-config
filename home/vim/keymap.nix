@@ -343,24 +343,6 @@
     };
   }
   {
-    mode = ["n" "v"];
-    key = "<leader>ad";
-    action = "<cmd>lua avante_ask_diag()<CR>";
-    options = {
-      silent = true;
-      desc = "Suggest fixes for diagnostics";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>an";
-    action = "<cmd>:AvanteChatNew<CR>";
-    options = {
-      silent = true;
-      desc = "Suggest fixes for diagnostics";
-    };
-  }
-  {
     mode = ["n"];
     key = "<leader>vg";
     action = "<cmd>lua Snacks.lazygit()<cr>";

@@ -63,27 +63,11 @@ in {
       colorizer.enable = true;
       web-devicons.enable = true;
       mini.enable = true;
-      avante = {
-        enable = true;
-        settings = {
-          provider = "claude";
-          package = pkgs.vimPlugins.avante-nvim;
-          behaviour = {
-            enable_cursor_planning_mode = true;
-          };
-          claude = {
-            max_tokens = 8192;
-            model = "claude-sonnet-4-20250514";
-            disable_tools = ["web_search"];
-            # disable_tools = true;
-          };
-        };
-      };
       render-markdown = {
         enable = true;
 
         settings = {
-          file_types = ["markdown" "Avante"];
+          file_types = ["markdown"];
         };
       };
       snacks = {

@@ -17,7 +17,6 @@
     };
     # overlays that should be on every system
     sharedOverlays = [
-      (import ../overlays/nixvim-avante.nix {unstable = unstable;})
       (import ../overlays/claude.nix {unstable = unstable;})
     ];
 
