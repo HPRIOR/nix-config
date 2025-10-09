@@ -65,7 +65,7 @@
     };
     keymaps.lspBuf = {
       "K" = "hover";
-      "<leader>r" = "rename";
+      # "<leader>r" = "rename";
     };
     keymaps.diagnostic = {
       "<leader>d" = "open_float";

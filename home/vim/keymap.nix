@@ -10,6 +10,16 @@
     };
   }
   {
+    key = "<leader>r";
+    action = "<cmd>lua vim.lsp.buf.rename()<cr>";
+    options = {
+      noremap = true;
+      unique = true;
+      silent = true;
+      desc = "toggle rename";
+    };
+  }
+  {
     mode = ["n" "v"];
     key = "gf";
     action = "<cmd>lua require('conform').format({ lsp_fallback = true })<cr>";

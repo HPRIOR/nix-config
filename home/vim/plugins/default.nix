@@ -67,6 +67,13 @@ in {
         enable = true;
 
         settings = {
+          code = {
+            border = "none";
+          };
+
+          link = {
+            enabled = true;
+          };
           file_types = ["markdown"];
         };
       };
@@ -216,4 +223,3 @@ in {
     nvim-window-picker
   ];
 }
-
