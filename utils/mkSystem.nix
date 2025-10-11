@@ -20,7 +20,7 @@
       (import ../overlays/claude.nix {unstable = unstable;})
     ];
 
-    permittedInsecurePkgs = [];
+    permittedInsecurePkgs = ["libsoup-2.74.3"];
   in
     import nixpkgs {
       inherit system;
@@ -58,11 +58,18 @@ in {
     sysConfig,
     homeConfig,
   }: let
+    unstable = import inputs.unstable {
+      inherit system;
+      config = {
+        allowUnfree = true;
+        permittedInsecurePackages = ["libsoup-2.74.3"];
+      };
+    };
     pkgs = mkPkgs {
       inherit system;
       # overlays needed only on Linux
       extraOverlays = [
-        (import ../overlays/citrix.nix)
+        (import ../overlays/citrix.nix {unstable = unstable;})
         inputs.ghostty.overlays.default
       ];
     };

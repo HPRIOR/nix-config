@@ -133,7 +133,7 @@ in {
         calibre
         # Some prerequisites for this package
         # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
-        citrix_workspace_24_11_0
+        citrix_workspace
         feh
         firefox # applications
         freecad
@@ -151,6 +151,7 @@ in {
         strace
         v4l-utils
         vlc
+        libsForQt5.okular
         # see https://github.com/ghostty-org/ghostty/discussions/3224#discussioncomment-11711871 - high iowait usage otherwise, waiting for fix
         inputs.ghostty.packages.${pkgs.system}.default
       ])
