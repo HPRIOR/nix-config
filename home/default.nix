@@ -67,6 +67,7 @@ in {
         bottom
         choose # user friendly cut (and awk)
         claude-code
+        codex
         croc
         ctop
         delta # git syntax highlighting pager
