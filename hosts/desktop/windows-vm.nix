@@ -1,14 +1,16 @@
 { config, pkgs, lib, ... }:
 let
   cfg = config.windowsVM;
-  hasAMD = config.hardware ? cpu && config.hardware.cpu ? amd;
-  hasIntel = config.hardware ? cpu && config.hardware.cpu ? intel;
+  hasAttrByPath = lib.hasAttrByPath;
+  hasAMD = hasAttrByPath ["hardware" "cpu" "amd"] config;
+  hasIntel = hasAttrByPath ["hardware" "cpu" "intel"] config;
   kvmModules = lib.optional hasAMD "kvm-amd" ++ lib.optional hasIntel "kvm-intel";
+  requiredKernelModules = ["kvm"] ++ kvmModules;
 in {
   options.windowsVM.enable = lib.mkEnableOption "Support for running Windows virtual machines via libvirt";
 
   config = lib.mkIf cfg.enable {
-    boot.kernelModules = lib.mkAfter kvmModules;
+    boot.kernelModules = lib.mkAfter requiredKernelModules;
 
     virtualisation = {
       libvirtd = {
