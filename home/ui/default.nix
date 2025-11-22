@@ -187,6 +187,10 @@ in {
   };
   wayland.windowManager.hyprland = {
     enable = isLinux;
+    plugins = with pkgs.hyprlandPlugins; [
+      hyprspace
+      hyprexpo
+    ];
     extraConfig = ''
       # Required for mouse to render
       env = LIBVA_DRIVER_NAME,nvidia
@@ -200,6 +204,15 @@ in {
 
       cursor {
           no_hardware_cursors = true
+      }
+
+
+      plugin {
+          hyprexpo {
+              columns = 3
+              gap_size = 5
+              workspace_method = center current
+          }
       }
 
 
@@ -257,10 +270,19 @@ in {
       bind = $shiftMod, L, movewindoworgroup, r
 
       bind = $mainMod, SPACE, exec, rofi -show drun -log -config "${settings.homeDir}/.config/rofi/config.rasi"
-      bind = $mainMod, TAB, exec, rofi -show window -config "${settings.homeDir}/.config/rofi/config.rasi"
+      bind = $mainMod, W, exec, rofi -show window -config "${settings.homeDir}/.config/rofi/config.rasi"
       bind = $mainMod, grave, exec, rofi -show run  -config "${settings.homeDir}/.config/rofi/config.rasi"
       bind = $mainMod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
       bind = , print, exec, grim -g "$(slurp)" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')
+
+
+      # Plugin bindings
+      bind = $mainMod, TAB, hyprspace:toggle
+      bind = $shiftMod, TAB, hyprexpo:expo, toggle
+      bind = $mainMod, E, overview:toggle
+      bind = $mainMod SHIFT, E, overview:toggle, all
+      bind = $mainMod, left, prevdesk
+      bind = $mainMod, right, nextdesk
 
 
       # Doesn't work as intended, possibly wayland issues
