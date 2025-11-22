@@ -18,6 +18,7 @@
     # overlays that should be on every system
     sharedOverlays = [
       (import ../overlays/claude.nix {unstable = unstable;})
+      (import ../overlays/codex.nix {unstable = unstable;})
     ];
 
     permittedInsecurePkgs = ["libsoup-2.74.3"];

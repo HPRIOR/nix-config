@@ -15,6 +15,43 @@
     windowrule=animation slide,class:${app}
   '';
 
+  hyprlandWorkspaceBase = {
+    "format" = "{icon}";
+    separate-outputs = true;
+    show-special = true;
+  };
+
+  hyprlandWorkspaceMain =
+    hyprlandWorkspaceBase
+    // {
+      "format" = "{icon}: {windows}";
+      "format-window-separator" = "|";
+      "window-rewrite-default" = "";
+      "window-rewrite" = {
+        "title<.*youtube.*>" = "";
+        "class<firefox>" = "";
+        "class<firefox> title<.*github.*>" = "";
+        "foot" = "";
+        "code" = "󰨞";
+      };
+      "workspace-taskbar" = {
+        "enable" = true;
+        "update-active-window" = true;
+        "format" = "{icon} {title:.20}";
+        "icon-size" = 18;
+        "on-click-window" = "focus_window {address} {button}";
+      };
+    };
+
+  mkHyprlandModules = {
+    workspace ? hyprlandWorkspaceBase,
+    submap ? {},
+  }: {
+    modules-left = ["hyprland/workspaces" "hyprland/submap"];
+    "hyprland/workspaces" = workspace;
+    "hyprland/submap" = submap;
+  };
+
   # Todo create a function that will generate the position of each screan automatically
   monitorLeft = {
     desc = "LG Electronics LG ULTRAFINE 201NTHM23033";
@@ -40,7 +77,7 @@
     res = "2560x2880";
     hertz = "59.966999";
     pos = "3440x0";
-    scale = "1.333333";
+    scale = "1.5";
     transform = throw "No transform set for monitor centre";
   };
 in {
@@ -51,22 +88,52 @@ in {
 
   programs.waybar = {
     enable = isLinux;
-    settings = {
-      mainBar = {
-        height = 20;
-        spacing = 4;
-        margin-top = 5;
-        margin-bottom = 1;
-        margin-right = 6;
-        margin-left = 6;
-        output = monitorCentre.screen;
-        reload_style_on_change = true;
-        modules-left = ["hyprland/workspaces" "hyprland/submap"];
-        modules-right = ["tray" "pulseaudio" "disk#root" "disk#home" "memory" "cpu" "temperature" "network" "clock"];
-        "hyprland/workspaces" = {
-          all-outputs = true;
-          show-special = true;
+    settings =
+      let
+        sharedHyprModules = mkHyprlandModules {
+          workspace = hyprlandWorkspaceMain;
         };
+      in {
+        leftBar =
+          sharedHyprModules
+          // {
+            layer = "top";
+            position = "top";
+            height = 24;
+            spacing = 4;
+            margin-top = 5;
+            margin-bottom = 1;
+            margin-right = 6;
+            margin-left = 6;
+            output = monitorLeft.desc;
+            reload_style_on_change = true;
+          };
+        rightBar =
+          sharedHyprModules
+          // {
+            layer = "top";
+            position = "top";
+            height = 24;
+            spacing = 4;
+            margin-top = 5;
+            margin-bottom = 1;
+            margin-right = 6;
+            margin-left = 6;
+            output = monitorRight.desc;
+            reload_style_on_change = true;
+          };
+        mainBar =
+          sharedHyprModules
+          // {
+            height = 24;
+            spacing = 4;
+            margin-top = 5;
+            margin-bottom = 1;
+            margin-right = 6;
+            margin-left = 6;
+            output = monitorCentre.desc;
+            reload_style_on_change = true;
+            modules-right = ["tray" "pulseaudio" "disk#root" "disk#home" "memory" "cpu" "temperature" "network" "clock"];
         "cpu" = {
           interval = 1;
           format = "{icon} {usage:02}% {avg_frequency:.2f}GHz";
@@ -134,15 +201,34 @@ in {
       }
       #workspaces button {
           background: #${config.colorScheme.palette.base02};
+          font-weight: bold;
           color: #${config.colorScheme.palette.base05};
-          padding-left: 10px;
-          padding-right: 10px;
+          padding: 0;
           margin-left: 1px;
           margin-right: 1px;
+          padding-left: 10px;
+          padding-right: 0px;
+          padding-bottom: 2px;
       }
       #workspaces button.active  {
+          border-bottom: 2px solid #${config.colorScheme.palette.base0E};
+          border-radius: 10px 10px 6px 6px;
+          padding-bottom: 2px;
+      }
+      #workspaces .workspace-label {
+          padding-left: 10px;
+      }
+      #workspaces button > label,
+      #workspaces button > span,
+      #workspaces button .taskbar-window {
+          font-weight: normal;
+          padding: 0 10px;            /* same as your old button padding */
+          border-radius: 10px;        /* match outer radius */
+          background: transparent;
+      }
+      #workspaces button .taskbar-window.active {
+          font-weight: bold;
           background-color: #${config.colorScheme.palette.base03};
-          background: #${config.colorScheme.palette.base03};
           color: #${config.colorScheme.palette.base05};
       }
       #submap {
@@ -193,7 +279,7 @@ in {
       env = __GLX_VENDOR_LIBRARY_NAME,nvidia
       env = HYPRCURSOR_THEME,rose-pine-hyprcursor
       env = HYPRCURSOR_SIZE,24
-      env = XCURSOR_THEME,BreezeX-RosePine-Linux      
+      env = XCURSOR_THEME,BreezeX-RosePine-Linux
       env = XCURSOR_SIZE,24
       env = XDG_SESSION_TYPE,wayland
       env = GBM_BACKEND,nvidia-drm
@@ -208,7 +294,6 @@ in {
       exec-once = blueman-applet
 
       exec-once = wl-paste --type text --watch cliphist store #Stores only text data
-
       exec-once = wl-paste --type image --watch cliphist store #Stores only image data
 
       ${createBarWindowRule "pavucontrol" 50 700}
@@ -236,9 +321,9 @@ in {
 
       monitor=Unknown-1,disable
 
-      workspace=1,monitor:desc:${monitorLeft.desc},default:true
-      workspace=2,monitor:desc:${monitorCentre.desc},default:true
-      workspace=3,monitor:desc:${monitorRight.desc},default:true
+      workspace=1,monitor:desc:${monitorLeft.desc},default:true,persistent:true
+      workspace=2,monitor:desc:${monitorCentre.desc},default:true,persistent:true
+      workspace=3,monitor:desc:${monitorRight.desc},default:true,persistent:true
 
       # Key bindings
       $mainMod = SUPER
@@ -269,6 +354,7 @@ in {
       bind = $mainMod, F, fullscreen, 0
       bind = $shiftMod, F, togglefloating,
 
+      # Window management
       bind = $mainMod, 1, workspace, 1
       bind = $mainMod, 2, workspace, 2
       bind = $mainMod, 3, workspace, 3
@@ -288,7 +374,17 @@ in {
       bind = $shiftMod, 8, movetoworkspace, 8
       bind = $shiftMod, 9, movetoworkspace, 9
 
-      bind = $shiftMod, S, movetoworkspace, special
+      # open next available workspace on current monitor
+      bind = $mainMod, N, workspace, r+1
+      # Cycle through workspaces on single monitor
+      bind = $mainMod, bracketleft,  workspace, m-1
+      bind = $mainMod, bracketright, workspace, m+1
+      # Cycle monitors
+      bind = $shiftMod, bracketleft, focusmonitor, l
+      bind = $shiftMod, bracketright, focusmonitor, r
+
+      # Special workspace
+      bind = $shiftMod, S, movetoworkspacesilent, special
       bind = $mainMod, S, togglespecialworkspace, special
 
       bind = $mainMod, G, togglegroup

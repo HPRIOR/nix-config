@@ -134,7 +134,7 @@ in {
         calibre
         # Some prerequisites for this package
         # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
-        citrix_workspace
+        # citrix_workspace
         feh
         firefox # applications
         freecad

@@ -31,7 +31,14 @@
     };
 
     nix-colours.url = "github:Misterio77/nix-colors";
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+    };
 
+    hyprland-plugins = {
+      url = "github:hyprwm/hyprland-plugins";
+      inputs.hyprland.follows = "hyprland";
+    };
 
     ghostty = {
       url = "github:ghostty-org/ghostty";

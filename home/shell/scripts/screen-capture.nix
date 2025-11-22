@@ -102,7 +102,7 @@
     text = smartCapture "slurp -o";
   };
 
-  # todo was this nor working?
+  # todo was this not working?
   _ = pkgs.writeShellApplication {
     name = rofi-capture-cmd;
 
@@ -128,6 +128,29 @@
 
     '';
   };
+
+  focus_window = pkgs.writeShellApplication {
+    name = "focus_window";
+
+    runtimeInputs = with pkgs; [jq];
+
+    text = ''
+      #!/bin/sh
+      address="$1"
+
+      button="$2"
+
+      if [ "$button" -eq 1 ]; then
+          # Left click: focus window
+          hyprctl keyword cursor:no_warps true
+          hyprctl dispatch focuswindow address:"$address"
+          hyprctl keyword cursor:no_warps false
+      elif [ "$button" -eq 2 ]; then
+          # Middle click: close window
+          hyprctl dispatch closewindow address:"$address"
+      fi
+    '';
+  };
 in {
   cmds = [
     capture-selection
@@ -136,5 +159,6 @@ in {
     clip-screen
     smart-selection
     smart-screen
+    focus_window
   ];
 }
