@@ -187,6 +187,11 @@ in {
   };
   wayland.windowManager.hyprland = {
     enable = isLinux;
+    plugins = [
+      pkgs.hyprlandPlugins.hyprspace
+      pkgs.hyprlandPlugins."hyprland-virtual-desktops"
+      pkgs.hyprlandPlugins.hyprexpo
+    ];
     extraConfig = ''
       # Required for mouse to render
       env = LIBVA_DRIVER_NAME,nvidia
@@ -219,6 +224,27 @@ in {
       windowrule=move 100%-350 50,class:^(Mullvad.*)$
       windowrule=float,class:^(Mullvad.*)$
       windowrule=animation slide,class:^(Mullvad.*)$
+
+      plugin {
+          virtual-desktops {
+              names = 1:coding, 2:browsing, 3:chat, 4:gaming
+              rememberlayout = size
+          }
+
+          hyprexpo {
+              columns = 3
+              gap_size = 8
+              bg_col = 0x${config.colorScheme.palette.base00}
+              workspace_method = center current
+              gesture_distance = 300
+          }
+      }
+
+      plugin:overview:workspaceMargin = 15
+      plugin:overview:overrideGaps = true
+      plugin:overview:gapsIn = 10
+      plugin:overview:gapsOut = 20
+      plugin:overview:exitKey = Escape
 
       # windowrulev2 = stayfocused,class:(Rofi)
       # windowrulev2 = forceinput,class:(Rofi)
@@ -269,24 +295,31 @@ in {
       bind = $mainMod, F, fullscreen, 0
       bind = $shiftMod, F, togglefloating,
 
-      bind = $mainMod, 1, workspace, 1
-      bind = $mainMod, 2, workspace, 2
-      bind = $mainMod, 3, workspace, 3
-      bind = $mainMod, 4, workspace, 4
-      bind = $mainMod, 5, workspace, 5
-      bind = $mainMod, 6, workspace, 6
-      bind = $mainMod, 7, workspace, 7
-      bind = $mainMod, 8, workspace, 8
-      bind = $mainMod, 9, workspace, 9
-      bind = $shiftMod, 1, movetoworkspace, 1
-      bind = $shiftMod, 2, movetoworkspace, 2
-      bind = $shiftMod, 3, movetoworkspace, 3
-      bind = $shiftMod, 4, movetoworkspace, 4
-      bind = $shiftMod, 5, movetoworkspace, 5
-      bind = $shiftMod, 6, movetoworkspace, 6
-      bind = $shiftMod, 7, movetoworkspace, 7
-      bind = $shiftMod, 8, movetoworkspace, 8
-      bind = $shiftMod, 9, movetoworkspace, 9
+      bind = $mainMod, 1, exec, hyprctl dispatch vdesk 1
+      bind = $mainMod, 2, exec, hyprctl dispatch vdesk 2
+      bind = $mainMod, 3, exec, hyprctl dispatch vdesk 3
+      bind = $mainMod, 4, exec, hyprctl dispatch vdesk 4
+      bind = $mainMod, 5, exec, hyprctl dispatch vdesk 5
+      bind = $mainMod, 6, exec, hyprctl dispatch vdesk 6
+      bind = $mainMod, 7, exec, hyprctl dispatch vdesk 7
+      bind = $mainMod, 8, exec, hyprctl dispatch vdesk 8
+      bind = $mainMod, 9, exec, hyprctl dispatch vdesk 9
+      bind = $shiftMod, 1, exec, hyprctl dispatch movetodesk 1
+      bind = $shiftMod, 2, exec, hyprctl dispatch movetodesk 2
+      bind = $shiftMod, 3, exec, hyprctl dispatch movetodesk 3
+      bind = $shiftMod, 4, exec, hyprctl dispatch movetodesk 4
+      bind = $shiftMod, 5, exec, hyprctl dispatch movetodesk 5
+      bind = $shiftMod, 6, exec, hyprctl dispatch movetodesk 6
+      bind = $shiftMod, 7, exec, hyprctl dispatch movetodesk 7
+      bind = $shiftMod, 8, exec, hyprctl dispatch movetodesk 8
+      bind = $shiftMod, 9, exec, hyprctl dispatch movetodesk 9
+      bind = $mainMod, bracketleft, exec, hyprctl dispatch lastdesk
+      bind = $mainMod, bracketright, exec, hyprctl dispatch nextdesk
+
+      bind = $mainMod, E, overview:toggle
+      bind = $shiftMod, E, overview:toggle, all
+
+      bind = $mainMod, g, hyprexpo:expo, toggle
 
       bind = $shiftMod, S, movetoworkspace, special
       bind = $mainMod, S, togglespecialworkspace, special
