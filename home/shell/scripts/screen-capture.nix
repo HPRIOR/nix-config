@@ -10,6 +10,7 @@
   smartCaptureScreenCmd = "smart-capture-screen";
   rofi-capture-cmd = "rofi-capture";
   moveWindowNextWorkspaceCmd = "move-window-next-workspace";
+  deleteWorkspaceCmd = "delete-current-workspace";
   screenshot-path = "\"$HOME\"/Pictures/Screenshots";
 
   capture = slurpCmd: ''
@@ -179,6 +180,59 @@
       hyprctl dispatch movetoworkspace "$next_workspace"
     '';
   };
+  delete_current_workspace = pkgs.writeShellApplication {
+    name = deleteWorkspaceCmd;
+
+    runtimeInputs = with pkgs; [hyprland jq coreutils];
+
+    text = ''
+      #!/bin/sh
+      set -euo pipefail
+
+      current_ws=$(hyprctl -j activeworkspace)
+      current_ws_id=$(echo "$current_ws" | jq -r '.id')
+
+      ws_info=$(
+        hyprctl -j workspaces \
+        | jq --argjson id "$current_ws_id" 'map(select(.id == $id)) | first'
+      )
+
+      if [ -z "$ws_info" ] || [ "$ws_info" = "null" ]; then
+        exit 0
+      fi
+
+      persistent=$(echo "$ws_info" | jq '.persistent // false')
+      monitor_name=$(echo "$ws_info" | jq -r '.monitor')
+
+      addresses=$(
+        hyprctl -j clients \
+        | jq -r --argjson id "$current_ws_id" '.[] | select(.workspace.id == $id) | .address'
+      )
+
+      if [ -n "$addresses" ]; then
+        echo "$addresses" | while IFS= read -r addr; do
+          [ -n "$addr" ] && hyprctl dispatch closewindow address:"$addr"
+        done
+      fi
+
+      if [ "$persistent" = "true" ]; then
+        exit 0
+      fi
+
+      target_ws=$(
+        hyprctl -j workspaces \
+        | jq -r --arg mon "$monitor_name" --argjson cur "$current_ws_id" '
+            [ .[] | select(.monitor == $mon and .id != $cur) | .id ] | sort | .[0] // empty
+          '
+      )
+
+      if [ -z "$target_ws" ]; then
+        target_ws=1
+      fi
+
+      hyprctl dispatch workspace "$target_ws"
+    '';
+  };
 in {
   cmds = [
     capture-selection
@@ -189,5 +243,6 @@ in {
     smart-screen
     focus_window
     move_window_next_workspace
+    delete_current_workspace
   ];
 }
