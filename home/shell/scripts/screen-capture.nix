@@ -9,6 +9,7 @@
   smartCaptureSelectionCmd = "smart-capture-selection";
   smartCaptureScreenCmd = "smart-capture-screen";
   rofi-capture-cmd = "rofi-capture";
+  moveWindowNextWorkspaceCmd = "move-window-next-workspace";
   screenshot-path = "\"$HOME\"/Pictures/Screenshots";
 
   capture = slurpCmd: ''
@@ -151,6 +152,33 @@
       fi
     '';
   };
+  move_window_next_workspace = pkgs.writeShellApplication {
+    name = moveWindowNextWorkspaceCmd;
+
+    runtimeInputs = with pkgs; [hyprland jq];
+
+    text = ''
+      #!/bin/sh
+      set -euo pipefail
+
+      active_window=$(hyprctl -j activewindow)
+      if [ "$active_window" = "null" ] || [ -z "$active_window" ]; then
+          exit 0
+      fi
+
+      next_workspace=$(
+        hyprctl -j workspaces \
+        | jq '
+            [.[].id]
+            | map(select(. > 0))
+            | sort
+            | reduce .[] as $id (1; if $id == . then . + 1 else . end)
+          '
+      )
+
+      hyprctl dispatch movetoworkspace "$next_workspace"
+    '';
+  };
 in {
   cmds = [
     capture-selection
@@ -160,5 +188,6 @@ in {
     smart-selection
     smart-screen
     focus_window
+    move_window_next_workspace
   ];
 }

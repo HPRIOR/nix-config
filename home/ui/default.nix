@@ -376,6 +376,8 @@ in {
 
       # open next available workspace on current monitor
       bind = $mainMod, N, workspace, r+1
+      # move active window to next available workspace on current monitor
+      bind = $shiftMod, N, exec, move-window-next-workspace
       # Cycle through workspaces on single monitor
       bind = $mainMod, bracketleft,  workspace, m-1
       bind = $mainMod, bracketright, workspace, m+1
