@@ -207,7 +207,10 @@ in {
         };
       };
 
-      leap.enable = true;
+      leap = {
+        enable = true;
+        addDefaultMappings = false;
+      };
       illuminate.enable = true;
       vim-surround.enable = true;
       comment.enable = true;

@@ -65,6 +65,15 @@
     };
   }
   {
+    mode = ["n" "x" "o"];
+    key = "s";
+    action = "<cmd>lua require('leap').leap({ target_windows = { vim.fn.win_getid() }})<cr>";
+    options = {
+      silent = true;
+      desc = "Leap up/down in window";
+    };
+  }
+  {
     mode = ["n"];
     key = "<leader>j";
     action = "<c-w>j";
