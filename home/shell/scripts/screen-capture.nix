@@ -11,6 +11,9 @@
   rofi-capture-cmd = "rofi-capture";
   moveWindowNextWorkspaceCmd = "move-window-next-workspace";
   deleteWorkspaceCmd = "delete-current-workspace";
+  focusHistoryDaemonCmd = "focus-history-daemon";
+  focusHistoryNextCmd = "focus-history-next";
+  focusHistoryPrevCmd = "focus-history-prev";
   screenshot-path = "\"$HOME\"/Pictures/Screenshots";
 
   capture = slurpCmd: ''
@@ -159,7 +162,7 @@
     runtimeInputs = with pkgs; [hyprland jq];
 
     text = ''
-      #!/bin/sh
+      #!/bin/bash
       set -euo pipefail
 
       active_window=$(hyprctl -j activewindow)
@@ -186,7 +189,7 @@
     runtimeInputs = with pkgs; [hyprland jq coreutils];
 
     text = ''
-      #!/bin/sh
+      #!/bin/bash
       set -euo pipefail
 
       current_ws=$(hyprctl -j activeworkspace)
@@ -233,6 +236,130 @@
       hyprctl dispatch workspace "$target_ws"
     '';
   };
+  focus_history_daemon = pkgs.writeShellApplication {
+    name = focusHistoryDaemonCmd;
+
+    runtimeInputs = with pkgs; [hyprland jq socat coreutils bash];
+
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      socket="/tmp/hypr/''${HYPRLAND_INSTANCE_SIGNATURE:-default}/.socket2.sock"
+      history_file="''${XDG_RUNTIME_DIR:-/tmp}/hypr-focus-history-''${HYPRLAND_INSTANCE_SIGNATURE:-default}"
+      mkdir -p "$(dirname "$history_file")"
+      : > "$history_file"
+
+      add_to_history() {
+        addr="$1"
+        [ -z "$addr" ] && return
+        tmp=$(mktemp)
+        {
+          printf '%s\n' "$addr"
+          cat "$history_file"
+        } | awk '!seen[$0]++' > "$tmp"
+        mv "$tmp" "$history_file"
+      }
+
+      remove_from_history() {
+        addr="$1"
+        [ -z "$addr" ] && return
+        tmp=$(mktemp)
+        awk -v drop="$addr" '$0 != drop {print}' "$history_file" > "$tmp"
+        mv "$tmp" "$history_file"
+      }
+
+      init_active=$(hyprctl -j activewindow | jq -r '.address // empty')
+      [ -n "$init_active" ] && add_to_history "$init_active"
+
+      # exit early if we cannot read socket
+      [ -S "$socket" ] || exit 0
+
+      socat - UNIX-CONNECT:"$socket" | while IFS= read -r line; do
+        event=''${line%%>>*}
+        payload=''${line#*>>}
+        addr=''${payload%%,*}
+
+        case "$event" in
+          activewindow|activewindowv2)
+            add_to_history "$addr"
+            ;;
+          closewindow)
+            remove_from_history "$addr"
+            ;;
+          *)
+            ;;
+        esac
+      done
+    '';
+  };
+
+  focus_history_cycle = direction: pkgs.writeShellApplication {
+    name =
+      if direction == "next"
+      then focusHistoryNextCmd
+      else focusHistoryPrevCmd;
+
+    runtimeInputs = with pkgs; [hyprland jq coreutils bash];
+
+    text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      history_file="''${XDG_RUNTIME_DIR:-/tmp}/hypr-focus-history-''${HYPRLAND_INSTANCE_SIGNATURE:-default}"
+      state_file="''${history_file}.state"
+
+      [ -f "$history_file" ] || exit 0
+
+      mapfile -t history < "$history_file"
+      len=''${#history[@]}
+      if [ "$len" -eq 0 ]; then
+        exit 0
+      fi
+
+      active=$(hyprctl -j activewindow | jq -r '.address // empty')
+
+      anchor=""
+      offset=0
+      last_target=""
+      if [ -f "$state_file" ]; then
+        # shellcheck source=/dev/null
+        . "$state_file"
+      fi
+
+      if [ "$active" != "$last_target" ]; then
+        anchor="$active"
+        offset=0
+      fi
+
+      if [ "$len" -le 1 ]; then
+        exit 0
+      fi
+
+      direction_flag="${direction}"
+      if [ "$direction_flag" = "next" ]; then
+        offset=$(( (offset + 1) % len ))
+      else
+        offset=$(( (offset - 1 + len) % len ))
+      fi
+
+      target=''${history[$offset]}
+      if [ -z "$target" ]; then
+        exit 0
+      fi
+
+      hyprctl dispatch focuswindow address:"$target"
+
+      cat > "$state_file" <<EOF
+anchor="$anchor"
+offset=$offset
+last_target="$target"
+EOF
+    '';
+  };
+
+  focus_history_next = focus_history_cycle "next";
+  focus_history_prev = focus_history_cycle "prev";
 in {
   cmds = [
     capture-selection
@@ -244,5 +371,8 @@ in {
     focus_window
     move_window_next_workspace
     delete_current_workspace
+    focus_history_daemon
+    focus_history_next
+    focus_history_prev
   ];
 }

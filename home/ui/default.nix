@@ -88,107 +88,106 @@ in {
 
   programs.waybar = {
     enable = isLinux;
-    settings =
-      let
-        sharedHyprModules = mkHyprlandModules {
-          workspace = hyprlandWorkspaceMain;
-        };
-      in {
-        leftBar =
-          sharedHyprModules
-          // {
-            layer = "top";
-            position = "top";
-            height = 24;
-            spacing = 4;
-            margin-top = 5;
-            margin-bottom = 1;
-            margin-right = 6;
-            margin-left = 6;
-            output = monitorLeft.desc;
-            reload_style_on_change = true;
-          };
-        rightBar =
-          sharedHyprModules
-          // {
-            layer = "top";
-            position = "top";
-            height = 24;
-            spacing = 4;
-            margin-top = 5;
-            margin-bottom = 1;
-            margin-right = 6;
-            margin-left = 6;
-            output = monitorRight.desc;
-            reload_style_on_change = true;
-          };
-        mainBar =
-          sharedHyprModules
-          // {
-            height = 24;
-            spacing = 4;
-            margin-top = 5;
-            margin-bottom = 1;
-            margin-right = 6;
-            margin-left = 6;
-            output = monitorCentre.desc;
-            reload_style_on_change = true;
-            modules-right = ["tray" "pulseaudio" "disk#root" "disk#home" "memory" "cpu" "temperature" "network" "clock"];
-        "cpu" = {
-          interval = 1;
-          format = "{icon} {usage:02}% {avg_frequency:.2f}GHz";
-          format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
-        };
-        "temperature" = {
-          hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
-          input-filename = "temp1_input";
-          critical-threshold = 80;
-          format = "{icon} {temperatureC:02}°C";
-          format-critical = "󰸁 {temperatureC:02}°C";
-          format-icons = ["󱃃" "󰔏" "󱃂"];
-          interval = 1;
-        };
-        "memory" = {
-          interval = 1;
-          format = "{used:0.1f}G/{total:0.1f}G ";
-        };
-        "clock" = {
-          interval = 60;
-          format-alt = "{:%A, %B %d, %Y - %R}";
-        };
-        "disk#root" = {
-          interval = 30;
-          format = "{path} {percentage_used}%";
-          path = "/";
-        };
-        "disk#home" = {
-          interval = 30;
-          format = "{path} {percentage_used}%";
-          path = "/home";
-        };
-        "pulseaudio" = {
-          "format" = "{volume}% {icon}";
-          "format-bluetooth" = "{volume}% {icon}";
-          "format-muted" = "";
-          "format-icons" = {
-            "headphone" = "";
-            "default" = ["" ""];
-          };
-          "scroll-step" = 1;
-          "on-click" = "hyprctl dispatch exec '${createToggleApp "pavucontrol"}'";
-          "ignored-sinks" = ["Easy Effects Sink"];
-        };
-        "network" = {
-          "interval" = 1;
-          "format" = "{ifname}";
-          "format-wifi" = "{essid} ({signalStrength}%) ";
-          "format-ethernet" = "{ipaddr} 󰈁";
-          "format-disconnected" = "󰈂";
-        };
-        "tray" = {
-          spacing = 10;
-        };
+    settings = let
+      sharedHyprModules = mkHyprlandModules {
+        workspace = hyprlandWorkspaceMain;
       };
+    in {
+      leftBar =
+        sharedHyprModules
+        // {
+          layer = "top";
+          position = "top";
+          height = 24;
+          spacing = 4;
+          margin-top = 5;
+          margin-bottom = 1;
+          margin-right = 6;
+          margin-left = 6;
+          output = monitorLeft.desc;
+          reload_style_on_change = true;
+        };
+      rightBar =
+        sharedHyprModules
+        // {
+          layer = "top";
+          position = "top";
+          height = 24;
+          spacing = 4;
+          margin-top = 5;
+          margin-bottom = 1;
+          margin-right = 6;
+          margin-left = 6;
+          output = monitorRight.desc;
+          reload_style_on_change = true;
+        };
+      mainBar =
+        sharedHyprModules
+        // {
+          height = 24;
+          spacing = 4;
+          margin-top = 5;
+          margin-bottom = 1;
+          margin-right = 6;
+          margin-left = 6;
+          output = monitorCentre.desc;
+          reload_style_on_change = true;
+          modules-right = ["tray" "pulseaudio" "disk#root" "disk#home" "memory" "cpu" "temperature" "network" "clock"];
+          "cpu" = {
+            interval = 1;
+            format = "{icon} {usage:02}% {avg_frequency:.2f}GHz";
+            format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+          };
+          "temperature" = {
+            hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
+            input-filename = "temp1_input";
+            critical-threshold = 80;
+            format = "{icon} {temperatureC:02}°C";
+            format-critical = "󰸁 {temperatureC:02}°C";
+            format-icons = ["󱃃" "󰔏" "󱃂"];
+            interval = 1;
+          };
+          "memory" = {
+            interval = 1;
+            format = "{used:0.1f}G/{total:0.1f}G ";
+          };
+          "clock" = {
+            interval = 60;
+            format-alt = "{:%A, %B %d, %Y - %R}";
+          };
+          "disk#root" = {
+            interval = 30;
+            format = "{path} {percentage_used}%";
+            path = "/";
+          };
+          "disk#home" = {
+            interval = 30;
+            format = "{path} {percentage_used}%";
+            path = "/home";
+          };
+          "pulseaudio" = {
+            "format" = "{volume}% {icon}";
+            "format-bluetooth" = "{volume}% {icon}";
+            "format-muted" = "";
+            "format-icons" = {
+              "headphone" = "";
+              "default" = ["" ""];
+            };
+            "scroll-step" = 1;
+            "on-click" = "hyprctl dispatch exec '${createToggleApp "pavucontrol"}'";
+            "ignored-sinks" = ["Easy Effects Sink"];
+          };
+          "network" = {
+            "interval" = 1;
+            "format" = "{ifname}";
+            "format-wifi" = "{essid} ({signalStrength}%) ";
+            "format-ethernet" = "{ipaddr} 󰈁";
+            "format-disconnected" = "󰈂";
+          };
+          "tray" = {
+            spacing = 10;
+          };
+        };
     };
     style = ''
       * {
@@ -292,6 +291,7 @@ in {
       # Startup applications
       exec-once = waybar
       exec-once = blueman-applet
+      exec-once = focus-history-daemon
 
       exec-once = wl-paste --type text --watch cliphist store #Stores only text data
       exec-once = wl-paste --type image --watch cliphist store #Stores only image data
@@ -335,6 +335,9 @@ in {
       bind = $mainMod, J, movefocus, d
       bind = $mainMod, K, movefocus, u
       bind = $mainMod, L, movefocus, r
+      # global focus history cycling across monitors/workspaces (scripted)
+      bind = $mainMod, I, exec, focus-history-next
+      bind = $mainMod, O, exec, focus-history-prev
 
       bind = $shiftMod, H, movewindoworgroup, l
       bind = $shiftMod, J, movewindoworgroup, d
@@ -386,6 +389,11 @@ in {
       # Cycle monitors
       bind = $shiftMod, bracketleft, focusmonitor, l
       bind = $shiftMod, bracketright, focusmonitor, r
+
+      # Onlye works within workspaces
+      # bind = $mainMod, I, cyclenext, hist next
+      # bind = $mainMod, O, cyclenext, hist prev
+
 
       # Special workspace
       bind = $shiftMod, S, movetoworkspacesilent, special
