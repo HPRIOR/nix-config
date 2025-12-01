@@ -17,7 +17,7 @@
       lua_ls.enable = true;
       marksman.enable = true;
       nixd.enable = true;
-      ocamlls = {
+      ocamllsp = {
         enable = true;
         package = null; # Needs to be overriden in project flakes
         cmd = ["ocamllsp" "--stdio"];
@@ -74,7 +74,7 @@
 
   lspkind = {
     enable = true;
-    extraOptions = {
+    settings = {
       maxwidth = 50;
       ellipsis_char = "...";
     };

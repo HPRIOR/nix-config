@@ -8,7 +8,7 @@
   plugins = import ./plugins {inherit pkgs config;};
   options = import ./options.nix;
 in {
-  imports = [inputs.nixvim.homeManagerModules.nixvim ./ideavim.nix];
+  imports = [inputs.nixvim.homeModules.nixvim ./ideavim.nix];
 
   home.sessionVariables = {
     EDITOR = "nvim";

@@ -73,7 +73,7 @@ in {
         delta # git syntax highlighting pager
         difftastic
         discord
-        du-dust # intuitive du - view drive space
+        dust # intuitive du - view drive space
         duf
         eva
         eza # ls replacement
@@ -109,7 +109,7 @@ in {
         syncthing
         tetex
         texstudio
-        thefuck
+        pay-respects
         tldr
         tree
         # build failing - investigate
@@ -152,9 +152,8 @@ in {
         strace
         v4l-utils
         vlc
-        libsForQt5.okular
         # see https://github.com/ghostty-org/ghostty/discussions/3224#discussioncomment-11711871 - high iowait usage otherwise, waiting for fix
-        inputs.ghostty.packages.${pkgs.system}.default
+        inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
       ])
       ++ (lib.optionals isDarwin [zoom-us]);
 
@@ -168,26 +167,26 @@ in {
 
     programs.git = {
       enable = true;
-      package = pkgs.gitAndTools.gitFull;
-      userName = settings.fullName;
-      userEmail = settings.email;
-      extraConfig = {
+      package = pkgs.gitFull;
+      settings = {
+        user.name = settings.fullName;
+        user.email = settings.email;
         core.autocrlf = "input";
         merge.conflictstyle = "diff3";
         diff.colorMoved = "default";
         init.defaultBranch = "main";
         push.autoSetupRemote = true;
+        alias.lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
       };
-      delta = {
-        enable = true;
-        options = {
-          features = "side-by-side line-numbers decorations";
-          whitespace-error-style = "22 reverse";
-          navigate = "true";
-        };
-      };
-      aliases = {
-        lg = "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+    };
+
+    programs.delta = {
+      enable = true;
+      enableGitIntegration = true;
+      options = {
+        features = "side-by-side line-numbers decorations";
+        whitespace-error-style = "22 reverse";
+        navigate = "true";
       };
     };
 

@@ -9,7 +9,7 @@
   home.sessionVariables = {
     TERMCMD =
       if pkgs.stdenv.isLinux
-      then "${inputs.ghostty.packages.${pkgs.system}.default}/bin/ghostty"
+      then "${inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default}/bin/ghostty"
       else "ghostty";
   };
   home.file."${settings.configDir}/ghostty/config".text = let

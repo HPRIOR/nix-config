@@ -97,7 +97,7 @@ in {
       mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
     }))
     libnotify
-    rofi-wayland
+    rofi
     wl-clipboard
     wlr-randr
     cliphist
