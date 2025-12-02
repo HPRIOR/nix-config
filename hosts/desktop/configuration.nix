@@ -8,6 +8,7 @@
 in {
   imports = [
     ./hardware-configuration.nix
+    ./windows-vm.nix
   ];
 
   hardware.nvidia = {
@@ -25,6 +26,8 @@ in {
   };
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
+
+  windowsVM.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

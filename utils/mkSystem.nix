@@ -51,7 +51,7 @@
     theme = "kanagawa";
     font = "FiraCode Nerd Font Mono";
     fontSize = 12;
-    extraGroups = ["networkmanager" "wheel" "docker"];
+    extraGroups = ["networkmanager" "wheel" "docker" "libvirtd" "kvm"];
   };
 in {
   nixos = {
