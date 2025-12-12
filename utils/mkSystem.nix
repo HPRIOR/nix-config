@@ -19,6 +19,7 @@
     sharedOverlays = [
       (import ../overlays/claude.nix {unstable = unstable;})
       (import ../overlays/codex.nix {unstable = unstable;})
+      (import ../overlays/spotify.nix)
     ];
 
     permittedInsecurePkgs = ["libsoup-2.74.3"];

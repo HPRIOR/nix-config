@@ -424,13 +424,4 @@
       desc = "Go to next diagnostic";
     };
   }
-  {
-    mode = ["n"];
-    key = "<leader>%";
-    action = "<cmd>Spectre<cr>";
-    options = {
-      silent = true;
-      desc = "Open search and replace window (spectre)";
-    };
-  }
 ]
