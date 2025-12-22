@@ -424,4 +424,31 @@
       desc = "Go to next diagnostic";
     };
   }
+  {
+    mode = ["n"];
+    key = "<leader>p";
+    action = "<cmd>Gitsigns preview_hunk_inline<cr>";
+    options = {
+      silent = true;
+      desc = "View git diff hunk inline";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "gh";
+    action = "<cmd>Gitsigns next_hunk<cr>";
+    options = {
+      silent = true;
+      desc = "Next hunk";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "gH";
+    action = "<cmd>Gitsigns prev_hunk<cr>";
+    options = {
+      silent = true;
+      desc = "Prev hung";
+    };
+  }
 ]

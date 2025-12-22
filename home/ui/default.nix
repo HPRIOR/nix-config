@@ -390,10 +390,12 @@ in {
       bind = $shiftMod, bracketleft, focusmonitor, l
       bind = $shiftMod, bracketright, focusmonitor, r
 
-      # Onlye works within workspaces
-      # bind = $mainMod, I, cyclenext, hist next
-      # bind = $mainMod, O, cyclenext, hist prev
+      # bind = $mainMod, O, focusmonitor, l
+      # bind = $mainMod, I, focusmonitor, r
 
+      # Onlye works within workspaces
+      bind = $mainMod, I, exec, ~/Scripts/hyprhist focus next
+      bind = $mainMod, O, exec, ~/Scripts/hyprhist focus prev
 
       # Special workspace
       bind = $shiftMod, S, movetoworkspacesilent, special
