@@ -5,6 +5,7 @@
   ...
 }: let
   defaultLocale = "en_GB.UTF-8";
+  rulesFile = "/etc/mullvad-excludeTraffic.nft";
 in {
   imports = [
     ./hardware-configuration.nix
@@ -89,6 +90,7 @@ in {
     vim
     wget
     git
+    nftables
     kitty
 
     # # hyprland and wm stuff
@@ -241,6 +243,31 @@ in {
     xz
     zlib
   ];
+
+  environment.etc."mullvad-excludeTraffic.nft".text = ''
+    table inet excludeTraffic {
+      chain excludeOutgoing {
+        type route hook output priority 0; policy accept;
+        ip daddr 192.168.100.60 ct mark set 0x00000f41 meta mark set 0x6d6f6c65;
+      }
+    }
+  '';
+
+  systemd.services.mullvad-exclude-ip = {
+    description = "Exclude 192.168.100.60 from Mullvad tunnel (nftables marks)";
+    wantedBy = ["multi-user.target"];
+
+    after = ["mullvad-daemon.service" "network-online.target"];
+    wants = ["mullvad-daemon.service" "network-online.target"];
+
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+
+      ExecStart = "${pkgs.nftables}/bin/nft -f ${rulesFile}";
+      ExecStop = "${pkgs.nftables}/bin/nft delete table inet excludeTraffic";
+    };
+  };
 
   xdg.portal.enable = true;
   xdg.portal.extraPortals = with pkgs; [
