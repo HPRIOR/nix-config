@@ -296,6 +296,8 @@ in {
       exec-once = wl-paste --type text --watch cliphist store #Stores only text data
       exec-once = wl-paste --type image --watch cliphist store #Stores only image data
 
+      exec-once = ~/Scripts/hyprhist daemon focus
+
       ${createBarWindowRule "pavucontrol" 50 700}
       ${createBarWindowRule ".blueman-manager-wrapped" 50 700}
       ${createBarWindowRule "1Password" 50 700}
