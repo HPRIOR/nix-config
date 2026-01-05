@@ -5,6 +5,9 @@
   ...
 }: let
   homeDir = settings.homeDir;
+  excludeIp = "192.168.100.60";
+  lanInterface = "en0";
+  lanGateway = "192.168.1.1";
 in {
   environment.systemPackages = [
     pkgs.vim
@@ -71,5 +74,17 @@ in {
       "vlc"
       "whatsapp"
     ];
+  };
+
+  services.pf = {
+    enable = true;
+    rules = ''
+      exclude_ip = "${excludeIp}"
+      lan_if = "${lanInterface}"
+      lan_gw = "${lanGateway}"
+
+      # Route excluded IP via LAN to bypass the VPN tunnel.
+      pass out quick on $lan_if route-to ($lan_if $lan_gw) to $exclude_ip
+    '';
   };
 }
