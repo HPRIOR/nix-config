@@ -76,15 +76,26 @@ in {
     ];
   };
 
-  services.pf = {
-    enable = true;
-    rules = ''
-      exclude_ip = "${excludeIp}"
-      lan_if = "${lanInterface}"
-      lan_gw = "${lanGateway}"
+  system.activationScripts.pf.text = ''
+    echo "configuring pf..." >&2
 
-      # Route excluded IP via LAN to bypass the VPN tunnel.
-      pass out quick on $lan_if route-to ($lan_if $lan_gw) to $exclude_ip
-    '';
-  };
+    pf_anchor="/etc/pf.anchors/nix-darwin"
+    pf_conf="/etc/pf.conf"
+
+    cat > "$pf_anchor" <<'EOF'
+    exclude_ip = "${excludeIp}"
+    lan_if = "${lanInterface}"
+    lan_gw = "${lanGateway}"
+
+    # Route excluded IP via LAN to bypass the VPN tunnel.
+    pass out quick on $lan_if route-to ($lan_if $lan_gw) to $exclude_ip
+    EOF
+
+    if ! /usr/bin/grep -q 'anchor "nix-darwin"' "$pf_conf"; then
+      printf '\nanchor "nix-darwin"\nload anchor "nix-darwin" from "/etc/pf.anchors/nix-darwin"\n' >> "$pf_conf"
+    fi
+
+    /sbin/pfctl -f "$pf_conf"
+    /sbin/pfctl -e 2>/dev/null || true
+  '';
 }
