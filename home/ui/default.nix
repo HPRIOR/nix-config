@@ -291,7 +291,6 @@ in {
       # Startup applications
       exec-once = waybar
       exec-once = blueman-applet
-      exec-once = focus-history-daemon
 
       exec-once = wl-paste --type text --watch cliphist store #Stores only text data
       exec-once = wl-paste --type image --watch cliphist store #Stores only image data
@@ -337,10 +336,6 @@ in {
       bind = $mainMod, J, movefocus, d
       bind = $mainMod, K, movefocus, u
       bind = $mainMod, L, movefocus, r
-      # global focus history cycling across monitors/workspaces (scripted)
-      bind = $mainMod, I, exec, focus-history-next
-      bind = $mainMod, O, exec, focus-history-prev
-
       bind = $shiftMod, H, movewindoworgroup, l
       bind = $shiftMod, J, movewindoworgroup, d
       bind = $shiftMod, K, movewindoworgroup, u

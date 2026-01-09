@@ -5,7 +5,7 @@
 }: let
   isLinux = pkgs.stdenv.isLinux;
 
-  capture-cmds =
+  screen-capture-cmds =
     if isLinux
     then
       (import ./scripts/screen-capture.nix {
@@ -14,6 +14,18 @@
       })
       .cmds
     else [];
+
+  hyprland-window-cmds =
+    if isLinux
+    then
+      (import ./scripts/hyprland-window.nix {
+        inherit pkgs;
+      })
+      .cmds
+    else [];
+
+
+  linux-cmds = screen-capture-cmds ++ hyprland-window-cmds;
 
   vdoc = pkgs.rustPlatform.buildRustPackage {
     pname = "vdoc";
@@ -41,7 +53,7 @@
 in {
   imports = [];
 
-  home.packages = [vdoc] ++ capture-cmds;
+  home.packages = [vdoc] ++ linux-cmds;
 
   programs.bash = {
     enable = false;
