@@ -57,7 +57,7 @@ in {
 
     home.username = userName;
     home.homeDirectory = homeDir;
-    home.stateVersion = "23.05";
+    home.stateVersion = "25.11";
 
     home.packages = with pkgs;
       [
@@ -82,6 +82,7 @@ in {
         get_iplayer
         glances
         glow
+        gnupg
         gping # ping with graph
         gh
         hexyl
