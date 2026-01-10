@@ -77,6 +77,7 @@
         hostNameArg = "Harrys-MacBook-Air";
         sysConfig = macConfig;
         homeConfig = macHomeConfig;
+        profileArg = "minimal";
       };
     };
   };

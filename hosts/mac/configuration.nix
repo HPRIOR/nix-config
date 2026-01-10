@@ -50,30 +50,33 @@ in {
   nixpkgs.hostPlatform = "aarch64-darwin";
   security.pam.services.sudo_local.touchIdAuth = true;
 
-  homebrew = {
-    enable = true;
-    onActivation.autoUpdate = true;
-    onActivation.upgrade = true;
-    onActivation.cleanup = "uninstall";
-    casks = [
+  homebrew = let
+    baseCasks = [
       "1password"
-      "calibre"
       "citrix-workspace"
       "dropbox"
-      "firefox"
-      "freecad"
       "ghostty"
-      "jetbrains-toolbox"
-      "libreoffice"
-      "mactex"
       "mullvadvpn"
       "obsidian"
       "protonmail-bridge"
       "rectangle"
-      "rustdesk"
       "vlc"
       "whatsapp"
     ];
+    largeCasks = [
+      "libreoffice"
+      "freecad"
+      "calibre"
+      "mactex"
+      "rustdesk"
+    ];
+    isMinimal = settings.profile == "minimal";
+  in {
+    enable = true;
+    onActivation.autoUpdate = true;
+    onActivation.upgrade = true;
+    onActivation.cleanup = "uninstall";
+    casks = baseCasks ++ lib.optionals (!isMinimal) largeCasks;
   };
 
   system.activationScripts.pf.text = ''

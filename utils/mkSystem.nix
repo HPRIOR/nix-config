@@ -40,6 +40,7 @@
     userName,
     homeDir,
     hostName,
+    profileArg ? "full",
   }: {
     uid = 1000;
     userName = userName;
@@ -53,12 +54,14 @@
     font = "FiraCode Nerd Font Mono";
     fontSize = 12;
     extraGroups = ["networkmanager" "wheel" "docker"];
+    profile = profileArg;
   };
 in {
   nixos = {
     system,
     sysConfig,
     homeConfig,
+    profileArg ? "full",
   }: let
     unstable = import inputs.unstable {
       inherit system;
@@ -76,10 +79,11 @@ in {
       ];
     };
 
-    settings = sharedSettings rec {
+    settings = sharedSettings {
       userName = sharedUserName;
-      homeDir = "/home/${userName}";
+      homeDir = "/home/${sharedUserName}";
       hostName = "nixos";
+      profileArg = profileArg;
     };
   in
     inputs.nixpkgs.lib.nixosSystem {
@@ -114,13 +118,15 @@ in {
     hostNameArg,
     sysConfig,
     homeConfig,
+    profileArg ? "full",
   }: let
     pkgs = mkPkgs {inherit system;}; # no extra overlays on macOS
 
-    settings = sharedSettings rec {
+    settings = sharedSettings {
       userName = sharedUserName;
-      homeDir = "/Users/${userName}";
+      homeDir = "/Users/${sharedUserName}";
       hostName = hostNameArg;
+      profileArg = profileArg;
     };
   in
     inputs.nix-darwin.lib.darwinSystem {
