@@ -10,6 +10,110 @@
   homeDir = settings.homeDir;
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
+  profile = settings.profile or "full";
+  isMinimal = profile == "minimal";
+
+  basePackages = with pkgs; [
+    aichat
+    atool
+    bat # cat replacement
+    bottom
+    choose # user friendly cut (and awk)
+    claude-code
+    codex
+    croc
+    ctop
+    delta # git syntax highlighting pager
+    difftastic
+    dust # intuitive du - view drive space
+    duf
+    eva
+    eza # ls replacement
+    fd # find alternative
+    fzf
+    glances
+    glow
+    gnupg
+    gping # ping with graph
+    gh
+    hexyl
+    hurl
+    hyperfine # benchmarking tool
+    immich-cli
+    iftop
+    inetutils
+    jless
+    jq # json processor
+    lazydocker
+    lazygit
+    lsof
+    nerd-fonts.fira-code
+    nerd-fonts.jetbrains-mono
+    mosh
+    perl538Packages.vidir
+    procs # ps alternative
+    progress
+    ripgrep
+    sd # sed alternative
+    sops
+    syncthing
+    tetex
+    pay-respects
+    tldr
+    tree
+    unzip
+    watchexec
+    yazi
+    zathura
+    zoxide
+  ];
+
+  largePackages = with pkgs; [
+    discord
+    spotify
+    texstudio
+  ];
+
+  linuxBasePackages = with pkgs; [
+    _1password-cli
+    _1password-gui
+    glibc
+    grim
+    libtree
+    nfs-utils
+    slurp
+    strace
+    v4l-utils
+    papirus-icon-theme
+    pavucontrol
+    protonmail-bridge
+    firefox
+    feh
+    vlc
+    inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
+  ];
+
+  largeLinuxPackages = with pkgs; [
+    (zoom-us.overrideAttrs (oldAttrs: let
+    in rec {
+      version = "6.0.12.5501";
+      src = pkgs.fetchurl {
+        url = "https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz";
+        sha256 = "sha256-h9gjVd7xqChaoC2BZWEhR5WdyfQrPiBjM2WHXMgp8uQ=";
+      };
+    }))
+    calibre
+    freecad
+    libreoffice
+    obsidian
+    rustdesk
+  ];
+
+  darwinBasePackages = with pkgs; [
+    zoom-us
+  ];
+
+  darwinLargePackages = with pkgs; [];
 in {
   imports = [
     inputs.nix-colours.homeManagerModules.default
@@ -59,104 +163,13 @@ in {
     home.homeDirectory = homeDir;
     home.stateVersion = "25.11";
 
-    home.packages = with pkgs;
-      [
-        aichat
-        atool
-        bat # cat replacement
-        bottom
-        choose # user friendly cut (and awk)
-        claude-code
-        codex
-        croc
-        ctop
-        delta # git syntax highlighting pager
-        difftastic
-        discord
-        dust # intuitive du - view drive space
-        duf
-        eva
-        eza # ls replacement
-        fd # find alternative
-        fzf
-        get_iplayer
-        glances
-        glow
-        gnupg
-        gping # ping with graph
-        gh
-        hexyl
-        hurl
-        hyperfine # benchmarking tool
-        immich-cli
-        iftop
-        inetutils
-        jless
-        jq # json processor
-        kitty # terminal emulator
-        lazydocker
-        lazygit
-        lsof
-        nerd-fonts.fira-code
-        nerd-fonts.jetbrains-mono
-        mosh
-        perl538Packages.vidir
-        procs # ps alternative
-        progress
-        ripgrep
-        sd # sed alternative
-        sops
-        spotify
-        syncthing
-        tetex
-        texstudio
-        pay-respects
-        tldr
-        tree
-        # build failing - investigate
-        # qsv
-        unzip
-        watchexec
-        yazi
-        zathura
-        zoxide
-      ]
-      ++ (lib.optionals isLinux [
-        (zoom-us.overrideAttrs (oldAttrs: let
-        in rec {
-          version = "6.0.12.5501";
-          src = pkgs.fetchurl {
-            url = "https://zoom.us/client/${version}/zoom_x86_64.pkg.tar.xz";
-            sha256 = "sha256-h9gjVd7xqChaoC2BZWEhR5WdyfQrPiBjM2WHXMgp8uQ=";
-          };
-        }))
-        _1password-cli
-        _1password-gui
-        calibre
-        # Some prerequisites for this package
-        # Download tarbal from citrix then run nix-prefetch-url file:///pathtofile
-        # citrix_workspace
-        feh
-        firefox # applications
-        freecad
-        glibc
-        grim
-        libreoffice
-        libtree
-        nfs-utils
-        obsidian
-        papirus-icon-theme
-        pavucontrol
-        protonmail-bridge
-        rustdesk
-        slurp
-        strace
-        v4l-utils
-        vlc
-        # see https://github.com/ghostty-org/ghostty/discussions/3224#discussioncomment-11711871 - high iowait usage otherwise, waiting for fix
-        inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
-      ])
-      ++ (lib.optionals isDarwin [zoom-us]);
+    home.packages =
+      basePackages
+      ++ (lib.optionals (!isMinimal) largePackages)
+      ++ (lib.optionals isLinux linuxBasePackages)
+      ++ (lib.optionals isDarwin darwinBasePackages)
+      ++ (lib.optionals (isLinux && !isMinimal) largeLinuxPackages)
+      ++ (lib.optionals (isDarwin && !isMinimal) darwinLargePackages);
 
     services.syncthing = {
       enable = true;
