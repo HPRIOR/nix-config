@@ -55,6 +55,7 @@ in {
       "1password"
       "citrix-workspace"
       "dropbox"
+      "firefox"
       "ghostty"
       "mullvadvpn"
       "obsidian"
@@ -64,9 +65,9 @@ in {
       "whatsapp"
     ];
     largeCasks = [
-      "libreoffice"
-      "freecad"
       "calibre"
+      "freecad"
+      "libreoffice"
       "mactex"
       "rustdesk"
     ];

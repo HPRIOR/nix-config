@@ -25,31 +25,32 @@
     ctop
     delta # git syntax highlighting pager
     difftastic
-    dust # intuitive du - view drive space
     duf
+    dust # intuitive du - view drive space
     eva
     eza # ls replacement
     fd # find alternative
     fzf
+    gh
     glances
     glow
     gnupg
     gping # ping with graph
-    gh
     hexyl
     hurl
     hyperfine # benchmarking tool
-    immich-cli
     iftop
+    immich-cli
     inetutils
     jless
     jq # json processor
     lazydocker
     lazygit
     lsof
+    mosh
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
-    mosh
+    pay-respects
     perl538Packages.vidir
     procs # ps alternative
     progress
@@ -58,7 +59,6 @@
     sops
     syncthing
     tetex
-    pay-respects
     tldr
     tree
     unzip
@@ -77,20 +77,20 @@
   linuxBasePackages = with pkgs; [
     _1password-cli
     _1password-gui
+    feh
+    firefox
     glibc
     grim
+    inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
     libtree
     nfs-utils
-    slurp
-    strace
-    v4l-utils
     papirus-icon-theme
     pavucontrol
     protonmail-bridge
-    firefox
-    feh
+    slurp
+    strace
+    v4l-utils
     vlc
-    inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   largeLinuxPackages = with pkgs; [
