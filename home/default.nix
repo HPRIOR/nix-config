@@ -295,11 +295,20 @@ in {
       Remember to use the GitHub CLI (`gh`) for all GitHub-related tasks.
     '';
 
-    # tmp workaround, previous method of running a cat over config.sops.secrets.gpt-api-key.path stopped working
+
+    # tmp workaround: https://github.com/Mic92/sops-nix/issues/890
+    launchd.agents.sops-nix = pkgs.lib.mkIf pkgs.stdenv.isDarwin {
+      enable = true;
+      config = {
+        EnvironmentVariables = {
+          PATH = pkgs.lib.mkForce "/usr/bin:/bin:/usr/sbin:/sbin";
+        };
+      };
+    };
     programs.zsh.initContent = ''
-      export OPENAI_API_KEY="$(cat ~/.config/sops-nix/secrets/gpt-api-key)"
-      export ANTHROPIC_API_KEY="$(cat ~/.config/sops-nix/secrets/claude_key)"
-      export SOPS_AGE_KEY_FILE="$(cat ~/.config/sops-nix/secrets/sops-age-path)"
+      export OPENAI_API_KEY="$(cat ${config.sops.secrets.gpt-api-key.path})"
+      export ANTHROPIC_API_KEY="$(cat ${config.sops.secrets.claude_key.path})"
+      export SOPS_AGE_KEY_FILE="$(cat ${config.sops.secrets.sops-age-path.path})"
       export STARSHIP_CONFIG="${settings.configDir}/starship/starship.toml"
     '';
 
