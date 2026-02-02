@@ -22,6 +22,7 @@ in {
       scrollview.enable = true;
       aerial.enable = true;
       dropbar.enable = true;
+      fidget.enable = true;
       smear-cursor = {
         enable = false;
         settings = {

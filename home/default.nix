@@ -77,6 +77,7 @@
   linuxBasePackages = with pkgs; [
     _1password-cli
     _1password-gui
+    citrix_workspace
     feh
     firefox
     glibc
@@ -294,7 +295,6 @@ in {
 
       Remember to use the GitHub CLI (`gh`) for all GitHub-related tasks.
     '';
-
 
     # tmp workaround: https://github.com/Mic92/sops-nix/issues/890
     launchd.agents.sops-nix = pkgs.lib.mkIf pkgs.stdenv.isDarwin {

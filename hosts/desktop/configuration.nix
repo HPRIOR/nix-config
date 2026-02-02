@@ -63,15 +63,22 @@ in {
   };
 
   services.xserver = {
+    enable = true;
     videoDrivers = ["nvidia"];
+    desktopManager.xfce.enable = true;
   };
 
   services.blueman.enable = true;
 
   services.displayManager.sddm = {
     enable = true;
-    wayland.enable = true;
-    wayland.compositor = "kwin";
+    wayland.enable = false;
+    settings = {
+      Theme = {
+        CursorTheme = "Breeze";
+        CursorSize = 24;
+      };
+    };
   };
 
   console.useXkbConfig = true;
@@ -105,6 +112,7 @@ in {
     cliphist
     wl-clip-persist
     kdePackages.qtwayland
+    kdePackages.breeze
     rose-pine-hyprcursor
     rose-pine-cursor
   ];
