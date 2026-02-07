@@ -237,6 +237,35 @@ in {
       model: openai
       clients:
       - type: openai
+        models:
+            - name: gpt-5.2
+              max_input_tokens: 400000
+              max_output_tokens: 128000
+              input_price: 1.75
+              output_price: 14
+              supports_vision: true
+              supports_function_calling: true
+            - name: gpt-5
+              max_input_tokens: 400000
+              max_output_tokens: 128000
+              input_price: 1.25
+              output_price: 10
+              supports_vision: true
+              supports_function_calling: true
+            - name: gpt-5-mini
+              max_input_tokens: 400000
+              max_output_tokens: 128000
+              input_price: 0.25
+              output_price: 2
+              supports_vision: true
+              supports_function_calling: true
+            - name: gpt-5-nano
+              max_input_tokens: 400000
+              max_output_tokens: 128000
+              input_price: 0.05
+              output_price: 0.4
+              supports_vision: true
+              supports_function_calling: true
     '';
 
     home.file."${settings.homeDir}/Code/.stignore".text = ''

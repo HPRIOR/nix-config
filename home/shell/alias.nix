@@ -9,7 +9,7 @@ in {
   shared = rec {
     v = "nvim";
 
-    ai = "aichat --model openai:gpt-4o";
+    ai = "aichat --model openai:gpt-5";
 
     buildnix = let
       buildcmd =
