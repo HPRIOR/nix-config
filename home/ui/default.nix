@@ -1,12 +1,12 @@
 {
   pkgs,
   config,
+  lib,
+  inputs,
   settings,
   ...
 }: let
   isLinux = pkgs.stdenv.isLinux;
-  createToggleApp = app: "pgrep ${app} > /dev/null && pkill ${app} || ${app}  & > /dev/null";
-
   createBarWindowRule = app: verticalSizePercent: horizontalSize: ''
     windowrule=workspace 2,class:${app}
     windowrule=size ${toString horizontalSize} ${toString verticalSizePercent}%,class:${app}
@@ -14,43 +14,6 @@
     windowrule=float,class:${app}
     windowrule=animation slide,class:${app}
   '';
-
-  hyprlandWorkspaceBase = {
-    "format" = "{icon}";
-    separate-outputs = true;
-    show-special = true;
-  };
-
-  hyprlandWorkspaceMain =
-    hyprlandWorkspaceBase
-    // {
-      "format" = "{icon}: {windows}";
-      "format-window-separator" = "|";
-      "window-rewrite-default" = "";
-      "window-rewrite" = {
-        "title<.*youtube.*>" = "";
-        "class<firefox>" = "";
-        "class<firefox> title<.*github.*>" = "";
-        "foot" = "";
-        "code" = "󰨞";
-      };
-      "workspace-taskbar" = {
-        "enable" = true;
-        "update-active-window" = true;
-        "format" = "{icon} {title:.20}";
-        "icon-size" = 18;
-        "on-click-window" = "focus_window {address} {button}";
-      };
-    };
-
-  mkHyprlandModules = {
-    workspace ? hyprlandWorkspaceBase,
-    submap ? {},
-  }: {
-    modules-left = ["hyprland/workspaces" "hyprland/submap"];
-    "hyprland/workspaces" = workspace;
-    "hyprland/submap" = submap;
-  };
 
   # Todo create a function that will generate the position of each screan automatically
   monitorLeft = {
@@ -86,189 +49,100 @@ in {
     ./notifications.nix
   ];
 
-  programs.waybar = {
-    enable = isLinux;
-    settings = let
-      sharedHyprModules = mkHyprlandModules {
-        workspace = hyprlandWorkspaceMain;
-      };
-    in {
-      leftBar =
-        sharedHyprModules
-        // {
-          layer = "top";
-          position = "top";
-          height = 24;
-          spacing = 4;
-          margin-top = 5;
-          margin-bottom = 1;
-          margin-right = 6;
-          margin-left = 6;
-          output = monitorLeft.desc;
-          reload_style_on_change = true;
-        };
-      rightBar =
-        sharedHyprModules
-        // {
-          layer = "top";
-          position = "top";
-          height = 24;
-          spacing = 4;
-          margin-top = 5;
-          margin-bottom = 1;
-          margin-right = 6;
-          margin-left = 6;
-          output = monitorRight.desc;
-          reload_style_on_change = true;
-        };
-      mainBar =
-        sharedHyprModules
-        // {
-          height = 24;
-          spacing = 4;
-          margin-top = 5;
-          margin-bottom = 1;
-          margin-right = 6;
-          margin-left = 6;
-          output = monitorCentre.desc;
-          reload_style_on_change = true;
-          modules-right = ["tray" "pulseaudio" "disk#root" "disk#home" "memory" "cpu" "temperature" "network" "clock"];
-          "cpu" = {
-            interval = 1;
-            format = "{icon} {usage:02}% {avg_frequency:.2f}GHz";
-            format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
-          };
-          "temperature" = {
-            hwmon-path-abs = "/sys/devices/pci0000:00/0000:00:18.3/hwmon";
-            input-filename = "temp1_input";
-            critical-threshold = 80;
-            format = "{icon} {temperatureC:02}°C";
-            format-critical = "󰸁 {temperatureC:02}°C";
-            format-icons = ["󱃃" "󰔏" "󱃂"];
-            interval = 1;
-          };
-          "memory" = {
-            interval = 1;
-            format = "{used:0.1f}G/{total:0.1f}G ";
-          };
-          "clock" = {
-            interval = 60;
-            format-alt = "{:%A, %B %d, %Y - %R}";
-          };
-          "disk#root" = {
-            interval = 30;
-            format = "{path} {percentage_used}%";
-            path = "/";
-          };
-          "disk#home" = {
-            interval = 30;
-            format = "{path} {percentage_used}%";
-            path = "/home";
-          };
-          "pulseaudio" = {
-            "format" = "{volume}% {icon}";
-            "format-bluetooth" = "{volume}% {icon}";
-            "format-muted" = "";
-            "format-icons" = {
-              "headphone" = "";
-              "default" = ["" ""];
-            };
-            "scroll-step" = 1;
-            "on-click" = "hyprctl dispatch exec '${createToggleApp "pavucontrol"}'";
-            "ignored-sinks" = ["Easy Effects Sink"];
-          };
-          "network" = {
-            "interval" = 1;
-            "format" = "{ifname}";
-            "format-wifi" = "{essid} ({signalStrength}%) ";
-            "format-ethernet" = "{ipaddr} 󰈁";
-            "format-disconnected" = "󰈂";
-          };
-          "tray" = {
-            spacing = 10;
-          };
-        };
-    };
-    style = ''
-      * {
-          background: transparent;
-          border: none;
-          border-radius: 10px;
-          font-family: ${settings.font};
-          font-size: 13px;
-          min-height: 0;
-      }
-      #workspaces button {
-          background: #${config.colorScheme.palette.base02};
-          font-weight: bold;
-          color: #${config.colorScheme.palette.base05};
-          padding: 0;
-          margin-left: 1px;
-          margin-right: 1px;
-          padding-left: 10px;
-          padding-right: 0px;
-          padding-bottom: 2px;
-      }
-      #workspaces button.active  {
-          border-bottom: 2px solid #${config.colorScheme.palette.base0E};
-          border-radius: 10px 10px 6px 6px;
-          padding-bottom: 2px;
-      }
-      #workspaces .workspace-label {
-          padding-left: 10px;
-      }
-      #workspaces button > label,
-      #workspaces button > span,
-      #workspaces button .taskbar-window {
-          font-weight: normal;
-          padding: 0 10px;            /* same as your old button padding */
-          border-radius: 10px;        /* match outer radius */
-          background: transparent;
-      }
-      #workspaces button .taskbar-window.active {
-          font-weight: bold;
-          background-color: #${config.colorScheme.palette.base03};
-          color: #${config.colorScheme.palette.base05};
-      }
-      #submap {
-          background-color: #${config.colorScheme.palette.base03};
-          background: #${config.colorScheme.palette.base03};
-          color: #${config.colorScheme.palette.base05};
-          padding-left: 10px;
-          padding-right: 10px;
-      }
-      #submap.resize  {
-          background-color: #${config.colorScheme.palette.base0B};
-          background: #${config.colorScheme.palette.base0B};
-          color: #${config.colorScheme.palette.base05};
-      }
-      #submap.move  {
-          background-color: #${config.colorScheme.palette.base0D};
-          background: #${config.colorScheme.palette.base0C};
-          color: #${config.colorScheme.palette.base05};
-      }
-      #battery,
-      #cpu,
-      #memory,
-      #disk,
-      #temperature,
-      #network,
-      #pulseaudio,
-      #tray,
-      #clock {
-        background-color:  #${config.colorScheme.palette.base02};
-        color: #${config.colorScheme.palette.base05};
-        padding-left: 10px;
-        padding-right: 10px;
-        margin-left: 1px;
-        margin-right: 1pX;
-      }
-      #temperature.critical {
-        background-color:  #${config.colorScheme.palette.base08};
-        color: #${config.colorScheme.palette.base05};
-      }
+  programs.noctalia-shell = lib.mkIf isLinux {
+    enable = true;
+    package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    systemd.enable = true;
 
-    '';
+    settings = {
+      general = {
+        scaleRatio = 1;
+        radiusRatio = 1;
+        gapsIn = 4;
+        gapsOut = 6;
+        activeScreenBorder = false;
+        screenCorners = false;
+      };
+
+      bar = {
+        position = "top";
+        density = "compact";
+        showCapsule = false;
+        backgroundOpacity = 0.95;
+        widgets = {
+          left = [
+            {id = "Launcher";}
+            {
+              id = "Workspace";
+              labelMode = "icon";
+              showIndicator = true;
+              activeIndicatorHeight = 4;
+              showScreenName = true;
+              workspacesToShow = 10;
+            }
+            {id = "ActiveWindow";}
+          ];
+          center = [];
+          right = [
+            {id = "SystemMonitor";}
+            {id = "Volume";}
+            {id = "Network";}
+            {id = "Bluetooth";}
+            {id = "Tray";}
+            {
+              id = "Clock";
+              formatHorizontal = "dd MMM - HH:mm";
+              useMonospacedFont = true;
+            }
+            {id = "ControlCenter";}
+          ];
+        };
+      };
+
+      appLauncher = {
+        enableClipboardHistory = true;
+        enableConsole = true;
+        enableWindowsSearch = true;
+      };
+
+      location = {
+        name = "London";
+      };
+
+      ui = {
+        fontDefault = settings.font;
+      };
+
+      wallpaper = {
+        enabled = false;
+      };
+    };
+
+    colors = {
+      mPrimary = "#${config.colorScheme.palette.base0D}";
+      mSecondary = "#${config.colorScheme.palette.base0B}";
+      mTertiary = "#${config.colorScheme.palette.base0E}";
+      mSurface = "#${config.colorScheme.palette.base00}";
+      mSurfaceVariant = "#${config.colorScheme.palette.base01}";
+      mOnSurface = "#${config.colorScheme.palette.base05}";
+      mOnSurfaceVariant = "#${config.colorScheme.palette.base04}";
+      mOnPrimary = "#${config.colorScheme.palette.base00}";
+      mOnSecondary = "#${config.colorScheme.palette.base00}";
+      mOnTertiary = "#${config.colorScheme.palette.base00}";
+      mError = "#${config.colorScheme.palette.base08}";
+      mOnError = "#${config.colorScheme.palette.base00}";
+      mOutline = "#${config.colorScheme.palette.base03}";
+      mShadow = "#${config.colorScheme.palette.base00}";
+      mHover = "#${config.colorScheme.palette.base02}";
+      mOnHover = "#${config.colorScheme.palette.base05}";
+    };
+  };
+
+  home.file.".cache/noctalia/wallpapers.json" = lib.mkIf isLinux {
+    text = builtins.toJSON {
+      defaultWallpaper = "";
+      wallpapers = {};
+    };
   };
   wayland.windowManager.hyprland = {
     enable = isLinux;
@@ -289,7 +163,6 @@ in {
 
 
       # Startup applications
-      exec-once = waybar
       exec-once = blueman-applet
 
       exec-once = wl-paste --type text --watch cliphist store #Stores only text data
@@ -341,10 +214,10 @@ in {
       bind = $shiftMod, K, movewindoworgroup, u
       bind = $shiftMod, L, movewindoworgroup, r
 
-      bind = $mainMod, SPACE, exec, rofi -show drun -log -config "${settings.homeDir}/.config/rofi/config.rasi"
-      bind = $mainMod, TAB, exec, rofi -show window -config "${settings.homeDir}/.config/rofi/config.rasi"
-      bind = $mainMod, grave, exec, rofi -show run  -config "${settings.homeDir}/.config/rofi/config.rasi"
-      bind = $mainMod, V, exec, cliphist list | rofi -dmenu | cliphist decode | wl-copy
+      bind = $mainMod, SPACE, exec, noctalia-shell ipc call launcher toggle
+      bind = $mainMod, TAB, exec, noctalia-shell ipc call launcher windows
+      bind = $mainMod, grave, exec, noctalia-shell ipc call launcher command
+      bind = $mainMod, V, exec, noctalia-shell ipc call launcher clipboard
       bind = , print, exec, grim -g "$(slurp)" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')
 
 
@@ -482,8 +355,12 @@ in {
               passes = 1
               vibrancy = 0.1696
           }
-          inactive_opacity = 0.95
+          inactive_opacity = 1.0
       }
+
+      layerrule = blur, namespace:noctalia-background-.*
+      layerrule = ignorealpha 0.5, namespace:noctalia-background-.*
+      layerrule = blurpopups, namespace:noctalia-background-.*
     '';
   };
 }

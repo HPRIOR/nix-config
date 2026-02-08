@@ -69,6 +69,8 @@ in {
   };
 
   services.blueman.enable = true;
+  services.power-profiles-daemon.enable = true;
+  services.upower.enable = true;
 
   services.displayManager.sddm = {
     enable = true;
@@ -101,10 +103,6 @@ in {
     kitty
 
     # # hyprland and wm stuff
-    waybar
-    (waybar.overrideAttrs (oldAttrs: {
-      mesonFlags = oldAttrs.mesonFlags ++ ["-Dexperimental=true"];
-    }))
     libnotify
     rofi
     wl-clipboard
