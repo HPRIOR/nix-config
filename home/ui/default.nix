@@ -49,94 +49,99 @@ in {
     ./notifications.nix
   ];
 
-  programs.noctalia-shell = lib.mkIf isLinux {
-    enable = true;
-    package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
-    systemd.enable = true;
+  programs =
+    if isLinux
+    then {
+      noctalia-shell = lib.mkIf isLinux {
+        enable = isLinux;
+        package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        systemd.enable = true;
 
-    settings = {
-      general = {
-        scaleRatio = 1;
-        radiusRatio = 1;
-        gapsIn = 4;
-        gapsOut = 6;
-        activeScreenBorder = false;
-        screenCorners = false;
-      };
+        settings = {
+          general = {
+            scaleRatio = 1;
+            radiusRatio = 1;
+            gapsIn = 4;
+            gapsOut = 6;
+            activeScreenBorder = false;
+            screenCorners = false;
+          };
 
-      bar = {
-        position = "top";
-        density = "compact";
-        showCapsule = false;
-        backgroundOpacity = 0.95;
-        widgets = {
-          left = [
-            {id = "Launcher";}
-            {
-              id = "Workspace";
-              labelMode = "icon";
-              showIndicator = true;
-              activeIndicatorHeight = 4;
-              showScreenName = true;
-              workspacesToShow = 10;
-            }
-            {id = "ActiveWindow";}
-          ];
-          center = [];
-          right = [
-            {id = "SystemMonitor";}
-            {id = "Volume";}
-            {id = "Network";}
-            {id = "Bluetooth";}
-            {id = "Tray";}
-            {
-              id = "Clock";
-              formatHorizontal = "dd MMM - HH:mm";
-              useMonospacedFont = true;
-            }
-            {id = "ControlCenter";}
-          ];
+          bar = {
+            position = "top";
+            density = "compact";
+            showCapsule = false;
+            backgroundOpacity = 0.95;
+            widgets = {
+              left = [
+                {id = "Launcher";}
+                {
+                  id = "Workspace";
+                  labelMode = "icon";
+                  showIndicator = true;
+                  activeIndicatorHeight = 4;
+                  showScreenName = true;
+                  workspacesToShow = 10;
+                }
+                {id = "ActiveWindow";}
+              ];
+              center = [];
+              right = [
+                {id = "SystemMonitor";}
+                {id = "Volume";}
+                {id = "Network";}
+                {id = "Bluetooth";}
+                {id = "Tray";}
+                {
+                  id = "Clock";
+                  formatHorizontal = "dd MMM - HH:mm";
+                  useMonospacedFont = true;
+                }
+                {id = "ControlCenter";}
+              ];
+            };
+          };
+
+          appLauncher = {
+            enableClipboardHistory = true;
+            enableConsole = true;
+            enableWindowsSearch = true;
+          };
+
+          location = {
+            name = "London";
+          };
+
+          ui = {
+            fontDefault = settings.font;
+          };
+
+          wallpaper = {
+            enabled = false;
+          };
         };
       };
 
-      appLauncher = {
-        enableClipboardHistory = true;
-        enableConsole = true;
-        enableWindowsSearch = true;
+      colors = {
+        mPrimary = "#${config.colorScheme.palette.base0D}";
+        mSecondary = "#${config.colorScheme.palette.base0B}";
+        mTertiary = "#${config.colorScheme.palette.base0E}";
+        mSurface = "#${config.colorScheme.palette.base00}";
+        mSurfaceVariant = "#${config.colorScheme.palette.base01}";
+        mOnSurface = "#${config.colorScheme.palette.base05}";
+        mOnSurfaceVariant = "#${config.colorScheme.palette.base04}";
+        mOnPrimary = "#${config.colorScheme.palette.base00}";
+        mOnSecondary = "#${config.colorScheme.palette.base00}";
+        mOnTertiary = "#${config.colorScheme.palette.base00}";
+        mError = "#${config.colorScheme.palette.base08}";
+        mOnError = "#${config.colorScheme.palette.base00}";
+        mOutline = "#${config.colorScheme.palette.base03}";
+        mShadow = "#${config.colorScheme.palette.base00}";
+        mHover = "#${config.colorScheme.palette.base02}";
+        mOnHover = "#${config.colorScheme.palette.base05}";
       };
-
-      location = {
-        name = "London";
-      };
-
-      ui = {
-        fontDefault = settings.font;
-      };
-
-      wallpaper = {
-        enabled = false;
-      };
-    };
-
-    colors = {
-      mPrimary = "#${config.colorScheme.palette.base0D}";
-      mSecondary = "#${config.colorScheme.palette.base0B}";
-      mTertiary = "#${config.colorScheme.palette.base0E}";
-      mSurface = "#${config.colorScheme.palette.base00}";
-      mSurfaceVariant = "#${config.colorScheme.palette.base01}";
-      mOnSurface = "#${config.colorScheme.palette.base05}";
-      mOnSurfaceVariant = "#${config.colorScheme.palette.base04}";
-      mOnPrimary = "#${config.colorScheme.palette.base00}";
-      mOnSecondary = "#${config.colorScheme.palette.base00}";
-      mOnTertiary = "#${config.colorScheme.palette.base00}";
-      mError = "#${config.colorScheme.palette.base08}";
-      mOnError = "#${config.colorScheme.palette.base00}";
-      mOutline = "#${config.colorScheme.palette.base03}";
-      mShadow = "#${config.colorScheme.palette.base00}";
-      mHover = "#${config.colorScheme.palette.base02}";
-      mOnHover = "#${config.colorScheme.palette.base05}";
-    };
-  };
+    }
+    else {};
 
   home.file.".cache/noctalia/wallpapers.json" = lib.mkIf isLinux {
     text = builtins.toJSON {

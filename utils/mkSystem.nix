@@ -120,7 +120,12 @@ in {
     homeConfig,
     profileArg ? "full",
   }: let
-    pkgs = mkPkgs {inherit system;}; # no extra overlays on macOS
+    pkgs = mkPkgs {
+      inherit system;
+      extraOverlays = [
+        (import ../overlays/inetutils.nix)
+      ];
+    };
 
     settings = sharedSettings {
       userName = sharedUserName;
