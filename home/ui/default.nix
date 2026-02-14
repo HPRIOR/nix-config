@@ -120,25 +120,25 @@ in {
             enabled = false;
           };
         };
-      };
 
-      colors = {
-        mPrimary = "#${config.colorScheme.palette.base0D}";
-        mSecondary = "#${config.colorScheme.palette.base0B}";
-        mTertiary = "#${config.colorScheme.palette.base0E}";
-        mSurface = "#${config.colorScheme.palette.base00}";
-        mSurfaceVariant = "#${config.colorScheme.palette.base01}";
-        mOnSurface = "#${config.colorScheme.palette.base05}";
-        mOnSurfaceVariant = "#${config.colorScheme.palette.base04}";
-        mOnPrimary = "#${config.colorScheme.palette.base00}";
-        mOnSecondary = "#${config.colorScheme.palette.base00}";
-        mOnTertiary = "#${config.colorScheme.palette.base00}";
-        mError = "#${config.colorScheme.palette.base08}";
-        mOnError = "#${config.colorScheme.palette.base00}";
-        mOutline = "#${config.colorScheme.palette.base03}";
-        mShadow = "#${config.colorScheme.palette.base00}";
-        mHover = "#${config.colorScheme.palette.base02}";
-        mOnHover = "#${config.colorScheme.palette.base05}";
+        colors = {
+          mPrimary = "#${config.colorScheme.palette.base0D}";
+          mSecondary = "#${config.colorScheme.palette.base0B}";
+          mTertiary = "#${config.colorScheme.palette.base0E}";
+          mSurface = "#${config.colorScheme.palette.base00}";
+          mSurfaceVariant = "#${config.colorScheme.palette.base01}";
+          mOnSurface = "#${config.colorScheme.palette.base05}";
+          mOnSurfaceVariant = "#${config.colorScheme.palette.base04}";
+          mOnPrimary = "#${config.colorScheme.palette.base00}";
+          mOnSecondary = "#${config.colorScheme.palette.base00}";
+          mOnTertiary = "#${config.colorScheme.palette.base00}";
+          mError = "#${config.colorScheme.palette.base08}";
+          mOnError = "#${config.colorScheme.palette.base00}";
+          mOutline = "#${config.colorScheme.palette.base03}";
+          mShadow = "#${config.colorScheme.palette.base00}";
+          mHover = "#${config.colorScheme.palette.base02}";
+          mOnHover = "#${config.colorScheme.palette.base05}";
+        };
       };
     }
     else {};
