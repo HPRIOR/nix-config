@@ -215,6 +215,49 @@ in {
       comment.enable = true;
       neo-tree.enable = true;
       dap.enable = true;
+      codecompanion = {
+        enable = true;
+        settings = {
+          adapters = {
+            http = {
+              openai.__raw = ''
+                function()
+                  return require("codecompanion.adapters").extend("openai", {
+                    env = {
+                      api_key = "OPENAI_API_KEY",
+                    },
+                    schema = {
+                      model = {
+                        default = "gpt-5.2",
+                      },
+                    },
+                  })
+                end
+              '';
+            };
+          };
+          strategies = {
+            chat = {
+              adapter = {
+                name = "openai";
+                model = "gpt-5.2";
+              };
+            };
+            inline = {
+              adapter = {
+                name = "openai";
+                model = "gpt-5.2";
+              };
+            };
+            cmd = {
+              adapter = {
+                name = "openai";
+                model = "gpt-5.2";
+              };
+            };
+          };
+        };
+      };
     }
     // lsp
     // autocomplete
