@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   settings,
   ...
@@ -300,7 +301,13 @@ in {
     package = pkgs.mullvad-vpn;
   };
 
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = false;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
 
   fileSystems."${settings.homeDir}/Mnt/server-nfs" = {
     device = "192.168.100.60:/Storage";
