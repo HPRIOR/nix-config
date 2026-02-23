@@ -26,7 +26,7 @@ in {
     primaryUser = "harryp";
     keyboard = {
       enableKeyMapping = true;
-      remapCapsLockToEscape = true;
+      remapCapsLockToEscape = settings.keyboard.remapCapsToEscape;
     };
     stateVersion = 4;
     defaults = {

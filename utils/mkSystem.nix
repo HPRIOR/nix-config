@@ -55,6 +55,9 @@
     fontSize = 12;
     extraGroups = ["networkmanager" "wheel" "docker"];
     profile = profileArg;
+    keyboard = {
+      remapCapsToEscape = false;
+    };
   };
 in {
   nixos = {

@@ -343,6 +343,7 @@ in {
 
       input {
           kb_layout = gb
+${lib.optionalString settings.keyboard.remapCapsToEscape "          kb_options = caps:escape"}
           repeat_delay = 300
           repeat_rate = 50
       }

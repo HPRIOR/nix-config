@@ -67,6 +67,9 @@ in {
     videoDrivers = ["nvidia"];
     desktopManager.xfce.enable = true;
   };
+  services.xserver.xkb = lib.mkIf settings.keyboard.remapCapsToEscape {
+    options = "caps:escape";
+  };
 
   services.blueman.enable = true;
   services.power-profiles-daemon.enable = true;
