@@ -18,7 +18,11 @@
     # overlays that should be on every system
     sharedOverlays = [
       (import ../overlays/claude.nix {unstable = unstable;})
-      (import ../overlays/codex.nix {unstable = unstable;})
+      (import ../overlays/codex.nix {
+        codex-cli-nix = inputs.codex-cli-nix;
+        unstable = unstable;
+      })
+      (import ../overlays/ron-lsp.nix)
       (import ../overlays/spotify.nix)
     ];
 
