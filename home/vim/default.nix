@@ -93,6 +93,25 @@ in {
             border = _border,
         }
 
+        local lspconfig = require('lspconfig')
+        local configs = require('lspconfig.configs')
+
+        if not configs.ron_lsp then
+            configs.ron_lsp = {
+                default_config = {
+                    cmd = { vim.fn.expand("ron-lsp") },
+                    filetypes = { "ron" },
+                    root_dir = function(fname)
+                        return lspconfig.util.root_pattern("Cargo.toml", ".git")(fname)
+                            or vim.loop.cwd()
+                    end,
+                    settings = {},
+                },
+            }
+        end
+
+        lspconfig.ron_lsp.setup({})
+
 
         -- Set rounded borders for all floating windows
         local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
@@ -133,6 +152,7 @@ in {
         pkgs.rustfmt
         pkgs.shfmt
         pkgs.jq
+        pkgs.ron-lsp
         # pkgs.ocamlPackages.ocamlformat
       ];
 
