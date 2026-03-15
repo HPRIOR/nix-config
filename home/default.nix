@@ -63,7 +63,6 @@
     tree
     unzip
     watchexec
-    yazi
     zathura
     zoxide
   ];
@@ -179,6 +178,26 @@ in {
 
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
+
+    programs.yazi = {
+      enable = true;
+      settings = lib.optionalAttrs isLinux {
+        opener.play = [
+          {
+            run = "vlc \"$@\"";
+            desc = "VLC";
+            orphan = true;
+            "for" = "linux";
+          }
+        ];
+        open.prepend_rules = [
+          {
+            mime = "video/*";
+            use = "play";
+          }
+        ];
+      };
+    };
 
     programs.git = {
       enable = true;

@@ -60,7 +60,7 @@
     extraGroups = ["networkmanager" "wheel" "docker"];
     profile = profileArg;
     keyboard = {
-      remapCapsToEscape = false;
+      remapCapsToEscape = true;
     };
   };
 in {

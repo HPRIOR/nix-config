@@ -137,7 +137,7 @@ in {
         };
       };
       nvim-autopairs.enable = true;
-      treesitter-context.enable = true;
+      treesitter-context.enable = false;
       treesitter-textobjects.enable = true;
       treesitter = {
         settings = {
