@@ -63,6 +63,34 @@ in {
       colorizer.enable = true;
       web-devicons.enable = true;
       mini.enable = true;
+      diagram = {
+        enable = true;
+        settings = {
+          renderer_options = {
+            mermaid = {
+              theme = "dark";
+              background = "transparent";
+            };
+          };
+        };
+      };
+      image = {
+        enable = true;
+        settings = {
+          backend = "kitty";
+          processor = "magick_cli";
+          integrations = {
+            markdown = {
+              enabled = true;
+              clear_in_insert_mode = false;
+              download_remote_images = true;
+              only_render_image_at_cursor = false;
+              floating_windows = false;
+              filetypes = ["markdown"];
+            };
+          };
+        };
+      };
       render-markdown = {
         enable = true;
 

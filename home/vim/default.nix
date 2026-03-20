@@ -17,6 +17,7 @@ in {
   programs.nixvim =
     {
       enable = true;
+      dependencies.imagemagick.enable = true;
       performance = {
         combinePlugins.enable = true;
         combinePlugins.standalonePlugins = ["nvim-treesitter" "blink.cmp" "smart-splits" "leap.nvim" "mini.nvim"];
@@ -142,6 +143,8 @@ in {
         # telescope deps
         pkgs.ripgrep
         pkgs.fzf
+        # diagram rendering
+        pkgs.mermaid-cli
         # formatters requred by conform
         pkgs.alejandra
         pkgs.prettierd
