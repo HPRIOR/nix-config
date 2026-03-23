@@ -77,6 +77,7 @@
     _1password-cli
     _1password-gui
     citrix_workspace
+    kdePackages.dolphin
     feh
     firefox
     glibc
