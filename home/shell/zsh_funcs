@@ -475,28 +475,7 @@ fkill() {
 }
 
 lzc() {
-    if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-        echo "You are not inside a Git repository."
-        return
-    fi
-
-    if [ -z "$(git status --porcelain)" ]; then
-        echo "No changes detected in the Git repository."
-        return
-    fi
-
-    local msg=$(git -c pager.diff='less -R' diff | aichat --model "openai:gpt-5-mini" 'Write me a succinct git commit messsage for these changes.' )
-    echo $msg
-    read -q "response?Do you want to commit? (y/n):"
-    echo ""
-    if [[ $response == "y" ]]; then
-        git commit -am "$msg"
-        echo "Committed!"
-    elif [[ $response == "n" ]]; then
-        echo "Not committed"
-    else
-        echo "Invalid response."
-    fi
+    command lzc "$@"
 }
 
 fnix() {

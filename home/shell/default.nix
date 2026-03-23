@@ -27,6 +27,9 @@
   diary-cmds = (import ./scripts/diary.nix {
     inherit pkgs;
   }).cmds;
+  lzc-cmds = (import ./scripts/lzc.nix {
+    inherit pkgs;
+  }).cmds;
 
   linux-cmds = screen-capture-cmds ++ hyprland-window-cmds;
 
@@ -56,7 +59,7 @@
 in {
   imports = [];
 
-  home.packages = [vdoc] ++ linux-cmds ++ diary-cmds;
+  home.packages = [vdoc] ++ linux-cmds ++ diary-cmds ++ lzc-cmds;
 
   programs.bash = {
     enable = false;
