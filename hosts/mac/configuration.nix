@@ -57,6 +57,7 @@ in {
       "dropbox"
       "firefox"
       "ghostty"
+      "google-chrome"
       "mullvad-vpn"
       "obsidian"
       "proton-mail-bridge"

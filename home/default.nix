@@ -10,6 +10,7 @@
   homeDir = settings.homeDir;
   isLinux = pkgs.stdenv.isLinux;
   isDarwin = pkgs.stdenv.isDarwin;
+  darwinChromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
   profile = settings.profile or "full";
   isMinimal = profile == "minimal";
 
@@ -361,16 +362,21 @@ in {
       export STARSHIP_CONFIG="${settings.configDir}/starship/starship.toml"
     '';
 
-    home.sessionVariables = {
-      DEFAULT_BROWSER =
-        if isLinux
-        then "${pkgs.firefox}/bin/firefox"
-        else "default";
+    home.sessionVariables =
+      {
+        DEFAULT_BROWSER =
+          if isLinux
+          then "${pkgs.firefox}/bin/firefox"
+          else "default";
 
-      AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
-      EDITOR = "nvim";
-      PAGER = "bat --paging always";
-    };
+        AICHAT_CONFIG_DIR = "${settings.configDir}/aichat";
+        EDITOR = "nvim";
+        PAGER = "bat --paging always";
+      }
+      // lib.optionalAttrs isDarwin {
+        CHROME_PATH = darwinChromePath;
+        PUPPETEER_EXECUTABLE_PATH = darwinChromePath;
+      };
 
     services.dropbox = {
       path = lib.mkIf isLinux /home/harryp/Dropbox;

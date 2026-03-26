@@ -7,6 +7,18 @@
   keymaps = import ./keymap.nix;
   plugins = import ./plugins {inherit pkgs config;};
   options = import ./options.nix;
+  mermaidChromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
+  mermaidPuppeteerConfig = pkgs.writeText "mermaid-puppeteer-config.json" (builtins.toJSON {
+    executablePath = mermaidChromePath;
+    headless = true;
+  });
+  mermaidCliPackage =
+    if pkgs.stdenv.isDarwin
+    then
+      pkgs.writeShellScriptBin "mmdc" ''
+        exec ${pkgs.mermaid-cli}/bin/mmdc -p ${mermaidPuppeteerConfig} "$@"
+      ''
+    else pkgs.mermaid-cli;
 in {
   imports = [inputs.nixvim.homeModules.nixvim ./ideavim.nix];
 
@@ -144,7 +156,7 @@ in {
         pkgs.ripgrep
         pkgs.fzf
         # diagram rendering
-        pkgs.mermaid-cli
+        mermaidCliPackage
         # formatters requred by conform
         pkgs.alejandra
         pkgs.prettierd
