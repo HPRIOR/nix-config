@@ -149,6 +149,14 @@ in {
           })
         require'window-picker'.setup()
 
+        -- Accept uppercase variants of :w and :wa.
+        vim.cmd([[
+          cnoreabbrev <expr> W getcmdtype() ==# ':' && getcmdline() ==# 'W' ? 'w' : 'W'
+          cnoreabbrev <expr> Wa getcmdtype() ==# ':' && getcmdline() ==# 'Wa' ? 'wa' : 'Wa'
+          cnoreabbrev <expr> wA getcmdtype() ==# ':' && getcmdline() ==# 'wA' ? 'wa' : 'wA'
+          cnoreabbrev <expr> WA getcmdtype() ==# ':' && getcmdline() ==# 'WA' ? 'wa' : 'WA'
+        ]])
+
       '';
       keymaps = keymaps;
       extraPackages = [
