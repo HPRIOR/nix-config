@@ -114,3 +114,4 @@ end
 
 _G.YankReference = M
 
+return M
