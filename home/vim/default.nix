@@ -48,7 +48,9 @@ in {
         enable = true;
         lazyLoad.enable = true;
       };
-      extraConfigLua = ''
+      extraConfigLua =
+        builtins.readFile ./lua/yank_reference.lua
+        + ''
         vim.g.no_ocaml_maps = 1
 
         -- configure lsp

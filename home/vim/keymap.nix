@@ -20,6 +20,15 @@
     };
   }
   {
+    mode = ["n"];
+    key = "yr";
+    action = "<cmd>lua YankReference.yank()<cr>";
+    options = {
+      silent = true;
+      desc = "Yank cursor reference";
+    };
+  }
+  {
     mode = ["n" "v"];
     key = "gf";
     action = "<cmd>lua require('conform').format({ lsp_fallback = true })<cr>";
