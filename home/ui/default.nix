@@ -91,6 +91,7 @@ in {
                 {id = "Volume";}
                 {id = "Network";}
                 {id = "Bluetooth";}
+                {id = "plugin:screenshot";}
                 {id = "Tray";}
                 {
                   id = "Clock";
@@ -121,6 +122,23 @@ in {
           };
         };
 
+        plugins = {
+          sources = [
+            {
+              enabled = true;
+              name = "Noctalia Plugins";
+              url = "https://github.com/noctalia-dev/noctalia-plugins";
+            }
+          ];
+          states = {
+            screenshot = {
+              enabled = true;
+              sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+            };
+          };
+          version = 2;
+        };
+
         colors = {
           mPrimary = "#${config.colorScheme.palette.base0D}";
           mSecondary = "#${config.colorScheme.palette.base0B}";
@@ -149,6 +167,9 @@ in {
       wallpapers = {};
     };
   };
+
+  xdg.configFile."noctalia/plugins.json".force = isLinux;
+
   wayland.windowManager.hyprland = {
     enable = isLinux;
     extraConfig = ''
@@ -223,7 +244,7 @@ in {
       bind = $mainMod, TAB, exec, noctalia-shell ipc call launcher windows
       bind = $mainMod, grave, exec, noctalia-shell ipc call launcher command
       bind = $mainMod, V, exec, noctalia-shell ipc call launcher clipboard
-      bind = , print, exec, grim -g "$(slurp)" $HOME/Pictures/Screenshots/$(date +'%s_grim.png')
+      bind = , print, exec, noctalia-shell ipc call plugin:screenshot takeScreenshot region
 
 
       # Doesn't work as intended, possibly wayland issues

@@ -83,6 +83,7 @@
     firefox
     glibc
     grim
+    hyprshot
     inputs.ghostty.packages.${pkgs.stdenv.hostPlatform.system}.default
     libtree
     nfs-utils
