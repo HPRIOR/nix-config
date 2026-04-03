@@ -21,11 +21,29 @@
   }
   {
     mode = ["n"];
-    key = "yr";
-    action = "<cmd>lua YankReference.yank()<cr>";
+    key = "yra";
+    action = "<cmd>lua YankReference.yank_full()<cr>";
     options = {
       silent = true;
-      desc = "Yank cursor reference";
+      desc = "Yank full reference";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "yrf";
+    action = "<cmd>lua YankReference.yank_file()<cr>";
+    options = {
+      silent = true;
+      desc = "Yank file path";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "yrl";
+    action = "<cmd>lua YankReference.yank_file_with_position()<cr>";
+    options = {
+      silent = true;
+      desc = "Yank file path with line and column";
     };
   }
   {

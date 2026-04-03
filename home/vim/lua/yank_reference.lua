@@ -78,12 +78,10 @@ local function get_hierarchy()
   return get_aerial_hierarchy() or get_dropbar_hierarchy() or {}
 end
 
-local function get_reference()
+local function get_location()
   local buf = vim.api.nvim_get_current_buf()
   local filepath = vim.api.nvim_buf_get_name(buf)
   local cursor = vim.api.nvim_win_get_cursor(0)
-  local line = cursor[1]
-  local col = cursor[2] + 1
 
   if filepath == "" then
     filepath = "[No Name]"
@@ -91,26 +89,54 @@ local function get_reference()
     filepath = vim.fn.fnamemodify(filepath, ":p")
   end
 
-  local reference = string.format("%s line: %d col: %d", filepath, line, col)
-  local hierarchy = get_hierarchy()
+  return {
+    filepath = filepath,
+    line = cursor[1],
+    col = cursor[2] + 1,
+    hierarchy = get_hierarchy(),
+  }
+end
 
-  if #hierarchy > 0 then
-    reference = string.format("%s %s", reference, table.concat(hierarchy, " |> "))
+local function format_file(location)
+  return location.filepath
+end
+
+local function format_file_with_position(location)
+  return string.format("%s line: %d col: %d", location.filepath, location.line, location.col)
+end
+
+local function format_full_reference(location)
+  local reference = format_file_with_position(location)
+
+  if #location.hierarchy > 0 then
+    reference = string.format("%s %s", reference, table.concat(location.hierarchy, " |> "))
   end
 
   return reference
 end
 
-function M.yank()
-  local reference = get_reference()
+local function yank(value, label)
+  vim.fn.setreg('"', value)
+  pcall(vim.fn.setreg, "+", value)
 
-  vim.fn.setreg('"', reference)
-  pcall(vim.fn.setreg, "+", reference)
-
-  vim.notify("Yanked reference: " .. reference, vim.log.levels.INFO, {
+  vim.notify(string.format("Yanked %s: %s", label, value), vim.log.levels.INFO, {
     title = "Reference Yank",
   })
 end
+
+function M.yank_file()
+  yank(format_file(get_location()), "file")
+end
+
+function M.yank_file_with_position()
+  yank(format_file_with_position(get_location()), "file location")
+end
+
+function M.yank_full()
+  yank(format_full_reference(get_location()), "reference")
+end
+
+M.yank = M.yank_full
 
 _G.YankReference = M
 
