@@ -168,7 +168,9 @@ in {
     };
   };
 
-  xdg.configFile."noctalia/plugins.json".force = isLinux;
+  xdg.configFile."noctalia/plugins.json" = lib.mkIf isLinux {
+    force = true;
+  };
 
   wayland.windowManager.hyprland = {
     enable = isLinux;
