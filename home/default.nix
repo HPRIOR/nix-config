@@ -184,6 +184,14 @@ in {
 
     programs.yazi = {
       enable = true;
+      keymap.mgr.prepend_keymap = [
+        {
+          on = "!";
+          "for" = "unix";
+          run = ''shell "$SHELL" --block'';
+          desc = "Open shell here";
+        }
+      ];
       settings = lib.optionalAttrs isLinux {
         opener.play = [
           {
