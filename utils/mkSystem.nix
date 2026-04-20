@@ -24,6 +24,7 @@
       })
       (import ../overlays/ron-lsp.nix)
       (import ../overlays/spotify.nix)
+      (import ../overlays/direnv.nix)
     ];
 
     permittedInsecurePkgs = ["libsoup-2.74.3"];
