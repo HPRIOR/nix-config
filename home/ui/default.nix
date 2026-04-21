@@ -7,6 +7,7 @@
   ...
 }: let
   isLinux = pkgs.stdenv.isLinux;
+  noctaliaPackage = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
   createBarWindowRule = app: verticalSizePercent: horizontalSize: ''
     windowrule=workspace 2,class:${app}
     windowrule=size ${toString horizontalSize} ${toString verticalSizePercent}%,class:${app}
@@ -54,8 +55,8 @@ in {
     then {
       noctalia-shell = lib.mkIf isLinux {
         enable = isLinux;
-        package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
-        systemd.enable = true;
+        package = noctaliaPackage;
+        systemd.enable = false;
 
         settings = {
           general = {
@@ -170,6 +171,32 @@ in {
 
   xdg.configFile."noctalia/plugins.json" = lib.mkIf isLinux {
     force = true;
+  };
+
+  systemd.user.services.noctalia-shell = lib.mkIf isLinux {
+    Unit = {
+      Description = "Noctalia Shell - Wayland desktop shell";
+      Documentation = "https://docs.noctalia.dev";
+      PartOf = [config.wayland.systemd.target];
+      After = [config.wayland.systemd.target];
+      X-Restart-Triggers =
+        lib.optional (config.programs.noctalia-shell.settings != {}) "${config.xdg.configFile."noctalia/settings.json".source}"
+        ++ lib.optional (config.programs.noctalia-shell.colors != {}) "${config.xdg.configFile."noctalia/colors.json".source}"
+        ++ lib.optional (config.programs.noctalia-shell.plugins != {}) "${config.xdg.configFile."noctalia/plugins.json".source}"
+        ++ lib.optional (
+          config.programs.noctalia-shell.user-templates != {}
+        ) "${config.xdg.configFile."noctalia/user-templates.toml".source}"
+        ++ lib.mapAttrsToList (
+          name: _: "${config.xdg.configFile."noctalia/plugins/${name}/settings.json".source}"
+        ) config.programs.noctalia-shell.pluginSettings;
+    };
+
+    Service = {
+      ExecStart = lib.getExe noctaliaPackage;
+      Restart = "on-failure";
+    };
+
+    Install.WantedBy = [config.wayland.systemd.target];
   };
 
   wayland.windowManager.hyprland = {
