@@ -110,6 +110,10 @@ in {
             enableWindowsSearch = true;
           };
 
+          plugins = {
+            notifyUpdates = false;
+          };
+
           location = {
             name = "London";
           };
