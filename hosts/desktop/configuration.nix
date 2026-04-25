@@ -7,6 +7,20 @@
 }: let
   defaultLocale = "en_GB.UTF-8";
   rulesFile = "/etc/mullvad-excludeTraffic.nft";
+  desktopSessions = config.services.displayManager.sessionData.desktops;
+  tuigreetCommand = lib.escapeShellArgs [
+    "${pkgs.tuigreet}/bin/tuigreet"
+    "--time"
+    "--remember"
+    "--remember-session"
+    "--asterisks"
+    "--sessions"
+    "${desktopSessions}/share/wayland-sessions"
+    "--xsessions"
+    "${desktopSessions}/share/xsessions"
+    "--xsession-wrapper"
+    "startx ${config.services.displayManager.sessionData.wrapper}"
+  ];
 in {
   imports = [
     ./hardware-configuration.nix
@@ -76,14 +90,11 @@ in {
   services.power-profiles-daemon.enable = true;
   services.upower.enable = true;
 
-  services.displayManager.sddm = {
+  services.greetd = {
     enable = true;
-    wayland.enable = false;
-    settings = {
-      Theme = {
-        CursorTheme = "Breeze";
-        CursorSize = 24;
-      };
+    settings.default_session = {
+      command = tuigreetCommand;
+      user = "greeter";
     };
   };
 
