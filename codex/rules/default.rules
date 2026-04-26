@@ -1,0 +1,121 @@
+prefix_rule(
+    pattern = ["cargo", "clippy"],
+    decision = "allow",
+    justification = "Allow Rust lint checks requested by the shared Codex policy.",
+    match = [
+        "cargo clippy",
+        "cargo clippy --all-targets",
+        "cargo clippy --workspace --all-targets -- -D warnings",
+    ],
+)
+
+prefix_rule(
+    pattern = ["cargo", "fmt"],
+    decision = "allow",
+    justification = "Allow Rust formatting requested by the shared Codex policy.",
+    match = [
+        "cargo fmt",
+        "cargo fmt --check",
+    ],
+)
+
+prefix_rule(
+    pattern = ["cargo", "build"],
+    decision = "allow",
+    justification = "Allow Rust build verification requested by the shared Codex policy.",
+    match = [
+        "cargo build",
+        "cargo build --workspace",
+    ],
+)
+
+prefix_rule(
+    pattern = ["cargo", "check"],
+    decision = "allow",
+    justification = "Allow Rust type checking requested by the shared Codex policy.",
+    match = [
+        "cargo check",
+        "cargo check --workspace",
+    ],
+)
+
+prefix_rule(
+    pattern = ["cargo", "test"],
+    decision = "allow",
+    justification = "Allow Rust test runs requested by the shared Codex policy.",
+    match = [
+        "cargo test",
+        "cargo test --workspace",
+    ],
+)
+
+prefix_rule(
+    pattern = ["nix", "eval"],
+    decision = "allow",
+    justification = "Allow Nix evaluation for configuration inspection.",
+    match = [
+        "nix eval .#nixosConfigurations.nixos.config.networking.hostName --raw",
+    ],
+)
+
+prefix_rule(
+    pattern = ["nix", "flake", "check"],
+    decision = "allow",
+    justification = "Allow flake evaluation checks. Use --no-build unless the user asks to build.",
+    match = [
+        "nix flake check . --no-build",
+        "nix flake check . --no-build --no-update-lock-file",
+    ],
+)
+
+prefix_rule(
+    pattern = ["nix", "flake", "show"],
+    decision = "allow",
+    justification = "Allow flake output inspection without updating the lock file.",
+    match = [
+        "nix flake show . --no-update-lock-file",
+        "nix flake show . --json --no-update-lock-file",
+    ],
+)
+
+prefix_rule(
+    pattern = ["nix", "flake", "metadata"],
+    decision = "allow",
+    justification = "Allow flake metadata inspection without updating the lock file.",
+    match = [
+        "nix flake metadata . --json --no-update-lock-file",
+    ],
+)
+
+prefix_rule(
+    pattern = ["nixos-rebuild", "dry-build", "--flake"],
+    decision = "allow",
+    justification = "Allow NixOS dry-build validation for configured flakes.",
+    match = [
+        "nixos-rebuild dry-build --flake .#nixos",
+        "nixos-rebuild dry-build --flake ~/.nix-config#nixos",
+    ],
+)
+
+prefix_rule(
+    pattern = ["darwin-rebuild", "dry-build", "--flake"],
+    decision = "allow",
+    justification = "Allow nix-darwin dry-build validation for configured flakes.",
+    match = [
+        "darwin-rebuild dry-build --flake .#Harrys-MacBook-Pro",
+        "darwin-rebuild dry-build --flake ~/.nix-config#Harrys-MacBook-Pro",
+        "darwin-rebuild dry-build --flake .#Harrys-MacBook-Air",
+        "darwin-rebuild dry-build --flake ~/.nix-config#Harrys-MacBook-Air",
+    ],
+)
+
+prefix_rule(
+    pattern = ["jq"],
+    decision = "allow",
+    justification = "Allow JSON inspection and transformation.",
+    match = [
+        "jq --version",
+        "jq .",
+        "jq -r .path",
+    ],
+)

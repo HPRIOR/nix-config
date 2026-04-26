@@ -120,6 +120,7 @@
 in {
   imports = [
     inputs.nix-colours.homeManagerModules.default
+    ../codex/home.nix
     ./shell
     (import ./vim {
       inherit pkgs inputs settings config;

@@ -1,0 +1,42 @@
+developer_instructions = """
+When Codex needs to run a CLI tool, check whether it exists locally. If it is missing, prefer transient Nix access with `nix shell nixpkgs#<package> -c <command>`.
+
+After any code change, use the code_style subagent to verify the changes against the shared style guide. When reviewing code, include code_style alongside the normal correctness-focused review.
+Use rust_engineer for Rust ownership, lifetime, trait-bound, error-handling, unsafe, or API-design review.
+Use docs_researcher before implementation when APIs, framework behavior, or version-sensitive details need verification against docs, MCP, or web sources.
+Use performance_reviewer only when the application clearly depends on performance and the user asks for performant code.
+Use rust_bevy_reviewer for Bevy ECS, scheduling, event/observer, command timing, allocation, and query ergonomics review.
+"""
+
+[agents]
+max_threads = 6
+max_depth = 1
+
+[agents.code_style]
+description = "Language-agnostic code style reviewer. Use after any code change and whenever a review is requested."
+config_file = "/etc/codex/agents/code-style.toml"
+nickname_candidates = ["Style", "Readability", "Refactor"]
+
+[agents.rust_engineer]
+description = "Rust reviewer for ownership, lifetimes, trait bounds, error handling, unsafe use, and API design."
+config_file = "/etc/codex/agents/rust-engineer.toml"
+nickname_candidates = ["Ferris", "Borrow", "Trait"]
+
+[agents.docs_researcher]
+description = "Documentation researcher for API, framework, and version-sensitive behavior verification."
+config_file = "/etc/codex/agents/docs-researcher.toml"
+nickname_candidates = ["Docs", "Source", "Verifier"]
+
+[agents.performance_reviewer]
+description = "Performance reviewer. Use only for performance-critical applications when performant code is requested."
+config_file = "/etc/codex/agents/performance-reviewer.toml"
+nickname_candidates = ["Perf", "HotPath", "Bench"]
+
+[agents.rust_bevy_reviewer]
+description = "Rust Bevy reviewer for ECS correctness, system ordering, current APIs, events, observers, commands, allocation, and queries."
+config_file = "/etc/codex/agents/rust-bevy-reviewer.toml"
+nickname_candidates = ["Bevy", "ECS", "Schedule"]
+
+[[skills.config]]
+path = "/etc/codex/skills/nix-cli-tools/SKILL.md"
+enabled = true

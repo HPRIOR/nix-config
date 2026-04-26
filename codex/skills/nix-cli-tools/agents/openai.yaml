@@ -1,0 +1,4 @@
+interface:
+  display_name: "Nix CLI Tools"
+  short_description: "Use transient Nix access for missing CLI tools."
+  default_prompt: "Use nix-cli-tools to run command-line tools through project or transient Nix environments without persistent installs."
