@@ -7,6 +7,7 @@
   ...
 }: let
   isLinux = pkgs.stdenv.isLinux;
+  isLinuxHost = lib.hasPrefix "/home/" settings.homeDir;
   noctaliaPackage = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
   createBarWindowRule = app: verticalSizePercent: horizontalSize: ''
     windowrule=workspace 2,class:${app}
@@ -45,10 +46,13 @@
     transform = throw "No transform set for monitor centre";
   };
 in {
-  imports = [
-    ./rofi.nix
-    ./notifications.nix
-  ];
+  imports =
+    [
+      ./rofi.nix
+    ]
+    ++ lib.optionals isLinuxHost [
+      ./notifications.nix
+    ];
 
   programs =
     if isLinux
