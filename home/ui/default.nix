@@ -187,6 +187,7 @@ in {
       Documentation = "https://docs.noctalia.dev";
       PartOf = [config.wayland.systemd.target];
       After = [config.wayland.systemd.target];
+      ConditionEnvironment = "XDG_CURRENT_DESKTOP=Hyprland";
       X-Restart-Triggers =
         lib.optional (config.programs.noctalia-shell.settings != {}) "${config.xdg.configFile."noctalia/settings.json".source}"
         ++ lib.optional (config.programs.noctalia-shell.colors != {}) "${config.xdg.configFile."noctalia/colors.json".source}"

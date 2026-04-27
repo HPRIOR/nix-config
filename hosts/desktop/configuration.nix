@@ -104,6 +104,9 @@ in {
     displayManager.startx.enable = true;
     desktopManager.xfce.enable = true;
   };
+  # Keep XFCE's notifier from claiming notifications in Hyprland.
+  systemd.user.services.xfce4-notifyd.unitConfig.ConditionEnvironment = "XDG_CURRENT_DESKTOP=XFCE";
+
   services.xserver.xkb = lib.mkIf settings.keyboard.remapCapsToEscape {
     options = "caps:escape";
   };
