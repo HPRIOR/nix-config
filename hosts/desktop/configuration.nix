@@ -8,6 +8,10 @@
   defaultLocale = "en_GB.UTF-8";
   rulesFile = "/etc/mullvad-excludeTraffic.nft";
   desktopSessions = config.services.displayManager.sessionData.desktops;
+  xsessionWrapper = lib.escapeShellArgs [
+    "${pkgs.xorg.xinit}/bin/startx"
+    "${config.services.displayManager.sessionData.wrapper}"
+  ];
   tuigreetCommand = lib.escapeShellArgs [
     "${pkgs.tuigreet}/bin/tuigreet"
     "--time"
@@ -19,7 +23,7 @@
     "--xsessions"
     "${desktopSessions}/share/xsessions"
     "--xsession-wrapper"
-    "startx ${config.services.displayManager.sessionData.wrapper}"
+    xsessionWrapper
   ];
 in {
   imports = [
@@ -80,6 +84,7 @@ in {
   services.xserver = {
     enable = true;
     videoDrivers = ["nvidia"];
+    displayManager.startx.enable = true;
     desktopManager.xfce.enable = true;
   };
   services.xserver.xkb = lib.mkIf settings.keyboard.remapCapsToEscape {
@@ -92,6 +97,7 @@ in {
 
   services.greetd = {
     enable = true;
+    useTextGreeter = true;
     settings.default_session = {
       command = tuigreetCommand;
       user = "greeter";
