@@ -8,6 +8,23 @@
   defaultLocale = "en_GB.UTF-8";
   rulesFile = "/etc/mullvad-excludeTraffic.nft";
   desktopSessions = config.services.displayManager.sessionData.desktops;
+  hyprlandUwsmSessionName = "hyprland-uwsm";
+  hyprlandUwsmSession = pkgs.writeTextFile {
+    name = hyprlandUwsmSessionName;
+    text = ''
+      [Desktop Entry]
+      Name=Hyprland (UWSM)
+      Comment=Hyprland compositor managed by UWSM
+      Exec=${lib.getExe config.programs.uwsm.package} start -F -e -D Hyprland -- /run/current-system/sw/bin/Hyprland
+      Type=Application
+      DesktopNames=Hyprland
+      Keywords=tiling;wayland;compositor;
+    '';
+    destination = "/share/wayland-sessions/${hyprlandUwsmSessionName}.desktop";
+    derivationArgs = {
+      passthru.providedSessions = [hyprlandUwsmSessionName];
+    };
+  };
   xsessionWrapper = lib.escapeShellArgs [
     "${pkgs.xorg.xinit}/bin/startx"
     "${config.services.displayManager.sessionData.wrapper}"
@@ -152,6 +169,11 @@ in {
     withUWSM = true; # recommended for most users
     xwayland.enable = true;
   };
+  # Replace nixpkgs' generated UWSM entry, which launches Hyprland without
+  # desktop names and can inherit XFCE's XDG_CURRENT_DESKTOP after switching.
+  programs.uwsm.waylandCompositors = lib.mkForce {};
+
+  services.displayManager.sessionPackages = [hyprlandUwsmSession];
 
   programs.nix-ld.enable = true;
   # https://nixos.wiki/wiki/Jetbrains_Tools
