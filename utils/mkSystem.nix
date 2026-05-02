@@ -3,6 +3,8 @@
   inputs,
   nixpkgs,
 }: let
+  lib = nixpkgs.lib;
+
   # helper: build a pkgs instance once and share it with both OS and HM
   mkPkgs = {
     system,
@@ -67,8 +69,10 @@
 in {
   nixos = {
     system,
-    sysConfig,
-    homeConfig,
+    sysConfig ? null,
+    sysModules ? [],
+    homeConfig ? null,
+    homeModules ? [],
     profileArg ? "full",
   }: let
     unstable = import inputs.unstable {
@@ -93,6 +97,9 @@ in {
       hostName = "nixos";
       profileArg = profileArg;
     };
+
+    resolvedSysModules = sysModules ++ lib.optional (sysConfig != null) sysConfig;
+    resolvedHomeModules = homeModules ++ lib.optional (homeConfig != null) homeConfig;
   in
     inputs.nixpkgs.lib.nixosSystem {
       inherit system pkgs; # <= share pkgs with Home-Manager
@@ -100,32 +107,35 @@ in {
         inherit inputs settings;
       };
 
-      modules = [
-        sysConfig
-        inputs.home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
+      modules =
+        resolvedSysModules
+        ++ [
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
 
-          home-manager.users.${sharedUserName}.imports = [homeConfig];
+            home-manager.users.${sharedUserName}.imports = resolvedHomeModules;
 
-          home-manager.extraSpecialArgs = {
-            inherit inputs settings;
-            linuxSettings = {primaryMonitor = "HDMI-A-1";};
-          };
+            home-manager.extraSpecialArgs = {
+              inherit inputs settings;
+              linuxSettings = {primaryMonitor = "HDMI-A-1";};
+            };
 
-          home-manager.sharedModules = [
-            inputs.sops-nix.homeManagerModules.sops
-          ];
-        }
-      ];
+            home-manager.sharedModules = [
+              inputs.sops-nix.homeManagerModules.sops
+            ];
+          }
+        ];
     };
 
   darwin = {
     system,
     hostNameArg,
-    sysConfig,
-    homeConfig,
+    sysConfig ? null,
+    sysModules ? [],
+    homeConfig ? null,
+    homeModules ? [],
     profileArg ? "full",
   }: let
     pkgs = mkPkgs {
@@ -141,6 +151,9 @@ in {
       hostName = hostNameArg;
       profileArg = profileArg;
     };
+
+    resolvedSysModules = sysModules ++ lib.optional (sysConfig != null) sysConfig;
+    resolvedHomeModules = homeModules ++ lib.optional (homeConfig != null) homeConfig;
   in
     inputs.nix-darwin.lib.darwinSystem {
       inherit system pkgs;
@@ -148,25 +161,26 @@ in {
         inherit inputs settings;
       };
 
-      modules = [
-        sysConfig
-        inputs.mac-app-util.darwinModules.default
-        inputs.home-manager.darwinModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
+      modules =
+        resolvedSysModules
+        ++ [
+          inputs.mac-app-util.darwinModules.default
+          inputs.home-manager.darwinModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
 
-          home-manager.users.${sharedUserName}.imports = [homeConfig];
+            home-manager.users.${sharedUserName}.imports = resolvedHomeModules;
 
-          home-manager.extraSpecialArgs = {
-            inherit inputs settings;
-          };
+            home-manager.extraSpecialArgs = {
+              inherit inputs settings;
+            };
 
-          home-manager.sharedModules = [
-            inputs.sops-nix.homeManagerModules.sops
-            inputs.mac-app-util.homeManagerModules.default
-          ];
-        }
-      ];
+            home-manager.sharedModules = [
+              inputs.sops-nix.homeManagerModules.sops
+              inputs.mac-app-util.homeManagerModules.default
+            ];
+          }
+        ];
     };
 }

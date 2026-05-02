@@ -1,8 +1,11 @@
 {
+  config,
   settings,
   pkgs,
+  lib,
   ...
 }: let
+  cfg = config.my.features.shell;
   isLinux = pkgs.stdenv.isLinux;
 
   screen-capture-cmds =
@@ -57,258 +60,258 @@
     then alias_combined
     else alias_shared;
 in {
-  imports = [];
+  config = lib.mkIf cfg.enable {
+    home.packages = [vdoc] ++ linux-cmds ++ diary-cmds ++ lzc-cmds;
 
-  home.packages = [vdoc] ++ linux-cmds ++ diary-cmds ++ lzc-cmds;
-
-  programs.bash = {
-    enable = false;
-    shellAliases = aliases;
-  };
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    oh-my-zsh = {
-      enable = true;
-      plugins = ["git" "sudo" "copypath" "copyfile" "history" "direnv" "copybuffer" "colored-man-pages"];
-      theme = "robbyrussell";
+    programs.bash = {
+      enable = false;
+      shellAliases = aliases;
     };
-    shellAliases = aliases;
-    initContent = let
-      linuxFuncs =
-        if isLinux
-        then builtins.readFile ./zsh_funcs_linux
-        else "";
 
-      control-x-binds =
-        if isLinux
-        then ''
-          bindkey "^H" backward-delete-word
-          bindkey '^[^H' backward-kill-line
-          bindkey '^[[3;5~' kill-word
-          bindkey '^[[3;7~' kill-line
-        ''
-        else "";
-    in ''
-      eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
-      eval "$(zoxide init zsh)"
-      eval "$(pay-respects zsh --alias fuck)"
-      source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
-      ${builtins.readFile ./zsh_funcs}
-      ${linuxFuncs}
-      ${control-x-binds}
+    programs.zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      oh-my-zsh = {
+        enable = true;
+        plugins = ["git" "sudo" "copypath" "copyfile" "history" "direnv" "copybuffer" "colored-man-pages"];
+        theme = "robbyrussell";
+      };
+      shellAliases = aliases;
+      initContent = let
+        linuxFuncs =
+          if isLinux
+          then builtins.readFile ./zsh_funcs_linux
+          else "";
+
+        control-x-binds =
+          if isLinux
+          then ''
+            bindkey "^H" backward-delete-word
+            bindkey '^[^H' backward-kill-line
+            bindkey '^[[3;5~' kill-word
+            bindkey '^[[3;7~' kill-line
+          ''
+          else "";
+      in ''
+        eval "$(atuin init zsh --disable-up-arrow --disable-ctrl-r)"
+        eval "$(zoxide init zsh)"
+        eval "$(pay-respects zsh --alias fuck)"
+        source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+        ${builtins.readFile ./zsh_funcs}
+        ${linuxFuncs}
+        ${control-x-binds}
+      '';
+    };
+
+    programs.starship = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+    home.file."${settings.configDir}/starship/starship.toml".text = ''
+      [aws]
+      symbol = "  "
+
+      [buf]
+      symbol = " "
+
+      [bun]
+      symbol = " "
+
+      [c]
+      symbol = " "
+
+      [cpp]
+      symbol = " "
+
+      [cmake]
+      symbol = " "
+
+      [conda]
+      symbol = " "
+
+      [crystal]
+      symbol = " "
+
+      [dart]
+      symbol = " "
+
+      [deno]
+      symbol = " "
+
+      [directory]
+      read_only = " 󰌾"
+
+      [docker_context]
+      symbol = " "
+
+      [elixir]
+      symbol = " "
+
+      [elm]
+      symbol = " "
+
+      [fennel]
+      symbol = " "
+
+      [fossil_branch]
+      symbol = " "
+
+      [gcloud]
+      symbol = "  "
+
+      [git_branch]
+      symbol = " "
+
+      [git_commit]
+      tag_symbol = '  '
+
+      [golang]
+      symbol = " "
+
+      [guix_shell]
+      symbol = " "
+
+      [haskell]
+      symbol = " "
+
+      [haxe]
+      symbol = " "
+
+      [hg_branch]
+      symbol = " "
+
+      [hostname]
+      ssh_symbol = " "
+
+      [java]
+      symbol = " "
+
+      [julia]
+      symbol = " "
+
+      [kotlin]
+      symbol = " "
+
+      [lua]
+      symbol = " "
+
+      [memory_usage]
+      symbol = "󰍛 "
+
+      [meson]
+      symbol = "󰔷 "
+
+      [nim]
+      symbol = "󰆥 "
+
+      [nix_shell]
+      symbol = " "
+
+      [nodejs]
+      symbol = " "
+
+      [ocaml]
+      symbol = " "
+
+      [os.symbols]
+      Alpaquita = " "
+      Alpine = " "
+      AlmaLinux = " "
+      Amazon = " "
+      Android = " "
+      Arch = " "
+      Artix = " "
+      CachyOS = " "
+      CentOS = " "
+      Debian = " "
+      DragonFly = " "
+      Emscripten = " "
+      EndeavourOS = " "
+      Fedora = " "
+      FreeBSD = " "
+      Garuda = "󰛓 "
+      Gentoo = " "
+      HardenedBSD = "󰞌 "
+      Illumos = "󰈸 "
+      Kali = " "
+      Linux = " "
+      Mabox = " "
+      Macos = " "
+      Manjaro = " "
+      Mariner = " "
+      MidnightBSD = " "
+      Mint = " "
+      NetBSD = " "
+      NixOS = " "
+      Nobara = " "
+      OpenBSD = "󰈺 "
+      openSUSE = " "
+      OracleLinux = "󰌷 "
+      Pop = " "
+      Raspbian = " "
+      Redhat = " "
+      RedHatEnterprise = " "
+      RockyLinux = " "
+      Redox = "󰀘 "
+      Solus = "󰠳 "
+      SUSE = " "
+      Ubuntu = " "
+      Unknown = " "
+      Void = " "
+      Windows = "󰍲 "
+
+      [package]
+      symbol = "󰏗 "
+
+      [perl]
+      symbol = " "
+
+      [php]
+      symbol = " "
+
+      [pijul_channel]
+      symbol = " "
+
+      [pixi]
+      symbol = "󰏗 "
+
+      [python]
+      symbol = " "
+
+      [rlang]
+      symbol = "󰟔 "
+
+      [ruby]
+      symbol = " "
+
+      [rust]
+      symbol = "󱘗 "
+
+      [scala]
+      symbol = " "
+
+      [swift]
+      symbol = " "
+
+      [zig]
+      symbol = " "
+
+      [gradle]
+      symbol = " "
+
     '';
-  };
 
-  programs.starship = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-  home.file."${settings.configDir}/starship/starship.toml".text = ''
-    [aws]
-    symbol = "  "
+    programs.zoxide = {
+      enable = true;
+      options = [];
+    };
 
-    [buf]
-    symbol = " "
-
-    [bun]
-    symbol = " "
-
-    [c]
-    symbol = " "
-
-    [cpp]
-    symbol = " "
-
-    [cmake]
-    symbol = " "
-
-    [conda]
-    symbol = " "
-
-    [crystal]
-    symbol = " "
-
-    [dart]
-    symbol = " "
-
-    [deno]
-    symbol = " "
-
-    [directory]
-    read_only = " 󰌾"
-
-    [docker_context]
-    symbol = " "
-
-    [elixir]
-    symbol = " "
-
-    [elm]
-    symbol = " "
-
-    [fennel]
-    symbol = " "
-
-    [fossil_branch]
-    symbol = " "
-
-    [gcloud]
-    symbol = "  "
-
-    [git_branch]
-    symbol = " "
-
-    [git_commit]
-    tag_symbol = '  '
-
-    [golang]
-    symbol = " "
-
-    [guix_shell]
-    symbol = " "
-
-    [haskell]
-    symbol = " "
-
-    [haxe]
-    symbol = " "
-
-    [hg_branch]
-    symbol = " "
-
-    [hostname]
-    ssh_symbol = " "
-
-    [java]
-    symbol = " "
-
-    [julia]
-    symbol = " "
-
-    [kotlin]
-    symbol = " "
-
-    [lua]
-    symbol = " "
-
-    [memory_usage]
-    symbol = "󰍛 "
-
-    [meson]
-    symbol = "󰔷 "
-
-    [nim]
-    symbol = "󰆥 "
-
-    [nix_shell]
-    symbol = " "
-
-    [nodejs]
-    symbol = " "
-
-    [ocaml]
-    symbol = " "
-
-    [os.symbols]
-    Alpaquita = " "
-    Alpine = " "
-    AlmaLinux = " "
-    Amazon = " "
-    Android = " "
-    Arch = " "
-    Artix = " "
-    CachyOS = " "
-    CentOS = " "
-    Debian = " "
-    DragonFly = " "
-    Emscripten = " "
-    EndeavourOS = " "
-    Fedora = " "
-    FreeBSD = " "
-    Garuda = "󰛓 "
-    Gentoo = " "
-    HardenedBSD = "󰞌 "
-    Illumos = "󰈸 "
-    Kali = " "
-    Linux = " "
-    Mabox = " "
-    Macos = " "
-    Manjaro = " "
-    Mariner = " "
-    MidnightBSD = " "
-    Mint = " "
-    NetBSD = " "
-    NixOS = " "
-    Nobara = " "
-    OpenBSD = "󰈺 "
-    openSUSE = " "
-    OracleLinux = "󰌷 "
-    Pop = " "
-    Raspbian = " "
-    Redhat = " "
-    RedHatEnterprise = " "
-    RockyLinux = " "
-    Redox = "󰀘 "
-    Solus = "󰠳 "
-    SUSE = " "
-    Ubuntu = " "
-    Unknown = " "
-    Void = " "
-    Windows = "󰍲 "
-
-    [package]
-    symbol = "󰏗 "
-
-    [perl]
-    symbol = " "
-
-    [php]
-    symbol = " "
-
-    [pijul_channel]
-    symbol = " "
-
-    [pixi]
-    symbol = "󰏗 "
-
-    [python]
-    symbol = " "
-
-    [rlang]
-    symbol = "󰟔 "
-
-    [ruby]
-    symbol = " "
-
-    [rust]
-    symbol = "󱘗 "
-
-    [scala]
-    symbol = " "
-
-    [swift]
-    symbol = " "
-
-    [zig]
-    symbol = " "
-
-    [gradle]
-    symbol = " "
-
-  '';
-
-  programs.zoxide = {
-    enable = true;
-    options = [];
-  };
-
-  programs.direnv = {
-    enable = true;
-    enableZshIntegration = true; # see note on other shells below
-    nix-direnv.enable = true;
+    programs.direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+    };
   };
 }

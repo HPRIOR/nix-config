@@ -1,4 +1,11 @@
 {...}: {
+  imports = [
+    ../../home
+    ../../home/mac
+  ];
 
-  imports = [../../home];
+  my.features.darwin = {
+    enable = true;
+    rectangle.enable = true;
+  };
 }
