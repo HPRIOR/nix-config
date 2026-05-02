@@ -2,8 +2,10 @@
   inputs,
   pkgs,
   config,
+  lib,
   ...
 }: let
+  cfg = config.my.features.neovim;
   keymaps = import ./keymap.nix;
   plugins = import ./plugins {inherit pkgs config;};
   options = import ./options.nix;
@@ -22,62 +24,65 @@
 in {
   imports = [inputs.nixvim.homeModules.nixvim ./ideavim.nix];
 
-  xdg.configFile."nvim/lua".source = ./lua;
+  config = lib.mkIf cfg.enable {
+    xdg.configFile."nvim/lua".source = ./lua;
 
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    VISUAL = "nvim";
-  };
-  programs.nixvim =
-    {
-      enable = true;
-      dependencies.imagemagick.enable = true;
-      performance = {
-        combinePlugins.enable = true;
-        combinePlugins.standalonePlugins = ["nvim-treesitter" "blink.cmp" "smart-splits" "leap.nvim" "mini.nvim"];
-        byteCompileLua = {
-          enable = true;
-          configs = true;
-          initLua = true;
-          nvimRuntime = true;
-          plugins = true;
-        };
-      };
-      defaultEditor = true;
-      viAlias = true;
-      vimAlias = true;
-      colorschemes.kanagawa = {
+    home.sessionVariables = {
+      EDITOR = "nvim";
+      VISUAL = "nvim";
+    };
+
+    programs.nixvim =
+      {
         enable = true;
-        lazyLoad.enable = true;
-      };
-      extraConfigLua = ''
-        require("yank_reference")
-        require("config").setup()
-      '';
-      keymaps = keymaps;
-      extraPackages = [
-        # telescope deps
-        pkgs.ripgrep
-        pkgs.fzf
-        # diagram rendering
-        mermaidCliPackage
-        # formatters requred by conform
-        pkgs.alejandra
-        pkgs.prettierd
-        pkgs.nodePackages.prettier
-        pkgs.black
-        pkgs.stylua
-        pkgs.yamlfmt
-        pkgs.rustfmt
-        pkgs.shfmt
-        pkgs.jq
-        pkgs.ron-lsp
-        # pkgs.ocamlPackages.ocamlformat
-      ];
+        dependencies.imagemagick.enable = true;
+        performance = {
+          combinePlugins.enable = true;
+          combinePlugins.standalonePlugins = ["nvim-treesitter" "blink.cmp" "smart-splits" "leap.nvim" "mini.nvim"];
+          byteCompileLua = {
+            enable = true;
+            configs = true;
+            initLua = true;
+            nvimRuntime = true;
+            plugins = true;
+          };
+        };
+        defaultEditor = true;
+        viAlias = true;
+        vimAlias = true;
+        colorschemes.kanagawa = {
+          enable = true;
+          lazyLoad.enable = true;
+        };
+        extraConfigLua = ''
+          require("yank_reference")
+          require("config").setup()
+        '';
+        keymaps = keymaps;
+        extraPackages = [
+          # telescope deps
+          pkgs.ripgrep
+          pkgs.fzf
+          # diagram rendering
+          mermaidCliPackage
+          # formatters requred by conform
+          pkgs.alejandra
+          pkgs.prettierd
+          pkgs.nodePackages.prettier
+          pkgs.black
+          pkgs.stylua
+          pkgs.yamlfmt
+          pkgs.rustfmt
+          pkgs.shfmt
+          pkgs.jq
+          pkgs.ron-lsp
+          # pkgs.ocamlPackages.ocamlformat
+        ];
 
-      globals.mapleader = " ";
-      globals.maplocalleader = " ";
-    }
-    // plugins
-    // options;
+        globals.mapleader = " ";
+        globals.maplocalleader = " ";
+      }
+      // plugins
+      // options;
+  };
 }
