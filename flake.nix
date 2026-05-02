@@ -61,31 +61,31 @@
       inputs = inputs;
       nixpkgs = nixpkgs;
     };
+
+    darwinSystem = "aarch64-darwin";
+    macSystemModules = [./hosts/mac/configuration.nix];
+    macHomeModules = [./hosts/mac/home.nix];
   in {
     nixosConfigurations = {
       nixos = mkSystem.nixos {
         system = "x86_64-linux";
-        sysConfig = ./hosts/desktop/configuration.nix;
-        homeConfig = ./hosts/desktop/home.nix;
+        sysModules = [./hosts/desktop/configuration.nix];
+        homeModules = [./hosts/desktop/home.nix];
       };
     };
 
-    darwinConfigurations = let
-      system = "aarch64-darwin";
-      macConfig = ./hosts/mac/configuration.nix;
-      macHomeConfig = ./hosts/mac/home.nix;
-    in {
+    darwinConfigurations = {
       "Harrys-MacBook-Pro" = mkSystem.darwin {
-        system = system;
+        system = darwinSystem;
         hostNameArg = "Harrys-MacBook-Pro";
-        sysConfig = macConfig;
-        homeConfig = macHomeConfig;
+        sysModules = macSystemModules;
+        homeModules = macHomeModules;
       };
       "Harrys-MacBook-Air" = mkSystem.darwin {
-        system = system;
+        system = darwinSystem;
         hostNameArg = "Harrys-MacBook-Air";
-        sysConfig = macConfig;
-        homeConfig = macHomeConfig;
+        sysModules = macSystemModules;
+        homeModules = macHomeModules;
         profileArg = "minimal";
       };
     };
