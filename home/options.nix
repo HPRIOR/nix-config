@@ -2,7 +2,9 @@
   lib,
   settings,
   ...
-}: {
+}: let
+  defaultProfile = settings.profile or "full";
+in {
   options.my = {
     identity = {
       uid = lib.mkOption {
@@ -62,7 +64,7 @@
 
     profile = lib.mkOption {
       type = lib.types.enum ["minimal" "full" "workstation"];
-      default = settings.profile or "full";
+      default = defaultProfile;
     };
 
     features = {
@@ -106,7 +108,7 @@
       shell.enable = lib.mkDefault true;
       syncthing.enable = lib.mkDefault true;
       yazi.enable = lib.mkDefault true;
-      largePackages.enable = lib.mkDefault (settings.profile or "full" != "minimal");
+      largePackages.enable = lib.mkDefault (defaultProfile != "minimal");
     };
   };
 }
