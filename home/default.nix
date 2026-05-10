@@ -13,6 +13,93 @@
   darwinChromePath = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome";
   profile = settings.profile or "full";
   isMinimal = profile == "minimal";
+  configureCitrixWfclientScript = ''
+    citrix_dir=${lib.escapeShellArg "${homeDir}/.ICAClient"}
+    citrix_wfclient="$citrix_dir/wfclient.ini"
+    desired_mouse_line='MouseSendsControlV=False'
+    desired_wcag_line='WCAGModeKeyCombination='
+
+    if [ -n "''${DRY_RUN+x}" ]; then
+      echo "configure Citrix wfclient settings in $citrix_wfclient"
+    else
+      (
+        ${pkgs.coreutils}/bin/mkdir -p "$citrix_dir"
+        citrix_tmp="$(${pkgs.coreutils}/bin/mktemp "$citrix_dir/wfclient.ini.XXXXXX")"
+        trap '${pkgs.coreutils}/bin/rm -f "$citrix_tmp"' EXIT
+
+        if [ -f "$citrix_wfclient" ]; then
+          ${pkgs.gawk}/bin/awk \
+            -v mouse_line="$desired_mouse_line" \
+            -v wcag_line="$desired_wcag_line" '
+              BEGIN {
+                in_wfclient = 0
+                seen_wfclient = 0
+                mouse_done = 0
+                wcag_done = 0
+              }
+
+              function emit_missing() {
+                if (!mouse_done) {
+                  print mouse_line
+                }
+                if (!wcag_done) {
+                  print wcag_line
+                }
+                mouse_done = 1
+                wcag_done = 1
+              }
+
+              /^\[.*\]$/ {
+                if (in_wfclient) {
+                  emit_missing()
+                }
+                in_wfclient = ($0 == "[WFClient]")
+                if (in_wfclient) {
+                  seen_wfclient = 1
+                }
+                print
+                next
+              }
+
+              in_wfclient && /^MouseSendsControlV[[:space:]]*=/ {
+                print mouse_line
+                mouse_done = 1
+                next
+              }
+
+              in_wfclient && /^WCAGModeKeyCombination[[:space:]]*=/ {
+                print wcag_line
+                wcag_done = 1
+                next
+              }
+
+              {
+                print
+              }
+
+              END {
+                if (in_wfclient) {
+                  emit_missing()
+                } else if (!seen_wfclient) {
+                  print ""
+                  print "[WFClient]"
+                  print mouse_line
+                  print wcag_line
+                }
+              }
+            ' "$citrix_wfclient" > "$citrix_tmp"
+        else
+          {
+            printf '%s\n' '[WFClient]'
+            printf '%s\n' "$desired_mouse_line"
+            printf '%s\n' "$desired_wcag_line"
+          } > "$citrix_tmp"
+        fi
+
+        ${pkgs.coreutils}/bin/install -m 600 "$citrix_tmp" "$citrix_wfclient"
+      )
+    fi
+  '';
 
   basePackages = with pkgs; [
     aichat
@@ -109,7 +196,7 @@
     freecad
     libreoffice
     obsidian
-    rustdesk
+    # rustdesk
   ];
 
   darwinBasePackages = with pkgs; [
@@ -174,6 +261,10 @@ in {
       ++ (lib.optionals isDarwin darwinBasePackages)
       ++ (lib.optionals (isLinux && !isMinimal) largeLinuxPackages)
       ++ (lib.optionals (isDarwin && !isMinimal) darwinLargePackages);
+
+    home.activation.configureCitrixWfclient = lib.mkIf isLinux (
+      lib.hm.dag.entryAfter ["writeBoundary"] configureCitrixWfclientScript
+    );
 
     services.syncthing = {
       enable = true;
