@@ -130,10 +130,11 @@ in {
     isNormalUser = true;
     uid = settings.uid;
     description = settings.fullName;
-    extraGroups = settings.extraGroups;
+    extraGroups = settings.extraGroups ++ ["video"];
     packages = [];
   };
 
+  services.udev.packages = [pkgs.litra-autotoggle];
 
   environment.systemPackages = with pkgs; [
     # standard stuff
