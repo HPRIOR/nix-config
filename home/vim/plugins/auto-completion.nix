@@ -91,6 +91,7 @@ pkgs: {
           lsp = {
             enabled = true;
             fallbacks = [];
+            score_offset = 100;
           };
           path = {
             enabled = true;
@@ -98,7 +99,7 @@ pkgs: {
           spell = {
             module = "blink-cmp-spell";
             name = "Spell";
-            score_offset = 100;
+            score_offset = -20;
             opts = {
             };
           };
