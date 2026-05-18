@@ -337,7 +337,9 @@
   {
     mode = ["n"];
     key = "<leader>vn";
-    action = "<cmd>lua Snacks.picker.notifications()<cr>";
+    action = ''
+      <cmd>lua Snacks.picker.notifications({ show_empty = true, confirm = function(picker, item) picker:close(); local notif = item and item.item; if not notif then return end; local text = notif.msg or ""; if notif.title and notif.title ~= "" then text = notif.title .. "\n\n" .. text end; if text == "" then return end; vim.fn.setreg("+", text); vim.api.nvim_echo({ { "Copied notification to clipboard", "ModeMsg" } }, false, {}) end })<cr>
+    '';
     options = {
       silent = true;
       desc = "Search notifications";
