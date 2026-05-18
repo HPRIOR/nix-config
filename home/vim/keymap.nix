@@ -478,4 +478,68 @@
       desc = "Prev hung";
     };
   }
+  # DAP
+  {
+    mode = ["n"];
+    key = "<leader>db";
+    action = "<cmd>lua require('dap').toggle_breakpoint()<cr>";
+    options = {
+      silent = true;
+      desc = "Toggle debug breakpoint";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>dc";
+    action = "<cmd>lua require('dap').continue()<cr>";
+    options = {
+      silent = true;
+      desc = "Start or continue debugging";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>di";
+    action = "<cmd>lua require('dap').step_into()<cr>";
+    options = {
+      silent = true;
+      desc = "Step into";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>do";
+    action = "<cmd>lua require('dap').step_over()<cr>";
+    options = {
+      silent = true;
+      desc = "Step over";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>dO";
+    action = "<cmd>lua require('dap').step_out()<cr>";
+    options = {
+      silent = true;
+      desc = "Step out";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>du";
+    action = "<cmd>lua require('dapui').toggle()<cr>";
+    options = {
+      silent = true;
+      desc = "Toggle debug UI";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>dx";
+    action = "<cmd>lua require('dap').terminate()<cr>";
+    options = {
+      silent = true;
+      desc = "Terminate debugging";
+    };
+  }
 ]

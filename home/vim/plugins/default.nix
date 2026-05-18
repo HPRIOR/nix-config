@@ -4,6 +4,7 @@
 }: let
   lsp = import ./lsp.nix {inherit pkgs;};
   autocomplete = import ./auto-completion.nix pkgs;
+  dap = import ./dap.nix {inherit pkgs;};
   lualine = import ./lualine.nix;
   splash-screen = import ./splash-screen.nix;
 in {
@@ -242,7 +243,6 @@ in {
       vim-surround.enable = true;
       comment.enable = true;
       neo-tree.enable = true;
-      dap.enable = true;
       codecompanion = {
         enable = true;
         settings = {
@@ -287,6 +287,7 @@ in {
         };
       };
     }
+    // dap.plugins
     // lsp
     // autocomplete
     // lualine
