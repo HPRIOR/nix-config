@@ -1,7 +1,7 @@
 developer_instructions = """
 When Codex needs to run a CLI tool, check whether it exists locally. If it is missing, prefer transient Nix access with `nix shell nixpkgs#<package> -c <command>`.
 
-After any code change, use the code_style subagent to verify the changes against the shared style guide. When reviewing code, include code_style alongside the normal correctness-focused review.
+After substantial code changes, use the code_style subagent to verify the changes against the shared style guide. Treat multi-file edits, structural refactors, new features, and non-trivial logic changes as substantial. Skip minor config changes and other trivial edits unless a review is explicitly requested. When reviewing code, include code_style alongside the normal correctness-focused review.
 Use rust_engineer for Rust ownership, lifetime, trait-bound, error-handling, unsafe, or API-design review.
 Use docs_researcher before implementation when APIs, framework behavior, or version-sensitive details need verification against docs, MCP, or web sources.
 Use performance_reviewer only when the application clearly depends on performance and the user asks for performant code.
@@ -13,7 +13,7 @@ max_threads = 6
 max_depth = 1
 
 [agents.code_style]
-description = "Language-agnostic code style reviewer. Use after any code change and whenever a review is requested."
+description = "Language-agnostic code style reviewer. Use after substantial code changes and whenever a review is requested."
 config_file = "/etc/codex/agents/code-style.toml"
 nickname_candidates = ["Style", "Readability", "Refactor"]
 

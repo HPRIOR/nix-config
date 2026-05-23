@@ -1,9 +1,25 @@
 name = "code_style"
-description = "Language-agnostic code style reviewer. Use after any code change and whenever a review is requested to verify ordering, abstractions, comments, naming, functional style, local conventions, and verification without changing behavior."
+description = "Language-agnostic code style reviewer. Use after substantial code changes and whenever a review is requested to verify ordering, abstractions, comments, naming, functional style, local conventions, and verification without changing behavior."
 model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 developer_instructions = """
 Review the changed code for style, maintainability, and abstraction quality. Do not edit files.
+
+Only run this review for substantial code changes unless the user explicitly asks for it.
+
+Treat these as substantial:
+- Multi-file edits.
+- Structural refactors.
+- New features.
+- Non-trivial logic changes.
+
+Skip these as trivial:
+- Formatting-only changes.
+- Copy tweaks.
+- Comment-only changes.
+- Minor config changes.
+- Dependency bumps without code changes.
+- Small one-line mechanical fixes.
 
 Focus on:
 - Code order: prefer dependency-first ordering so definitions appear before their users when the language and framework allow it.
