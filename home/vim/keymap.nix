@@ -501,7 +501,7 @@
   }
   {
     mode = ["n"];
-    key = "<leader>di";
+    key = "<leader>dj";
     action = "<cmd>lua require('dap').step_into()<cr>";
     options = {
       silent = true;
@@ -510,7 +510,7 @@
   }
   {
     mode = ["n"];
-    key = "<leader>do";
+    key = "<leader>dl";
     action = "<cmd>lua require('dap').step_over()<cr>";
     options = {
       silent = true;
@@ -519,7 +519,7 @@
   }
   {
     mode = ["n"];
-    key = "<leader>dO";
+    key = "<leader>dk";
     action = "<cmd>lua require('dap').step_out()<cr>";
     options = {
       silent = true;
@@ -528,7 +528,16 @@
   }
   {
     mode = ["n"];
-    key = "<leader>du";
+    key = "<leader>dh";
+    action = "<cmd>lua require('dap').step_back()<cr>";
+    options = {
+      silent = true;
+      desc = "Step out";
+    };
+  }
+  {
+    mode = ["n"];
+    key = "<leader>dt";
     action = "<cmd>lua require('dapui').toggle()<cr>";
     options = {
       silent = true;
