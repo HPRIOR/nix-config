@@ -501,6 +501,15 @@
   }
   {
     mode = ["n"];
+    key = "<leader>dp";
+    action = "<cmd>lua require('dap').continue()<cr>";
+    options = {
+      silent = true;
+      desc = "Play until next breakpoint";
+    };
+  }
+  {
+    mode = ["n"];
     key = "<leader>dj";
     action = "<cmd>lua require('dap').step_into()<cr>";
     options = {
