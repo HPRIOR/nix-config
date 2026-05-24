@@ -21,31 +21,7 @@ in {
           type = "codelldb";
           request = "launch";
           name = "Launch Rust executable";
-
-          program.__raw = ''
-            function()
-              local dap = require("dap")
-              local path = vim.fn.input({
-                prompt = "Path to executable: ",
-                default = vim.fn.getcwd() .. "/target/debug/",
-                completion = "file",
-              })
-
-              if path == nil or path == "" then
-                return dap.ABORT
-              end
-
-              path = vim.fn.expand(path)
-              vim.notify("DAP launching executable: " .. path, vim.log.levels.INFO)
-
-              if vim.fn.executable(path) ~= 1 then
-                vim.notify("DAP executable does not exist or is not executable: " .. path, vim.log.levels.ERROR)
-                return dap.ABORT
-              end
-
-              return path
-            end
-          '';
+          program.__raw = "require('config.dap').pick_rust_executable";
 
           cwd = "\${workspaceFolder}";
           stopOnEntry = false;
