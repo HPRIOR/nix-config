@@ -57,7 +57,29 @@ in {
       trouble = {enable = true;};
       vim-matchup.enable = true;
       tiny-inline-diagnostic.enable = false;
-      auto-session.enable = true;
+      auto-session = {
+        enable = true;
+        settings = {
+          pre_save_cmds = [
+            {
+              __raw = ''
+                function(session_name)
+                  require("config.dap").save_breakpoints(session_name)
+                end
+              '';
+            }
+          ];
+          post_restore_cmds = [
+            {
+              __raw = ''
+                function(session_name)
+                  require("config.dap").restore_breakpoints(session_name)
+                end
+              '';
+            }
+          ];
+        };
+      };
       guess-indent = {
         enable = true;
       };
