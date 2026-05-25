@@ -1,6 +1,12 @@
 {pkgs}: let
   codelldbPath = "${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb";
   debugserverPath = "/Library/Developer/CommandLineTools/Library/PrivateFrameworks/LLDB.framework/Versions/A/Resources/debugserver";
+  rustLldbEtc = "${pkgs.rustc-unwrapped}/lib/rustlib/etc";
+  rustLldbInitCommands = [
+    "settings set target.process.thread.step-avoid-regexp '^<?(std|core|alloc)::'"
+    "command script import '${rustLldbEtc}/lldb_lookup.py'"
+    "command source -s true '${rustLldbEtc}/lldb_commands'"
+  ];
 in {
   plugins = {
     dap = {
@@ -24,6 +30,7 @@ in {
           program.__raw = "require('config.dap').pick_rust_executable";
 
           cwd = "\${workspaceFolder}";
+          initCommands = rustLldbInitCommands;
           stopOnEntry = false;
         }
 
@@ -33,6 +40,7 @@ in {
           name = "Attach to process";
           pid.__raw = "require('dap.utils').pick_process";
           cwd = "\${workspaceFolder}";
+          initCommands = rustLldbInitCommands;
         }
       ];
 
