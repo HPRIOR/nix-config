@@ -492,6 +492,15 @@
   }
   {
     mode = ["n"];
+    key = "<leader>dA";
+    action = "<cmd>lua require('dap').clear_breakpoints()<cr>";
+    options = {
+      silent = true;
+      desc = "Clear all debug breakpoints";
+    };
+  }
+  {
+    mode = ["n"];
     key = "<leader>dv";
     action = "<cmd>lua require('config.dap').pick_breakpoints()<cr>";
     options = {
