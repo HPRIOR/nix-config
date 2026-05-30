@@ -139,7 +139,7 @@
     nerd-fonts.fira-code
     nerd-fonts.jetbrains-mono
     pay-respects
-    perl538Packages.vidir
+    perlPackages.vidir
     procs # ps alternative
     progress
     ripgrep
@@ -230,6 +230,7 @@ in {
       userDirs = {
         enable = true;
         createDirectories = true;
+        setSessionVariables = true;
       };
       mime.enable = true;
       mimeApps = {
@@ -277,6 +278,7 @@ in {
 
     programs.yazi = {
       enable = true;
+      shellWrapperName = "yy";
       keymap.mgr.prepend_keymap = [
         {
           on = "!";
