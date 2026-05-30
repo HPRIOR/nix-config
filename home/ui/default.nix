@@ -10,11 +10,7 @@
   isLinuxHost = lib.hasPrefix "/home/" settings.homeDir;
   noctaliaPackage = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
   createBarWindowRule = app: verticalSizePercent: horizontalSize: ''
-    windowrule=workspace 2,class:${app}
-    windowrule=size ${toString horizontalSize} ${toString verticalSizePercent}%,class:${app}
-    windowrule=move 100%-${toString (horizontalSize + 30)} 50,class:${app}
-    windowrule=float,class:${app}
-    windowrule=animation slide,class:${app}
+    windowrule = match:class ${app}, workspace 2, float on, size ${toString horizontalSize} ${toString verticalSizePercent}%, move (monitor_w-${toString (horizontalSize + 30)}) 50, animation slide
   '';
 
   # Todo create a function that will generate the position of each screan automatically
@@ -210,6 +206,7 @@ in {
 
   wayland.windowManager.hyprland = {
     enable = isLinux;
+    configType = "hyprlang";
     extraConfig = ''
       # Required for mouse to render
       env = LIBVA_DRIVER_NAME,nvidia
@@ -219,7 +216,6 @@ in {
       env = XCURSOR_THEME,BreezeX-RosePine-Linux
       env = XCURSOR_SIZE,24
       env = XDG_SESSION_TYPE,wayland
-      env = GBM_BACKEND,nvidia-drm
 
       cursor {
           no_hardware_cursors = true
@@ -238,13 +234,10 @@ in {
       ${createBarWindowRule ".blueman-manager-wrapped" 50 700}
       ${createBarWindowRule "1Password" 50 700}
 
-      windowrule=workspace 2,class:^(Mullvad.*)$
-      windowrule=move 100%-350 50,class:^(Mullvad.*)$
-      windowrule=float,class:^(Mullvad.*)$
-      windowrule=animation slide,class:^(Mullvad.*)$
+      windowrule = match:class ^(Mullvad.*)$, workspace 2, float on, move (monitor_w-350) 50, animation slide
 
-      # windowrulev2 = stayfocused,class:(Rofi)
-      # windowrulev2 = forceinput,class:(Rofi)
+      # windowrule = match:class Rofi, stay_focused on
+      # windowrule = match:class Rofi, allows_input on
 
       # Monitor left
       monitor=desc:${monitorLeft.desc},${monitorLeft.res}@${monitorLeft.hertz},${monitorLeft.pos},${monitorLeft.scale},transform,${monitorLeft.transform}
@@ -423,9 +416,9 @@ ${lib.optionalString settings.keyboard.remapCapsToEscape "          kb_options =
           inactive_opacity = 1.0
       }
 
-      layerrule = blur, namespace:noctalia-background-.*
-      layerrule = ignorealpha 0.5, namespace:noctalia-background-.*
-      layerrule = blurpopups, namespace:noctalia-background-.*
+      layerrule = match:namespace noctalia-background-.*, blur on
+      layerrule = match:namespace noctalia-background-.*, ignore_alpha 0.5
+      layerrule = match:namespace noctalia-background-.*, blur_popups on
     '';
   };
 }
