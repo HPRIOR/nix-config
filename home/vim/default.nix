@@ -31,10 +31,12 @@ in {
   programs.nixvim =
     {
       enable = true;
+      nixpkgs.useGlobalPackages = true;
       dependencies.imagemagick.enable = true;
       performance = {
         combinePlugins.enable = true;
-        combinePlugins.standalonePlugins = ["nvim-treesitter" "blink.cmp" "smart-splits" "leap.nvim" "mini.nvim"];
+        # Keep query-providing plugins standalone to avoid buildEnv path conflicts.
+        combinePlugins.standalonePlugins = ["nvim-treesitter" "blink.cmp" "smart-splits" "leap.nvim" "mini.nvim" "snacks.nvim"];
         byteCompileLua = {
           enable = true;
           configs = true;
@@ -64,7 +66,7 @@ in {
         # formatters requred by conform
         pkgs.alejandra
         pkgs.prettierd
-        pkgs.nodePackages.prettier
+        pkgs.prettier
         pkgs.black
         pkgs.stylua
         pkgs.yamlfmt
