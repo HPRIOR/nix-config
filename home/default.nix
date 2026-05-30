@@ -151,7 +151,6 @@
     tree
     unzip
     watchexec
-    zathura
     zoxide
   ];
 
@@ -182,6 +181,7 @@
     strace
     v4l-utils
     vlc
+    zathura
   ];
 
   largeLinuxPackages = with pkgs; [
