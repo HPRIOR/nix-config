@@ -19,11 +19,26 @@ in {
           };
         };
       };
-      lz-n.enable = true;
-      scrollview.enable = true;
-      aerial.enable = true;
+      lz-n = {
+        enable = true;
+        autoLoad = true;
+      };
+      scrollview = {
+        enable = true;
+        lazyLoad.settings.event = "DeferredUIEnter";
+      };
+      aerial = {
+        enable = true;
+        lazyLoad.settings.cmd = [
+          "AerialNavToggle"
+          "AerialToggle"
+        ];
+      };
       dropbar.enable = true;
-      fidget.enable = true;
+      fidget = {
+        enable = true;
+        lazyLoad.settings.event = "LspAttach";
+      };
       smear-cursor = {
         enable = false;
         settings = {
@@ -35,6 +50,12 @@ in {
       smart-splits.enable = true;
       bullets = {
         enable = true;
+        lazyLoad.settings.ft = [
+          "markdown"
+          "text"
+          "gitcommit"
+          "scratch"
+        ];
         settings = {
           enable_in_empty_buffers = 0;
           enabled_file_types = [
@@ -46,20 +67,36 @@ in {
           nested_checkboxes = 0;
         };
       };
-      gitsigns.enable = true;
+      gitsigns = {
+        enable = true;
+        lazyLoad.settings.event = [
+          "BufReadPre"
+          "BufNewFile"
+        ];
+      };
       wrapping = {
         enable = true;
+        lazyLoad.settings.event = "BufReadPost";
         settings = {
           create_commands = false;
           create_keymaps = false;
         };
       };
-      trouble = {enable = true;};
-      vim-matchup.enable = true;
+      trouble = {
+        enable = true;
+        lazyLoad.settings.cmd = "Trouble";
+      };
+      vim-matchup = {
+        enable = true;
+        lazyLoad.settings.event = "BufReadPost";
+      };
       tiny-inline-diagnostic.enable = false;
       auto-session = {
         enable = true;
         settings = {
+          session_lens = {
+            load_on_setup = false;
+          };
           pre_save_cmds = [
             {
               __raw = ''
@@ -82,12 +119,26 @@ in {
       };
       guess-indent = {
         enable = true;
+        lazyLoad.settings.event = [
+          "BufReadPre"
+          "BufNewFile"
+        ];
       };
-      colorizer.enable = true;
+      colorizer = {
+        enable = true;
+        lazyLoad.settings.event = [
+          "BufReadPost"
+          "BufNewFile"
+        ];
+      };
       web-devicons.enable = true;
       mini.enable = true;
       diagram = {
         enable = true;
+        lazyLoad.settings.ft = [
+          "markdown"
+          "mermaid"
+        ];
         settings = {
           renderer_options = {
             mermaid = {
@@ -99,6 +150,7 @@ in {
       };
       image = {
         enable = true;
+        lazyLoad.settings.ft = "markdown";
         settings = {
           backend = "kitty";
           processor = "magick_cli";
@@ -116,6 +168,7 @@ in {
       };
       render-markdown = {
         enable = true;
+        lazyLoad.settings.ft = "markdown";
 
         settings = {
           code = {
@@ -233,9 +286,18 @@ in {
       illuminate.enable = true;
       vim-surround.enable = true;
       comment.enable = true;
-      neo-tree.enable = true;
+      neo-tree = {
+        enable = true;
+        lazyLoad.settings.cmd = "Neotree";
+      };
       codecompanion = {
         enable = true;
+        lazyLoad.settings.cmd = [
+          "CodeCompanion"
+          "CodeCompanionActions"
+          "CodeCompanionChat"
+          "CodeCompanionCmd"
+        ];
         settings = {
           adapters = {
             http = {
