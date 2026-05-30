@@ -37,7 +37,18 @@
     pumheight = 10; # Maximum number of entries in a popup
     relativenumber = false; # Relative line numbers
     scrolloff = 4; # Lines of context
-    sessionoptions = ["buffers" "curdir" "tabpages" "winsize"];
+    sessionoptions = [
+      "blank"
+      "buffers"
+      "curdir"
+      "folds"
+      "help"
+      "tabpages"
+      "winsize"
+      "winpos"
+      "terminal"
+      "localoptions"
+    ];
     shiftround = true; # Round indent
     shiftwidth = 4; # Size of an indent
     showmode = false; # Dont show mode since we have a statusline

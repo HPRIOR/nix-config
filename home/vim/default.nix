@@ -52,6 +52,23 @@ in {
         enable = true;
         lazyLoad.enable = true;
       };
+      extraConfigLuaPre = ''
+        do
+          local original_deprecate = vim.deprecate
+          local suppressed_deprecations = {
+            ["vim.lsp.with()"] = true,
+            ["vim.validate{<table>}"] = true,
+          }
+
+          vim.deprecate = function(name, ...)
+            if suppressed_deprecations[name] then
+              return nil
+            end
+
+            return original_deprecate(name, ...)
+          end
+        end
+      '';
       extraConfigLua = ''
         require("yank_reference")
         require("config").setup()
@@ -63,6 +80,9 @@ in {
         pkgs.fzf
         # diagram rendering
         mermaidCliPackage
+        # checkhealth deps
+        pkgs.tree-sitter
+        pkgs.ghostscript
         # formatters requred by conform
         pkgs.alejandra
         pkgs.prettierd
