@@ -17,14 +17,11 @@
     };
     # overlays that should be on every system
     sharedOverlays = [
-      (import ../overlays/claude.nix {unstable = unstable;})
       (import ../overlays/codex.nix {
         codex-cli-nix = inputs.codex-cli-nix;
         unstable = unstable;
       })
-      (import ../overlays/ron-lsp.nix)
       (import ../overlays/spotify.nix)
-      (import ../overlays/direnv.nix)
     ];
 
     permittedInsecurePkgs = ["libsoup-2.74.3"];
@@ -83,7 +80,6 @@ in {
       # overlays needed only on Linux
       extraOverlays = [
         (import ../overlays/citrix.nix {unstable = unstable;})
-        (import ../overlays/rustnet.nix {unstable = unstable;})
         (import ../overlays/litra-autotoggle.nix)
         inputs.ghostty.overlays.default
       ];
@@ -132,9 +128,6 @@ in {
   }: let
     pkgs = mkPkgs {
       inherit system;
-      extraOverlays = [
-        (import ../overlays/inetutils.nix)
-      ];
     };
 
     settings = sharedSettings {
