@@ -25,6 +25,13 @@ in {
         else "sudo nixos-rebuild switch --flake ${dotFiles}";
     in "echo 'Building nix config' && ${buildcmd}";
 
+    buildnix-boot = let
+      buildcmd =
+        if isDarwin
+        then "sudo darwin-rebuild switch --flake ${dotFiles}"
+        else "sudo nixos-rebuild boot --flake ${dotFiles}";
+    in "echo 'Building nix config for next boot' && ${buildcmd}";
+
     updatenix = "sudo nix flake update --flake ${dotFiles} && ${buildnix}";
 
     editnix = "cd ${dotFiles} && nvim && cd -";
