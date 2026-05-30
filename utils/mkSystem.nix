@@ -83,6 +83,7 @@ in {
       # overlays needed only on Linux
       extraOverlays = [
         (import ../overlays/citrix.nix {unstable = unstable;})
+        (import ../overlays/rustnet.nix {unstable = unstable;})
         (import ../overlays/litra-autotoggle.nix)
         inputs.ghostty.overlays.default
       ];

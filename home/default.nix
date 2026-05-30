@@ -177,6 +177,7 @@
     papirus-icon-theme
     pavucontrol
     protonmail-bridge
+    rustnet
     slurp
     strace
     v4l-utils
