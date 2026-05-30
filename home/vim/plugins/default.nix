@@ -13,7 +13,7 @@ in {
       actions-preview = {
         enable = true;
         settings = {
-          backend = ["snacks" "telescope" "minipick"];
+          backend = ["snacks" "minipick"];
           snacks = {
             layout = {preset = "dropdown";};
           };
@@ -154,37 +154,6 @@ in {
           terminal = {
             enabled = true;
           };
-        };
-      };
-      telescope = {
-        enable = true;
-        lazyLoad = {
-          enable = true;
-          settings = {
-            cmd = "Telescope";
-          };
-        };
-        settings = {
-          pickers = {
-            command_history = {
-              theme = "dropdown";
-            };
-            builtin = {
-              theme = "dropdown";
-            };
-            lsp_definitions = {
-              theme = "ivy";
-            };
-            lsp_references = {
-              theme = "ivy";
-            };
-            diagnostics = {
-              theme = "ivy";
-            };
-          };
-        };
-        extensions = {
-          fzf-native.enable = true;
         };
       };
       nvim-autopairs.enable = true;

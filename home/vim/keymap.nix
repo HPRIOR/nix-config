@@ -76,7 +76,7 @@
   {
     mode = ["n"];
     key = "<leader>s";
-    action = "<cmd>lua require'telescope.builtin'.spell_suggest(require('telescope.themes').get_dropdown({ width = 0.8, previewer = false, prompt_title = false }))<cr>";
+    action = "<cmd>lua Snacks.picker.spelling({ layout = { preset = 'select' } })<cr>";
     options = {
       silent = true;
       desc = "Show spelling suggestions";

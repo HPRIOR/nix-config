@@ -75,7 +75,7 @@ in {
       '';
       keymaps = keymaps;
       extraPackages = [
-        # telescope deps
+        # Picker deps
         pkgs.ripgrep
         pkgs.fzf
         # diagram rendering
