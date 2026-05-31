@@ -364,5 +364,8 @@ in {
   networking.firewall.allowedUDPPorts = [22000 21027 53 1194 1195 1196 1197 1300 1301 1302 1303 1400];
 
   system.stateVersion = "23.11"; # Did you read the comment? (doesn't need to change?)
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    auto-optimise-store = true;
+    experimental-features = ["nix-command" "flakes"];
+  };
 }
