@@ -23,6 +23,21 @@ in {
         enable = true;
         autoLoad = true;
       };
+      which-key = {
+        enable = true;
+        settings = {
+          preset = "helix";
+          triggers = [
+            {
+              __unkeyed = "<leader>T";
+              mode = "n";
+            }
+          ];
+          win = {
+            no_overlap = false;
+          };
+        };
+      };
       scrollview = {
         enable = true;
         lazyLoad.settings.event = "DeferredUIEnter";
@@ -199,6 +214,7 @@ in {
           picker = {enabled = true;};
           quickfile = {enabled = true;};
           scroll = {enabled = true;};
+          toggle = {};
           zen = {
             enabled = true;
             toggles = {
