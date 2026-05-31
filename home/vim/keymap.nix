@@ -383,6 +383,15 @@
   }
   {
     mode = ["n"];
+    key = "<leader>vD";
+    action = "<cmd>CodeDiff<cr>";
+    options = {
+      silent = true;
+      desc = "Open code diff";
+    };
+  }
+  {
+    mode = ["n"];
     key = "<leader>vj";
     action = "<cmd>lua Snacks.picker.jumps()<cr>";
     options = {

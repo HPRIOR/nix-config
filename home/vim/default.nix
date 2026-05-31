@@ -36,7 +36,7 @@ in {
       performance = {
         combinePlugins.enable = true;
         # Keep query-providing plugins standalone to avoid buildEnv path conflicts.
-        combinePlugins.standalonePlugins = ["nvim-treesitter" "blink.cmp" "smart-splits" "leap.nvim" "mini.nvim" "snacks.nvim"];
+        combinePlugins.standalonePlugins = ["nvim-treesitter" "blink.cmp" "smart-splits" "leap.nvim" "mini.nvim" "snacks.nvim" "codediff.nvim"];
         byteCompileLua = {
           enable = true;
           configs = true;

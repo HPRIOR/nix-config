@@ -89,6 +89,7 @@ in {
       vim-matchup = {
         enable = true;
         lazyLoad.settings.event = "BufReadPost";
+      codediff.enable = true;
       };
       tiny-inline-diagnostic.enable = false;
       auto-session = {
