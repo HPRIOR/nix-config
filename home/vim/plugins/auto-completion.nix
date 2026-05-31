@@ -1,7 +1,8 @@
 pkgs: {
   # Ripgrep too slow for vdoc dir so removing for now
-  blink-cmp-spell.enable = true;
   # blink-ripgrep.enable = true;
+  blink-cmp-dictionary.enable = true;
+  blink-cmp-spell.enable = true;
   colorful-menu.enable = true;
   blink-cmp = let
     border_type = "rounded";
@@ -78,8 +79,9 @@ pkgs: {
           "lsp"
           "path"
           "snippets"
-          "buffer"
           "spell"
+          "dictionary"
+          "buffer"
           # "ripgrep"
         ];
         cmdline = [];
@@ -101,6 +103,16 @@ pkgs: {
             name = "Spell";
             score_offset = -20;
             opts = {
+            };
+          };
+          dictionary = {
+            module = "blink-cmp-dictionary";
+            name = "Dict";
+            score_offset = -30;
+            opts = {
+              dictionary_files = [
+                "${pkgs.scowl}/share/dict/words.txt"
+              ];
             };
           };
           # ripgrep = {
