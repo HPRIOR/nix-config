@@ -89,6 +89,17 @@ in {
           "BufNewFile"
         ];
       };
+      codediff = {
+        enable = true;
+        settings = {
+          keymaps = {
+            view = {
+              next_hunk = "gh";
+              prev_hunk = "gH";
+            };
+          };
+        };
+      };
       wrapping = {
         enable = true;
         lazyLoad.settings.event = "BufReadPost";
@@ -104,7 +115,6 @@ in {
       vim-matchup = {
         enable = true;
         lazyLoad.settings.event = "BufReadPost";
-      codediff.enable = true;
       };
       tiny-inline-diagnostic.enable = false;
       auto-session = {
