@@ -63,6 +63,7 @@ in {
         };
       };
       smart-splits.enable = true;
+      colorful-winsep.enable = true;
       bullets = {
         enable = true;
         lazyLoad.settings.ft = [
@@ -206,6 +207,10 @@ in {
           };
           file_types = ["markdown"];
         };
+      };
+      helpview = {
+        enable = true;
+        lazyLoad.settings.ft = "help";
       };
       snacks = {
         enable = true;
