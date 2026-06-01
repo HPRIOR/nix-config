@@ -3,6 +3,11 @@ local M = {}
 local uv = vim.uv or vim.loop
 local Snacks = require("snacks")
 local stale_breakpoint_prune_threshold = 10
+local pending_restore_session_name = nil
+
+local function is_dap_loaded()
+	return package.loaded["dap"] ~= nil or package.loaded["dap.breakpoints"] ~= nil
+end
 
 local function is_executable(path)
 	return vim.fn.isdirectory(path) == 0 and vim.fn.executable(path) == 1
@@ -422,6 +427,10 @@ function M.pick_breakpoints()
 end
 
 function M.save_breakpoints(session_name)
+	if not is_dap_loaded() then
+		return
+	end
+
 	session_name = session_name or ""
 
 	local stored = read_breakpoint_store(session_name)
@@ -453,7 +462,13 @@ function M.save_breakpoints(session_name)
 end
 
 function M.restore_breakpoints(session_name)
+	if not is_dap_loaded() then
+		pending_restore_session_name = session_name or ""
+		return
+	end
+
 	session_name = session_name or ""
+	pending_restore_session_name = nil
 
 	local stored = read_breakpoint_store(session_name)
 	if not stored then
@@ -489,6 +504,14 @@ function M.restore_breakpoints(session_name)
 	if changed then
 		write_breakpoint_store(session_name, updated)
 	end
+end
+
+function M.restore_pending_breakpoints()
+	if pending_restore_session_name == nil then
+		return
+	end
+
+	M.restore_breakpoints(pending_restore_session_name)
 end
 
 return M
