@@ -12,6 +12,17 @@ in {
     {
       actions-preview = {
         enable = true;
+        lazyLoad.settings.keys = [
+          {
+            __unkeyed-1 = "<c-a>";
+            __unkeyed-2 = "<cmd>lua require('actions-preview').code_actions()<cr>";
+            desc = "Show code actions";
+            mode = [
+              "n"
+              "i"
+            ];
+          }
+        ];
         settings = {
           backend = ["snacks" "minipick"];
           snacks = {
@@ -62,7 +73,31 @@ in {
           distance_stop_animating = 0.5;
         };
       };
-      smart-splits.enable = true;
+      smart-splits = {
+        enable = true;
+        lazyLoad.settings.keys = [
+          {
+            __unkeyed-1 = "<c-h>";
+            __unkeyed-2 = "<cmd>lua require('smart-splits').resize_left()<cr>";
+            desc = "Resize left";
+          }
+          {
+            __unkeyed-1 = "<c-j>";
+            __unkeyed-2 = "<cmd>lua require('smart-splits').resize_down()<cr>";
+            desc = "Resize down";
+          }
+          {
+            __unkeyed-1 = "<c-k>";
+            __unkeyed-2 = "<cmd>lua require('smart-splits').resize_up()<cr>";
+            desc = "Resize up";
+          }
+          {
+            __unkeyed-1 = "<c-l>";
+            __unkeyed-2 = "<cmd>lua require('smart-splits').resize_right()<cr>";
+            desc = "Resize right";
+          }
+        ];
+      };
       colorful-winsep.enable = true;
       bullets = {
         enable = true;
@@ -92,6 +127,7 @@ in {
       };
       codediff = {
         enable = true;
+        lazyLoad.settings.cmd = "CodeDiff";
         settings = {
           keymaps = {
             view = {
@@ -257,6 +293,17 @@ in {
       # Code formatting
       conform-nvim = {
         enable = true;
+        lazyLoad.settings.keys = [
+          {
+            __unkeyed-1 = "gf";
+            __unkeyed-2 = "<cmd>lua require('conform').format({ lsp_fallback = true })<cr>";
+            desc = "Format buffer or selection";
+            mode = [
+              "n"
+              "v"
+            ];
+          }
+        ];
         settings.notifyOnError = true;
         settings.formatters_by_ft = {
           html = {
@@ -314,6 +361,18 @@ in {
 
       leap = {
         enable = true;
+        lazyLoad.settings.keys = [
+          {
+            __unkeyed-1 = "s";
+            __unkeyed-2 = "<cmd>lua require('leap').leap({ target_windows = { vim.fn.win_getid() }})<cr>";
+            desc = "Leap up/down in window";
+            mode = [
+              "n"
+              "x"
+              "o"
+            ];
+          }
+        ];
       };
       illuminate.enable = true;
       vim-surround.enable = true;

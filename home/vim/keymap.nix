@@ -47,15 +47,6 @@
     };
   }
   {
-    mode = ["n" "v"];
-    key = "gf";
-    action = "<cmd>lua require('conform').format({ lsp_fallback = true })<cr>";
-    options = {
-      silent = true;
-      desc = "Format buffer or selection";
-    };
-  }
-  {
     mode = ["v"];
     key = "<C-p>";
     action = "y'>p";
@@ -92,15 +83,6 @@
     };
   }
   {
-    mode = ["n" "x" "o"];
-    key = "s";
-    action = "<cmd>lua require('leap').leap({ target_windows = { vim.fn.win_getid() }})<cr>";
-    options = {
-      silent = true;
-      desc = "Leap up/down in window";
-    };
-  }
-  {
     mode = ["n"];
     key = "<leader>j";
     action = "<c-w>j";
@@ -125,42 +107,6 @@
     options = {
       silent = true;
       desc = "Focus window right";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<c-h>";
-    action = "<cmd>lua require('smart-splits').resize_left()<cr>";
-    options = {
-      silent = true;
-      desc = "Resize left";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<c-j>";
-    action = "<cmd>lua require('smart-splits').resize_down()<cr>";
-    options = {
-      silent = true;
-      desc = "Resize down";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<c-k>";
-    action = "<cmd>lua require('smart-splits').resize_up()<cr>";
-    options = {
-      silent = true;
-      desc = "Resize up";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<c-l>";
-    action = "<cmd>lua require('smart-splits').resize_right()<cr>";
-    options = {
-      silent = true;
-      desc = "Resize right";
     };
   }
   {
@@ -436,15 +382,6 @@
     };
   }
   {
-    mode = ["n" "i"];
-    key = "<c-a>";
-    action = "<cmd>lua require('actions-preview').code_actions()<cr>";
-    options = {
-      silent = true;
-      desc = "Toggle terminal";
-    };
-  }
-  {
     mode = ["n"];
     key = "ge";
     action = "<cmd>lua vim.diagnostic.goto_next()<cr>";
@@ -487,106 +424,6 @@
     options = {
       silent = true;
       desc = "Prev hung";
-    };
-  }
-  # DAP
-  {
-    mode = ["n"];
-    key = "<leader>db";
-    action = "<cmd>lua require('dap').toggle_breakpoint()<cr>";
-    options = {
-      silent = true;
-      desc = "Toggle debug breakpoint";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dA";
-    action = "<cmd>lua require('dap').clear_breakpoints()<cr>";
-    options = {
-      silent = true;
-      desc = "Clear all debug breakpoints";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dv";
-    action = "<cmd>lua require('config.dap').pick_breakpoints()<cr>";
-    options = {
-      silent = true;
-      desc = "Search debug breakpoints";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dc";
-    action = "<cmd>lua require('dap').continue()<cr>";
-    options = {
-      silent = true;
-      desc = "Start or continue debugging";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dp";
-    action = "<cmd>lua require('dap').continue()<cr>";
-    options = {
-      silent = true;
-      desc = "Play until next breakpoint";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dj";
-    action = "<cmd>lua require('dap').step_into()<cr>";
-    options = {
-      silent = true;
-      desc = "Step into";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dl";
-    action = "<cmd>lua require('dap').step_over()<cr>";
-    options = {
-      silent = true;
-      desc = "Step over";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dk";
-    action = "<cmd>lua require('dap').step_out()<cr>";
-    options = {
-      silent = true;
-      desc = "Step out";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dh";
-    action = "<cmd>lua require('dap').step_back()<cr>";
-    options = {
-      silent = true;
-      desc = "Step out";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dt";
-    action = "<cmd>lua require('dapui').toggle()<cr>";
-    options = {
-      silent = true;
-      desc = "Toggle debug UI";
-    };
-  }
-  {
-    mode = ["n"];
-    key = "<leader>dx";
-    action = "<cmd>lua require('dap').terminate()<cr>";
-    options = {
-      silent = true;
-      desc = "Terminate debugging";
     };
   }
 ]
