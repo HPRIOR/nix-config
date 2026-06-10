@@ -81,6 +81,7 @@ in {
     onActivation.autoUpdate = true;
     onActivation.upgrade = true;
     onActivation.cleanup = "uninstall";
+    onActivation.extraFlags = [ "--force-cleanup" ];
     casks = baseCasks ++ lib.optionals (!isMinimal) largeCasks;
   };
 
