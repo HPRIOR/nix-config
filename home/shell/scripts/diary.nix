@@ -76,7 +76,7 @@
       edit_file() {
         local f="$1"
         local tmp
-        tmp="$(mktemp)"
+        tmp="$(mktemp --suffix=.md)"
         trap 'rm -f "$tmp"' RETURN
 
         if [[ -f "$f" ]]; then
