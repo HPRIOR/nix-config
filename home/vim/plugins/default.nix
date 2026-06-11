@@ -273,6 +273,10 @@ in {
             };
             win = {
               style = "zen";
+              backdrop = {
+                transparent = false;
+                blend = 0;
+              };
               wo = {
                 wrap = true;
               };
