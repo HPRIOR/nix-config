@@ -271,6 +271,12 @@ in {
             toggles = {
               dim = false;
             };
+            win = {
+              style = "zen";
+              wo = {
+                wrap = true;
+              };
+            };
           };
           terminal = {
             enabled = true;
