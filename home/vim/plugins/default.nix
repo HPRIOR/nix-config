@@ -98,7 +98,7 @@ in {
           }
         ];
       };
-      colorful-winsep.enable = true;
+      colorful-winsep.enable = false;
       bullets = {
         enable = true;
         lazyLoad.settings.ft = [
