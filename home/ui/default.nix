@@ -261,8 +261,14 @@ in {
             monitor=Unknown-1,disable
 
             workspace=1,monitor:desc:${monitorLeft.desc},default:true,persistent:true
-            workspace=2,monitor:desc:${monitorCentre.desc},default:true,persistent:true
-            workspace=3,monitor:desc:${monitorRight.desc},default:true,persistent:true
+            workspace=2,monitor:desc:${monitorLeft.desc},persistent:true
+            workspace=3,monitor:desc:${monitorLeft.desc},persistent:true
+            workspace=4,monitor:desc:${monitorCentre.desc},default:true,persistent:true
+            workspace=5,monitor:desc:${monitorCentre.desc},persistent:true
+            workspace=6,monitor:desc:${monitorCentre.desc},persistent:true
+            workspace=7,monitor:desc:${monitorRight.desc},default:true,persistent:true
+            workspace=8,monitor:desc:${monitorRight.desc},persistent:true
+            workspace=9,monitor:desc:${monitorRight.desc},persistent:true
 
             # Key bindings
             $mainMod = SUPER
@@ -312,18 +318,15 @@ in {
             bind = $shiftMod, 8, movetoworkspace, 8
             bind = $shiftMod, 9, movetoworkspace, 9
 
-            # open next available workspace on current monitor
-            bind = $mainMod, N, workspace, r+1
-            # move active window to next available workspace on current monitor
-            bind = $shiftMod, N, exec, move-window-next-workspace
-            # delete current workspace (or just its windows if persistent/default)
-            bind = $shiftMod, X, exec, delete-current-workspace
+            # Cycle monitors
+            bind = $mainMod, N, focusmonitor, r
+            bind = $shiftMod, N, focusmonitor, l
             # Cycle through workspaces on single monitor
             bind = $mainMod, bracketleft,  workspace, m-1
             bind = $mainMod, bracketright, workspace, m+1
-            # Cycle monitors
-            bind = $shiftMod, bracketleft, focusmonitor, l
-            bind = $shiftMod, bracketright, focusmonitor, r
+            # Move active window through persistent workspaces
+            bind = $shiftMod, bracketleft, exec, move-window-workspace prev
+            bind = $shiftMod, bracketright, exec, move-window-workspace next
 
             # bind = $mainMod, O, focusmonitor, l
             # bind = $mainMod, I, focusmonitor, r
