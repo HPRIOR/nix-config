@@ -1,8 +1,7 @@
 {
   pkgs,
 }: let
-  moveWindowNextWorkspaceCmd = "move-window-next-workspace";
-  deleteWorkspaceCmd = "delete-current-workspace";
+  moveWindowWorkspaceCmd = "move-window-workspace";
 
   focus_window = pkgs.writeShellApplication {
     name = "focus_window";
@@ -27,8 +26,8 @@
     '';
   };
 
-  move_window_next_workspace = pkgs.writeShellApplication {
-    name = moveWindowNextWorkspaceCmd;
+  move_window_workspace = pkgs.writeShellApplication {
+    name = moveWindowWorkspaceCmd;
 
     runtimeInputs = with pkgs; [hyprland jq];
 
@@ -36,82 +35,49 @@
       #!/bin/bash
       set -euo pipefail
 
+      direction="''${1:-}"
+      case "$direction" in
+        next) step=1 ;;
+        prev) step=-1 ;;
+        *) exit 2 ;;
+      esac
+
       active_window=$(hyprctl -j activewindow)
       if [ "$active_window" = "null" ] || [ -z "$active_window" ]; then
-          exit 0
-      fi
-
-      next_workspace=$(
-        hyprctl -j workspaces \
-        | jq '
-            [.[].id]
-            | map(select(. > 0))
-            | sort
-            | reduce .[] as $id (1; if $id == . then . + 1 else . end)
-          '
-      )
-
-      hyprctl dispatch movetoworkspace "$next_workspace"
-    '';
-  };
-
-  delete_current_workspace = pkgs.writeShellApplication {
-    name = deleteWorkspaceCmd;
-
-    runtimeInputs = with pkgs; [hyprland jq coreutils];
-
-    text = ''
-      #!/bin/bash
-      set -euo pipefail
-
-      current_ws=$(hyprctl -j activeworkspace)
-      current_ws_id=$(echo "$current_ws" | jq -r '.id')
-
-      ws_info=$(
-        hyprctl -j workspaces \
-        | jq --argjson id "$current_ws_id" 'map(select(.id == $id)) | first'
-      )
-
-      if [ -z "$ws_info" ] || [ "$ws_info" = "null" ]; then
         exit 0
       fi
 
-      persistent=$(echo "$ws_info" | jq '.persistent // false')
-      monitor_name=$(echo "$ws_info" | jq -r '.monitor')
+      current_ws=$(echo "$active_window" | jq -r '.workspace.id')
+      case "$current_ws" in
+        1|2|3)
+          min_ws=1
+          max_ws=3
+          ;;
+        4|5|6)
+          min_ws=4
+          max_ws=6
+          ;;
+        7|8|9)
+          min_ws=7
+          max_ws=9
+          ;;
+        *) exit 0 ;;
+      esac
 
-      addresses=$(
-        hyprctl -j clients \
-        | jq -r --argjson id "$current_ws_id" '.[] | select(.workspace.id == $id) | .address'
-      )
+      target_ws=$((current_ws + step))
 
-      if [ -n "$addresses" ]; then
-        echo "$addresses" | while IFS= read -r addr; do
-          [ -n "$addr" ] && hyprctl dispatch closewindow address:"$addr"
-        done
+      if [ "$target_ws" -lt "$min_ws" ]; then
+        target_ws=$max_ws
+      elif [ "$target_ws" -gt "$max_ws" ]; then
+        target_ws=$min_ws
       fi
 
-      if [ "$persistent" = "true" ]; then
-        exit 0
-      fi
-
-      target_ws=$(
-        hyprctl -j workspaces \
-        | jq -r --arg mon "$monitor_name" --argjson cur "$current_ws_id" '
-            [ .[] | select(.monitor == $mon and .id != $cur) | .id ] | sort | .[0] // empty
-          '
-      )
-
-      if [ -z "$target_ws" ]; then
-        target_ws=1
-      fi
-
-      hyprctl dispatch workspace "$target_ws"
+      hyprctl dispatch movetoworkspace "$target_ws"
     '';
   };
 in {
   cmds = [
     focus_window
-    move_window_next_workspace
-    delete_current_workspace
+    move_window_workspace
   ];
 }
