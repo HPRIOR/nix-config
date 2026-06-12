@@ -8,8 +8,8 @@ in
   lib.mkIf isLinux {
     services.dunst.enable = lib.mkForce false;
 
-    programs.noctalia-shell.settings.notifications = {
-      enabled = true;
-      location = "top_right";
+    programs.noctalia.settings.notification = {
+      enable_daemon = true;
+      layer = "top";
     };
   }
